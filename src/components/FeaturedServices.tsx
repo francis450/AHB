@@ -1,9 +1,18 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import { Scissors, Sparkles, Crown, Heart } from 'lucide-react';
 import { useUI } from '../context/UIContext';
+import { 
+  useScrollAnimation, 
+  slideUpVariants, 
+  containerVariants,
+  staggeredChildrenVariants,
+  scaleInVariants
+} from '../hooks/useScrollAnimation';
 
 const FeaturedServices = () => {
   const { openBooking } = useUI();
+  const { ref, controls } = useScrollAnimation();
 
   const services = [
     {
@@ -37,52 +46,108 @@ const FeaturedServices = () => {
   ];
 
   return (
-    <section className="py-20 bg-gray-50">
+    <motion.section 
+      ref={ref}
+      initial="hidden"
+      animate={controls}
+      variants={slideUpVariants}
+      className="py-20 bg-gray-50"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+        <motion.div 
+          variants={containerVariants}
+          className="text-center mb-16"
+        >
+          <motion.h2 
+            variants={staggeredChildrenVariants}
+            className="text-4xl md:text-5xl font-bold text-gray-900 mb-4"
+          >
             Our <span className="text-yellow-600">Signature Services</span>
-          </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          </motion.h2>
+          <motion.p 
+            variants={staggeredChildrenVariants}
+            className="text-xl text-gray-600 max-w-3xl mx-auto"
+          >
             Discover our range of premium beauty services designed to enhance your natural elegance
-          </p>
-        </div>
+          </motion.p>
+        </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <motion.div 
+          variants={containerVariants}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
+        >
           {services.map((service, index) => (
-            <div
+            <motion.div
               key={index}
-              className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 group"
+              variants={scaleInVariants}
+              className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 group"
+              whileHover={{ 
+                y: -8,
+                scale: 1.02,
+                transition: { duration: 0.3 }
+              }}
+              whileTap={{ scale: 0.98 }}
             >
               <div className="relative overflow-hidden rounded-xl mb-6">
-                <img
+                <motion.img
                   src={service.image}
                   alt={service.title}
-                  className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-110"
+                  className="w-full h-48 object-cover"
+                  whileHover={{ scale: 1.1 }}
+                  transition={{ duration: 0.4 }}
                 />
-                <div className="absolute inset-0 bg-black bg-opacity-20 group-hover:bg-opacity-30 transition-all duration-300"></div>
-                <div className="absolute top-4 right-4 bg-white rounded-full p-2">
+                <motion.div 
+                  className="absolute inset-0 bg-black bg-opacity-20"
+                  whileHover={{ backgroundColor: "rgba(0, 0, 0, 0.3)" }}
+                  transition={{ duration: 0.3 }}
+                />
+                <motion.div 
+                  className="absolute top-4 right-4 bg-white rounded-full p-2"
+                  whileHover={{ scale: 1.1, rotate: 5 }}
+                  transition={{ duration: 0.3 }}
+                >
                   {service.icon}
-                </div>
+                </motion.div>
               </div>
 
-              <h3 className="text-xl font-bold text-gray-900 mb-3">{service.title}</h3>
-              <p className="text-gray-600 mb-4 text-sm leading-relaxed">{service.description}</p>
+              <motion.h3 
+                className="text-xl font-bold text-gray-900 mb-3"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 + index * 0.1 }}
+              >
+                {service.title}
+              </motion.h3>
+              <motion.p 
+                className="text-gray-600 mb-4 text-sm leading-relaxed"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 + index * 0.1 }}
+              >
+                {service.description}
+              </motion.p>
               
-              <div className="flex items-center justify-between">
+              <motion.div 
+                className="flex items-center justify-between"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 + index * 0.1 }}
+              >
                 <span className="text-lg font-bold text-yellow-600">{service.price}</span>
-                <button
+                <motion.button
                   onClick={openBooking}
                   className="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded-full text-sm font-semibold transition-colors duration-200"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                 >
                   Book Now
-                </button>
-              </div>
-            </div>
+                </motion.button>
+              </motion.div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
-    </section>
+    </motion.section>
   );
 };
 
