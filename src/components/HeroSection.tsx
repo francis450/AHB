@@ -20,6 +20,57 @@ const HeroSection = () => {
           backgroundPosition: 'center'
         }}
       />
+
+      {/* Gradient overlay bubbles for depth */}
+      <motion.div 
+        className="absolute top-0 left-0 w-96 h-96 rounded-full opacity-5"
+        style={{
+          background: 'radial-gradient(circle, rgba(251, 191, 36, 0.3) 0%, transparent 70%)'
+        }}
+        animate={{ 
+          scale: [1, 1.2, 1],
+          opacity: [0.05, 0.15, 0.05]
+        }}
+        transition={{ 
+          duration: 8, 
+          repeat: Infinity, 
+          ease: "easeInOut" 
+        }}
+      />
+      
+      <motion.div 
+        className="absolute bottom-0 right-0 w-80 h-80 rounded-full opacity-8"
+        style={{
+          background: 'radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 60%)'
+        }}
+        animate={{ 
+          scale: [1, 0.8, 1],
+          opacity: [0.08, 0.18, 0.08]
+        }}
+        transition={{ 
+          duration: 6, 
+          repeat: Infinity, 
+          ease: "easeInOut",
+          delay: 2
+        }}
+      />
+
+      <motion.div 
+        className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full opacity-3"
+        style={{
+          background: 'radial-gradient(circle, rgba(251, 191, 36, 0.1) 0%, transparent 80%)'
+        }}
+        animate={{ 
+          rotate: [0, 360],
+          scale: [1, 1.1, 1],
+          opacity: [0.03, 0.08, 0.03]
+        }}
+        transition={{ 
+          duration: 20, 
+          repeat: Infinity, 
+          ease: "linear"
+        }}
+      />
       
       {/* Content */}
       <motion.div 
@@ -91,7 +142,8 @@ const HeroSection = () => {
         </motion.div>
       </motion.div>
       
-      {/* Floating Elements */}
+      {/* Floating Elements - Enhanced Bubbles */}
+      {/* Large primary bubbles */}
       <motion.div 
         className="absolute top-20 left-10 w-20 h-20 bg-yellow-400 rounded-full opacity-20"
         animate={{ 
@@ -131,6 +183,195 @@ const HeroSection = () => {
           repeat: Infinity, 
           ease: "easeInOut",
           delay: 2
+        }}
+      />
+
+      {/* Additional floating bubbles */}
+      <motion.div 
+        className="absolute top-32 right-1/4 w-8 h-8 bg-yellow-300 rounded-full opacity-25"
+        animate={{ 
+          y: [0, -25, 0],
+          x: [0, -15, 0],
+          scale: [1, 1.2, 1],
+          opacity: [0.25, 0.45, 0.25]
+        }}
+        transition={{ 
+          duration: 6, 
+          repeat: Infinity, 
+          ease: "easeInOut",
+          delay: 0.5
+        }}
+      />
+
+      <motion.div 
+        className="absolute bottom-32 left-1/4 w-14 h-14 bg-white rounded-full opacity-15"
+        animate={{ 
+          y: [0, 20, 0],
+          x: [0, 12, 0],
+          scale: [1, 0.8, 1],
+          opacity: [0.15, 0.35, 0.15]
+        }}
+        transition={{ 
+          duration: 4.5, 
+          repeat: Infinity, 
+          ease: "easeInOut",
+          delay: 1.5
+        }}
+      />
+
+      <motion.div 
+        className="absolute top-1/4 left-16 w-6 h-6 bg-yellow-500 rounded-full opacity-20"
+        animate={{ 
+          y: [0, -18, 0],
+          scale: [1, 1.3, 1],
+          opacity: [0.2, 0.4, 0.2],
+          rotate: [0, 180, 360]
+        }}
+        transition={{ 
+          duration: 7, 
+          repeat: Infinity, 
+          ease: "easeInOut",
+          delay: 2.5
+        }}
+      />
+
+      <motion.div 
+        className="absolute bottom-1/4 right-16 w-10 h-10 bg-yellow-200 rounded-full opacity-30"
+        animate={{ 
+          y: [0, 22, 0],
+          x: [0, -8, 0],
+          scale: [1, 1.1, 1],
+          opacity: [0.3, 0.5, 0.3]
+        }}
+        transition={{ 
+          duration: 5.5, 
+          repeat: Infinity, 
+          ease: "easeInOut",
+          delay: 3
+        }}
+      />
+
+      {/* Small accent bubbles */}
+      <motion.div 
+        className="absolute top-40 left-1/3 w-4 h-4 bg-white rounded-full opacity-20"
+        animate={{ 
+          y: [0, -12, 0],
+          x: [0, 8, 0],
+          opacity: [0.2, 0.4, 0.2]
+        }}
+        transition={{ 
+          duration: 3.5, 
+          repeat: Infinity, 
+          ease: "easeInOut",
+          delay: 1.2
+        }}
+      />
+
+      <motion.div 
+        className="absolute bottom-40 right-1/3 w-5 h-5 bg-yellow-400 rounded-full opacity-25"
+        animate={{ 
+          y: [0, 16, 0],
+          scale: [1, 1.4, 1],
+          opacity: [0.25, 0.45, 0.25]
+        }}
+        transition={{ 
+          duration: 4.2, 
+          repeat: Infinity, 
+          ease: "easeInOut",
+          delay: 0.8
+        }}
+      />
+
+      <motion.div 
+        className="absolute top-2/3 left-8 w-7 h-7 bg-yellow-300 rounded-full opacity-18"
+        animate={{ 
+          y: [0, -20, 0],
+          x: [0, 15, 0],
+          scale: [1, 0.9, 1],
+          opacity: [0.18, 0.38, 0.18]
+        }}
+        transition={{ 
+          duration: 6.5, 
+          repeat: Infinity, 
+          ease: "easeInOut",
+          delay: 2.8
+        }}
+      />
+
+      <motion.div 
+        className="absolute top-16 right-8 w-9 h-9 bg-white rounded-full opacity-12"
+        animate={{ 
+          y: [0, 25, 0],
+          x: [0, -20, 0],
+          scale: [1, 1.2, 1],
+          opacity: [0.12, 0.32, 0.12],
+          rotate: [0, -90, 0]
+        }}
+        transition={{ 
+          duration: 8, 
+          repeat: Infinity, 
+          ease: "easeInOut",
+          delay: 1.8
+        }}
+      />
+
+      {/* Tiny floating particles */}
+      <motion.div 
+        className="absolute top-1/3 right-1/5 w-3 h-3 bg-yellow-500 rounded-full opacity-30"
+        animate={{ 
+          y: [0, -10, 0],
+          opacity: [0.3, 0.6, 0.3]
+        }}
+        transition={{ 
+          duration: 2.5, 
+          repeat: Infinity, 
+          ease: "easeInOut",
+          delay: 0.3
+        }}
+      />
+
+      <motion.div 
+        className="absolute bottom-1/3 left-1/5 w-3 h-3 bg-white rounded-full opacity-25"
+        animate={{ 
+          y: [0, 14, 0],
+          x: [0, 6, 0],
+          opacity: [0.25, 0.5, 0.25]
+        }}
+        transition={{ 
+          duration: 3.8, 
+          repeat: Infinity, 
+          ease: "easeInOut",
+          delay: 2.2
+        }}
+      />
+
+      <motion.div 
+        className="absolute top-3/4 right-1/6 w-2 h-2 bg-yellow-400 rounded-full opacity-35"
+        animate={{ 
+          y: [0, -8, 0],
+          scale: [1, 1.5, 1],
+          opacity: [0.35, 0.65, 0.35]
+        }}
+        transition={{ 
+          duration: 2.2, 
+          repeat: Infinity, 
+          ease: "easeInOut",
+          delay: 1.6
+        }}
+      />
+
+      <motion.div 
+        className="absolute top-1/6 left-1/6 w-2 h-2 bg-white rounded-full opacity-28"
+        animate={{ 
+          y: [0, 12, 0],
+          x: [0, -4, 0],
+          opacity: [0.28, 0.55, 0.28]
+        }}
+        transition={{ 
+          duration: 4.8, 
+          repeat: Infinity, 
+          ease: "easeInOut",
+          delay: 3.5
         }}
       />
     </section>
