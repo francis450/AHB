@@ -10,6 +10,7 @@ import Gallery from './pages/Gallery';
 import Contact from './pages/Contact';
 import Cart from './components/Cart';
 import BookingModal from './components/BookingModal';
+import FloatingWhatsAppButton from './components/FloatingWhatsAppButton';
 import { CartProvider } from './context/CartContext';
 import { UIProvider } from './context/UIContext';
 
@@ -33,6 +34,7 @@ function App() {
             <Footer />
             <Cart />
             <BookingModal />
+            <FloatingWhatsAppButton />
           </div>
         </Router>
       </UIProvider>
