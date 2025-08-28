@@ -128,7 +128,7 @@ const Contact = () => {
                   <Phone className="text-yellow-400 mt-1" size={24} />
                   <div>
                     <h3 className="font-semibold mb-1">Phone</h3>
-                    <p className="text-gray-300">+254 XXX XXX XXX</p>
+                    <p className="text-gray-300">+254 7115131131</p>
                     <p className="text-gray-400 text-sm mt-1">Available during business hours</p>
                   </div>
                 </motion.div>
@@ -272,7 +272,7 @@ const Contact = () => {
                       value={formData.phone}
                       onChange={handleChange}
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-200"
-                      placeholder="+254 XXX XXX XXX"
+                      placeholder="+254 7115131131"
                       whileFocus={{ scale: 1.02 }}
                     />
                   </div>
@@ -405,7 +405,7 @@ const Contact = () => {
                 >
                   <Phone className="text-yellow-600 mx-auto mb-2" size={24} />
                   <h4 className="font-semibold text-gray-900 mb-1">Call Us</h4>
-                  <p className="text-gray-600 text-sm">+254 XXX XXX XXX</p>
+                  <p className="text-gray-600 text-sm">+254 7115131131</p>
                 </motion.div>
               </div>
               
