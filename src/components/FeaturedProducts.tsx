@@ -1,7 +1,8 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ShoppingBag, Star } from 'lucide-react';
+import { ShoppingBag, Star, Loader, AlertCircle } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { useFeaturedProducts } from '../hooks/useFeaturedProducts';
 import { 
   useScrollAnimation, 
   slideUpVariants, 
@@ -13,47 +14,16 @@ import {
 const FeaturedProducts = () => {
   const { addToCart } = useCart();
   const { ref, controls } = useScrollAnimation();
+  // const { products, loading, error } = useFeaturedProducts();
 
-  const products = [
-    {
-      id: 1,
-      name: "Premium Wig Cap",
-      price: 50,
-      originalPrice: 80,
-      rating: 5,
-      image: "https://images.pexels.com/photos/4041392/pexels-photo-4041392.jpeg?auto=compress&cs=tinysrgb&w=400",
-      category: "Accessories"
-    },
-    {
-      id: 2,
-      name: "Professional Lace Glue",
-      price: 1500,
-      originalPrice: null,
-      rating: 4.8,
-      image: "https://images.pexels.com/photos/5240834/pexels-photo-5240834.jpeg?auto=compress&cs=tinysrgb&w=400",
-      category: "Adhesives"
-    },
-    {
-      id: 3,
-      name: "Nourishing Hair Serum",
-      price: 400,
-      originalPrice: 600,
-      rating: 4.9,
-      image: "https://images.pexels.com/photos/4465124/pexels-photo-4465124.jpeg?auto=compress&cs=tinysrgb&w=400",
-      category: "Hair Care"
-    },
-    {
-      id: 4,
-      name: "Luxury Shampoo Set",
-      price: 1200,
-      originalPrice: null,
-      rating: 5,
-      image: "https://images.pexels.com/photos/4465830/pexels-photo-4465830.jpeg?auto=compress&cs=tinysrgb&w=400",
-      category: "Hair Care"
-    }
-  ];
+  const { products, loading, error } = useFeaturedProducts();
 
   const handleAddToCart = (product: any) => {
+    if (!product.inStock) {
+      alert('Sorry, this product is out of stock!');
+      return;
+    }
+    
     addToCart({
       id: product.id,
       name: product.name,
@@ -62,6 +32,29 @@ const FeaturedProducts = () => {
       quantity: 1
     });
   };
+
+  // Loading state
+  if (loading) {
+    return (
+      <motion.section 
+        ref={ref}
+        initial="hidden"
+        animate={controls}
+        variants={slideUpVariants}
+        className="py-20 bg-white"
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <Loader className="animate-spin h-16 w-16 text-yellow-600 mx-auto mb-4" />
+            <p className="text-gray-600">Loading featured products...</p>
+          </div>
+        </div>
+      </motion.section>
+    );
+  }
+
+  // Error state (still show content with fallback data)
+  const showErrorMessage = error && !products.length;
 
   return (
     <motion.section 
@@ -88,11 +81,22 @@ const FeaturedProducts = () => {
           >
             Premium quality hair and beauty products carefully selected for the best results
           </motion.p>
+          {error && (
+            <motion.div 
+              variants={staggeredChildrenVariants}
+              className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg max-w-md mx-auto"
+            >
+              <div className="flex items-center justify-center space-x-2">
+                <AlertCircle className="h-4 w-4 text-yellow-600" />
+                <p className="text-sm text-yellow-700">{error}</p>
+              </div>
+            </motion.div>
+          )}
         </motion.div>
 
         <motion.div 
           variants={containerVariants}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6"
         >
           {products.map((product, index) => (
             <motion.div
@@ -139,6 +143,11 @@ const FeaturedProducts = () => {
                     SALE
                   </motion.div>
                 )}
+                {!product.inStock && (
+                  <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                    <span className="text-white font-semibold text-sm">Out of Stock</span>
+                  </div>
+                )}
               </div>
 
               <motion.div 
@@ -175,6 +184,29 @@ const FeaturedProducts = () => {
                 >
                   {product.name}
                 </motion.h3>
+
+                {/* Stock Status */}
+                <motion.div 
+                  className="flex items-center mb-3"
+                  variants={staggeredChildrenVariants}
+                >
+                  {product.inStock ? (
+                    <>
+                      <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
+                      <span className="text-sm text-green-600">
+                        {product.stockQuantity <= 5 
+                          ? `Only ${product.stockQuantity} left!` 
+                          : 'In Stock'
+                        }
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      <div className="w-2 h-2 bg-red-500 rounded-full mr-2"></div>
+                      <span className="text-sm text-red-600">Out of Stock</span>
+                    </>
+                  )}
+                </motion.div>
                 
                 <motion.div 
                   className="flex items-center justify-between mb-4"
@@ -190,13 +222,18 @@ const FeaturedProducts = () => {
 
                 <motion.button
                   onClick={() => handleAddToCart(product)}
-                  className="w-full bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-3 rounded-full font-semibold text-sm flex items-center justify-center space-x-2 transition-all duration-200"
+                  disabled={!product.inStock}
+                  className={`w-full px-4 py-3 rounded-full font-semibold text-sm flex items-center justify-center space-x-2 transition-all duration-200 ${
+                    product.inStock
+                      ? 'bg-yellow-600 hover:bg-yellow-700 text-white'
+                      : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                  }`}
                   variants={staggeredChildrenVariants}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
+                  whileHover={product.inStock ? { scale: 1.05 } : {}}
+                  whileTap={product.inStock ? { scale: 0.95 } : {}}
                 >
                   <ShoppingBag size={16} />
-                  <span>Add to Cart</span>
+                  <span>{product.inStock ? 'Add to Cart' : 'Out of Stock'}</span>
                 </motion.button>
               </motion.div>
             </motion.div>
