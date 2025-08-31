@@ -3,13 +3,12 @@ import { Clock, AlertCircle, Calendar } from 'lucide-react';
 
 const WorkingHours = () => {
   const schedule = [
-    { day: 'Monday', hours: '8:00 AM - 8:00 PM', isOpen: true },
-    { day: 'Tuesday', hours: '8:00 AM - 8:00 PM', isOpen: true },
-    { day: 'Wednesday', hours: '8:00 AM - 8:00 PM', isOpen: true },
-    { day: 'Thursday', hours: '8:00 AM - 8:00 PM', isOpen: true },
-    { day: 'Friday', hours: '8:00 AM - 8:00 PM', isOpen: true },
-    { day: 'Saturday', hours: '8:00 AM - 8:00 PM', isOpen: true },
-    { day: 'Sunday', hours: '10:00 AM - 6:00 PM', isOpen: true }
+    { day: 'Monday', hours: '9:00 AM - 7:00 PM', isOpen: true },
+    { day: 'Tuesday', hours: '9:00 AM - 7:00 PM', isOpen: true },
+    { day: 'Wednesday', hours: '9:00 AM - 7:00 PM', isOpen: true },
+    { day: 'Thursday', hours: '9:00 AM - 7:00 PM', isOpen: true },
+    { day: 'Friday', hours: '9:00 AM - 7:00 PM', isOpen: true },
+    { day: 'Saturday', hours: '9:00 AM - 7:00 PM', isOpen: true },
   ];
 
   return (
@@ -45,8 +44,8 @@ const WorkingHours = () => {
                   <div>
                     <h4 className="text-yellow-400 font-semibold mb-2">Special Rates</h4>
                     <p className="text-gray-300 text-sm leading-relaxed">
-                      Early appointments (before 8 AM) or late appointments (after 8 PM) are available 
-                      with an additional fee of <span className="text-yellow-400 font-semibold">Ksh 500</span>.
+                      Early or late appointments (outside working hours) are subject  
+                      to an additional fee and based on stylist availability.
                     </p>
                   </div>
                 </div>
