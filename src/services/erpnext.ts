@@ -284,6 +284,94 @@ export class ERPNextService {
     }
   }
 
+  // Create and submit sales order in one operation
+  static async createAndSubmitSalesOrder(orderData: Partial<ERPNextSalesOrder>): Promise<any> {
+    try {
+      // First create the sales order
+      const salesOrder = await this.createSalesOrder(orderData);
+      
+      // Then submit it
+      await this.submitSalesOrder(salesOrder.name);
+      
+      // Return the updated sales order
+      return await this.getSalesOrder(salesOrder.name);
+    } catch (error) {
+      console.error('Error creating and submitting sales order:', error);
+      throw error;
+    }
+  }
+
+  // Get sales order details
+  static async getSalesOrder(salesOrderId: string): Promise<any> {
+    try {
+      const response = await erpnextAPI.get(`/api/resource/Sales Order/${salesOrderId}`);
+      return response.data.data;
+    } catch (error) {
+      console.error('Error fetching sales order:', error);
+      throw error;
+    }
+  }
+
+  // Update sales order status
+  static async updateSalesOrderStatus(salesOrderId: string, status: string): Promise<any> {
+    try {
+      const response = await erpnextAPI.put(`/api/resource/Sales Order/${salesOrderId}`, {
+        status: status
+      });
+      return response.data.data;
+    } catch (error) {
+      console.error('Error updating sales order status:', error);
+      throw error;
+    }
+  }
+
+  // Submit sales order (to confirm it)
+  static async submitSalesOrder(salesOrderId: string): Promise<any> {
+    try {
+      // ERPNext requires a specific endpoint format for document submission
+      const response = await erpnextAPI.put(`/api/resource/Sales Order/${salesOrderId}`, {
+        docstatus: 1 // Setting docstatus to 1 submits the document
+      });
+      return response.data.data;
+    } catch (error) {
+      console.error('Error submitting sales order:', error);
+      
+      // If the PUT method doesn't work, try the alternative submit endpoint
+      try {
+        const submitResponse = await erpnextAPI.post(`/api/method/frappe.client.submit_doc`, {
+          doctype: 'Sales Order',
+          name: salesOrderId
+        });
+        return submitResponse.data;
+      } catch (alternativeError) {
+        console.error('Alternative submit method also failed:', alternativeError);
+        throw error; // Throw the original error
+      }
+    }
+  }
+
+  // Create customer address
+  static async createAddress(addressData: {
+    address_title: string;
+    address_line1: string;
+    city: string;
+    state?: string;
+    country?: string;
+    address_type: string;
+    links: Array<{
+      link_doctype: string;
+      link_name: string;
+    }>;
+  }): Promise<any> {
+    try {
+      const response = await erpnextAPI.post('/api/resource/Address', addressData);
+      return response.data.data;
+    } catch (error) {
+      console.error('Error creating address:', error);
+      throw error;
+    }
+  }
+
   // Create quotation
   static async createQuotation(quotationData: Partial<ERPNextQuotation>): Promise<any> {
     try {
@@ -377,6 +465,58 @@ export class ERPNextService {
       }));
     } catch (error) {
       console.error('Error searching website items:', error);
+      throw error;
+    }
+  }
+
+  // Get featured products (limit to 5 items for homepage)
+  static async getFeaturedWebsiteItems(): Promise<(ERPNextWebsiteItem & { price?: number; actualQty?: number; inStock?: boolean })[]> {
+    try {
+      const params = new URLSearchParams();
+      
+      // Default fields for Website Item
+      params.append('fields', JSON.stringify([
+        'name', 'item_name', 'item_code', 'web_item_name', 'description',
+        'website_image', 'website_warehouse', 'item_group', 'brand', 'route',
+        'published', 'on_backorder', 'web_long_description',
+        'short_description', 'slideshow', 'thumbnail'
+      ]));
+      
+      // Filter for published items only, limit to 5
+      params.append('filters', JSON.stringify({
+        published: 1
+      }));
+      
+      params.append('limit_page_length', '5');
+      params.append('order_by', 'creation desc'); // Get newest items first
+      
+      const response = await erpnextAPI.get(`/api/resource/Website Item?${params.toString()}`);
+      const items = response.data.data;
+      
+      // Get item codes for batch operations
+      const itemCodes = items.map((item: any) => item.item_code);
+      
+      // Fetch prices and stock in parallel
+      const [priceMap, stockMap] = await Promise.all([
+        ERPNextService.getItemPrices(itemCodes, 'Website Price'),
+        ERPNextService.getItemsStock(itemCodes)
+      ]);
+      
+      // Combine items with their prices and stock
+      return items.map((item: any) => ({
+        ...item,
+        price: priceMap[item.item_code] || 0,
+        actualQty: stockMap[item.item_code]?.actualQty || 0,
+        inStock: stockMap[item.item_code]?.inStock || false,
+        website_image: ERPNextService.getAbsoluteImageUrl(item.website_image),
+        thumbnail: ERPNextService.getAbsoluteImageUrl(item.thumbnail),
+        slideshow: item.slideshow ? ERPNextService.getAbsoluteImageUrl(item.slideshow) : undefined,
+        web_long_description: ERPNextService.cleanHtmlContent(item.web_long_description),
+        short_description: ERPNextService.cleanHtmlContent(item.short_description),
+        description: ERPNextService.cleanHtmlContent(item.description)
+      }));
+    } catch (error) {
+      console.error('Error fetching featured website items from ERPNext:', error);
       throw error;
     }
   }
