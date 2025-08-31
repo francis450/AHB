@@ -50,13 +50,13 @@ export class CheckoutService {
         grand_total: checkoutData.totalAmount
       };
 
-      // Step 3: Create sales order
-      const salesOrder = await ERPNextService.createSalesOrder(salesOrderData);
+      // Step 3: Create and submit sales order in one operation
+      const salesOrder = await ERPNextService.createAndSubmitSalesOrder(salesOrderData);
       
       return {
         success: true,
         salesOrderId: salesOrder.name,
-        message: `Order ${salesOrder.name} created successfully!`
+        message: `Order ${salesOrder.name} created and submitted successfully!`
       };
       
     } catch (error) {
@@ -109,7 +109,7 @@ export class CheckoutService {
   }
 
   /**
-   * Create or get existing customer
+   * Create or get existing customer with address
    */
   private static async createOrGetCustomer(customerInfo: CheckoutData['customerInfo']): Promise<ERPNextCustomer> {
     try {
@@ -128,10 +128,34 @@ export class CheckoutService {
         territory: 'Kenya',
         email_id: customerInfo.email,
         mobile_no: customerInfo.phone,
-        // You can create a custom address field or handle addresses separately
       };
 
-      return await ERPNextService.createCustomer(customerData);
+      const newCustomer = await ERPNextService.createCustomer(customerData);
+      
+      // Create address for the customer
+      try {
+        const addressData = {
+          address_title: `${customerInfo.name} - ${customerInfo.city}`,
+          address_line1: customerInfo.address,
+          city: customerInfo.city,
+          state: 'Kenya', // You can make this dynamic
+          country: 'Kenya',
+          address_type: 'Billing',
+          links: [
+            {
+              link_doctype: 'Customer',
+              link_name: newCustomer.name
+            }
+          ]
+        };
+        
+        await ERPNextService.createAddress(addressData);
+      } catch (addressError) {
+        console.warn('Failed to create address, but customer was created:', addressError);
+        // Don't fail the entire process if address creation fails
+      }
+
+      return newCustomer;
       
     } catch (error) {
       console.error('Error handling customer:', error);
@@ -141,12 +165,25 @@ export class CheckoutService {
 
   /**
    * Convert product ID to ERPNext item code
-   * This assumes your product IDs are either item codes or can be mapped to them
+   * This handles the mapping between frontend product IDs and ERPNext item codes
    */
   private static getItemCodeFromId(productId: string): string {
-    // If your product IDs are already item codes, return as is
-    // Otherwise, implement mapping logic here
-    return productId;
+    // If the product ID is already an ERPNext item code format, return as is
+    if (productId.includes('-') && productId.length > 5) {
+      return productId;
+    }
+    
+    // For numeric IDs, you might need a mapping table or lookup
+    // This is a placeholder - implement based on your actual data structure
+    const itemCodeMap: Record<string, string> = {
+      '1': 'WIG-CAP-001',
+      '2': 'LACE-GLUE-001',
+      '3': 'SERUM-001',
+      '4': 'SHAMPOO-SET-001',
+      '5': 'GROWTH-OIL-001'
+    };
+    
+    return itemCodeMap[productId] || productId;
   }
 
   /**
@@ -176,10 +213,10 @@ export class CheckoutService {
     try {
       for (const item of cartItems) {
         const itemCode = this.getItemCodeFromId(item.id.toString());
-        const stockQty = await ERPNextService.getItemStock(itemCode);
+        const stockInfo = await ERPNextService.getItemStock(itemCode);
         
-        if (stockQty < item.quantity) {
-          issues.push(`${item.name}: Only ${stockQty} items available, but ${item.quantity} requested`);
+        if (stockInfo.actualQty < item.quantity) {
+          issues.push(`${item.name}: Only ${stockInfo.actualQty} items available, but ${item.quantity} requested`);
         }
       }
       
