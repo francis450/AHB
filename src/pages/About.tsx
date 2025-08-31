@@ -11,7 +11,7 @@ const About = () => {
 
   const team = [
     {
-      name: 'Alicia Wanjiru',
+      name: 'Maggie',
       role: 'Founder & Master Stylist',
       image: 'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=400',
       bio: 'With over 10 years of experience, Alicia is a certified master stylist specializing in luxury hair treatments and wig installations.'
@@ -56,7 +56,7 @@ const About = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
               <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-                About <span className="text-yellow-600">Alicia</span> Hairline & Beauty
+                About <span className="text-yellow-600" style={{ fontFamily: 'Yellowtail, cursive' }}>Alicia</span> Hairline & Beauty
               </h1>
               <p className="text-xl text-gray-600 mb-8 leading-relaxed">
                 Founded with a passion for enhancing natural beauty, Alicia Hairline & Beauty 
@@ -111,7 +111,7 @@ const About = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              Meet Our <span className="text-yellow-600">Expert Team</span>
+              Meet Our <span className="text-yellow-600" style={{ fontFamily: 'Yellowtail, cursive' }}>Expert Team</span>
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               Our talented professionals are dedicated to bringing out your natural beauty 
@@ -148,7 +148,7 @@ const About = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              Our <span className="text-yellow-600">Core Values</span>
+              Our <span className="text-yellow-600" style={{ fontFamily: 'Yellowtail, cursive' }}>Core Values</span>
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               These principles guide everything we do and ensure every client receives 
@@ -172,7 +172,7 @@ const About = () => {
       <section className="py-20 bg-gray-900 text-white">
         <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
           <h2 className="text-4xl font-bold mb-6">
-            Ready to Experience the <span className="text-yellow-400">Alicia</span> Difference?
+            Ready to Experience the <span className="text-yellow-400" style={{ fontFamily: 'Yellowtail, cursive' }}>Alicia</span> Difference?
           </h2>
           <p className="text-xl text-gray-300 mb-8">
             Join hundreds of satisfied clients who trust us with their beauty needs. 

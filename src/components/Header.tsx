@@ -29,11 +29,12 @@ const Header = () => {
           <Link to="/" className="flex items-center space-x-2">
             <div className="w-12 h-12 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-full flex items-center justify-center">
               <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                <span className="text-yellow-600 font-bold text-sm">A</span>
+                {/* replace with logo image - https://alicia.boraerp.co.ke/files/logo.png */}
+                <img src="https://alicia.boraerp.co.ke/files/logo.png" alt="Logo" className="w-8 h-8 rounded-full" />
               </div>
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-yellow-600" style={{ fontFamily: 'cursive' }}>
+              <h1 className="text-2xl font-bold text-yellow-600" style={{ fontFamily: 'Yellowtail, cursive' }}>
                 alicia
               </h1>
               <p className="text-xs text-gray-600 -mt-1">Hairline & Beauty</p>

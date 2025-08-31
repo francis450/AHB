@@ -141,7 +141,7 @@ const Gallery = () => {
             variants={staggeredChildrenVariants}
             className="text-4xl md:text-5xl font-bold text-gray-900 mb-6"
           >
-            Our <span className="text-yellow-600">Gallery</span>
+            Our <span className="text-yellow-600" style={{ fontFamily: 'Yellowtail, cursive' }}>Gallery</span>
           </motion.h1>
           <motion.p 
             variants={staggeredChildrenVariants}
@@ -308,7 +308,7 @@ const Gallery = () => {
             variants={staggeredChildrenVariants}
             className="text-4xl font-bold mb-4"
           >
-            Follow Us on <span className="text-yellow-400">Social Media</span>
+            Follow Us on <span className="text-yellow-400" style={{ fontFamily: 'Yellowtail, cursive' }}>Social Media</span>
           </motion.h2>
           <motion.p 
             variants={staggeredChildrenVariants}

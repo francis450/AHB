@@ -97,7 +97,7 @@ const Products = () => {
       <section className="py-20 bg-gradient-to-br from-yellow-50 to-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            Premium <span className="text-yellow-600">Beauty Products</span>
+            Premium <span className="text-yellow-600" style={{ fontFamily: 'Yellowtail, cursive' }}>Beauty Products</span>
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
             Carefully curated collection of professional-grade hair care and beauty products 

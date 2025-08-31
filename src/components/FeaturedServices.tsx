@@ -62,7 +62,7 @@ const FeaturedServices = () => {
             variants={staggeredChildrenVariants}
             className="text-4xl md:text-5xl font-bold text-gray-900 mb-4"
           >
-            Our <span className="text-yellow-600">Signature Services</span>
+            Our <span className="text-yellow-600" style={{ fontFamily: 'Yellowtail, cursive' }}>Signature Services</span>
           </motion.h2>
           <motion.p 
             variants={staggeredChildrenVariants}

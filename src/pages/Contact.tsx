@@ -73,7 +73,7 @@ const Contact = () => {
             variants={staggeredChildrenVariants}
             className="text-4xl md:text-5xl font-bold text-gray-900 mb-6"
           >
-            Get in <span className="text-yellow-600">Touch</span>
+            Get in <span className="text-yellow-600" style={{ fontFamily: 'Yellowtail, cursive' }}>Touch</span>
           </motion.h1>
           <motion.p 
             variants={staggeredChildrenVariants}
@@ -350,7 +350,7 @@ const Contact = () => {
               variants={staggeredChildrenVariants}
               className="text-4xl font-bold text-gray-900 mb-4"
             >
-              Visit Our <span className="text-yellow-600">Salon</span>
+              Visit Our <span className="text-yellow-600" style={{ fontFamily: 'Yellowtail, cursive' }}>Salon</span>
             </motion.h2>
             <motion.p 
               variants={staggeredChildrenVariants}

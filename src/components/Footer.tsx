@@ -12,11 +12,13 @@ const Footer = () => {
             <div className="flex items-center space-x-2">
               <div className="w-10 h-10 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-full flex items-center justify-center">
                 <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center">
-                  <span className="text-yellow-600 font-bold text-xs">A</span>
+                  {/* replace with logo image - https://alicia.boraerp.co.ke/files/logo.png */}
+                  <img src="https://alicia.boraerp.co.ke/files/logo.png" alt="Logo" className="w-6 h-6 rounded-full" />
+                  {/* <span className="text-yellow-600 font-bold text-sm">A</span> */}
                 </div>
               </div>
               <div>
-                <h3 className="text-xl font-bold text-yellow-400" style={{ fontFamily: 'cursive' }}>
+                <h3 className="text-xl font-bold text-yellow-400" style={{ fontFamily: 'Yellowtail, cursive' }}>
                   alicia
                 </h3>
                 <p className="text-xs text-gray-300 -mt-1">Hairline & Beauty</p>

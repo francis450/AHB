@@ -107,7 +107,7 @@ const Services = () => {
       <section className="py-20 bg-gradient-to-br from-yellow-50 to-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            Our <span className="text-yellow-600">Premium Services</span>
+            Our <span className="text-yellow-600" style={{ fontFamily: 'Yellowtail, cursive' }}>Premium Services</span>
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
             Discover our comprehensive range of luxury hair and beauty services, 
@@ -206,7 +206,7 @@ const Services = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold mb-4">
-              <span className="text-yellow-400">Special</span> Offers
+              <span className="text-yellow-400" style={{ fontFamily: 'Yellowtail, cursive' }}>Special</span> Offers
             </h2>
             <p className="text-xl text-gray-300">
               Take advantage of our exclusive packages and seasonal promotions
