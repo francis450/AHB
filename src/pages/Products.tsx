@@ -1,136 +1,50 @@
-import React, { useState } from 'react';
-import { ShoppingBag, Star, Filter, Search } from 'lucide-react';
+import { useState } from 'react';
+import { ShoppingBag, Star, Search, AlertCircle, Loader } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { useProducts } from '../hooks/useProducts';
+import { useCategories } from '../hooks/useCategories';
 
 const Products = () => {
   const { addToCart } = useCart();
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
+  
+  const { 
+    products, 
+    loading: productsLoading, 
+    error: productsError,
+    searchProducts,
+    getProductsByCategory 
+  } = useProducts();
+  
+  const { 
+    categories, 
+    loading: categoriesLoading 
+  } = useCategories();
 
-  const categories = [
-    { id: 'all', name: 'All Products' },
-    { id: 'wigs', name: 'Wig Caps' },
-    { id: 'adhesives', name: 'Lace Glue' },
-    { id: 'haircare', name: 'Hair Care' },
-    { id: 'styling', name: 'Styling Products' },
-    { id: 'tools', name: 'Tools & Accessories' }
-  ];
-
-  const products = [
-    {
-      id: 1,
-      name: 'Premium Wig Cap',
-      category: 'wigs',
-      price: 50,
-      originalPrice: 80,
-      rating: 5,
-      reviews: 24,
-      image: 'https://images.pexels.com/photos/4041392/pexels-photo-4041392.jpeg?auto=compress&cs=tinysrgb&w=400',
-      description: 'High-quality wig cap for secure and comfortable wig application.',
-      inStock: true,
-      bestseller: true
-    },
-    {
-      id: 2,
-      name: 'Professional Lace Glue',
-      category: 'adhesives',
-      price: 1500,
-      originalPrice: null,
-      rating: 4.8,
-      reviews: 18,
-      image: 'https://images.pexels.com/photos/5240834/pexels-photo-5240834.jpeg?auto=compress&cs=tinysrgb&w=400',
-      description: 'Strong-hold adhesive for lace front wigs with waterproof formula.',
-      inStock: true,
-      bestseller: false
-    },
-    {
-      id: 3,
-      name: 'Nourishing Hair Serum',
-      category: 'haircare',
-      price: 400,
-      originalPrice: 600,
-      rating: 4.9,
-      reviews: 31,
-      image: 'https://images.pexels.com/photos/4465124/pexels-photo-4465124.jpeg?auto=compress&cs=tinysrgb&w=400',
-      description: 'Lightweight serum that adds shine and protects against heat damage.',
-      inStock: true,
-      bestseller: true
-    },
-    {
-      id: 4,
-      name: 'Luxury Shampoo Set',
-      category: 'haircare',
-      price: 1200,
-      originalPrice: null,
-      rating: 5,
-      reviews: 15,
-      image: 'https://images.pexels.com/photos/4465830/pexels-photo-4465830.jpeg?auto=compress&cs=tinysrgb&w=400',
-      description: 'Professional shampoo and conditioner set for all hair types.',
-      inStock: true,
-      bestseller: false
-    },
-    {
-      id: 5,
-      name: 'Heat Protectant Spray',
-      category: 'styling',
-      price: 350,
-      originalPrice: null,
-      rating: 4.7,
-      reviews: 22,
-      image: 'https://images.pexels.com/photos/4465124/pexels-photo-4465124.jpeg?auto=compress&cs=tinysrgb&w=400',
-      description: 'Protects hair from heat damage up to 230°C with lightweight formula.',
-      inStock: true,
-      bestseller: false
-    },
-    {
-      id: 6,
-      name: 'Wide Tooth Comb Set',
-      category: 'tools',
-      price: 150,
-      originalPrice: 200,
-      rating: 4.6,
-      reviews: 8,
-      image: 'https://images.pexels.com/photos/4041392/pexels-photo-4041392.jpeg?auto=compress&cs=tinysrgb&w=400',
-      description: 'Set of professional wide tooth combs for detangling without damage.',
-      inStock: false,
-      bestseller: false
-    },
-    {
-      id: 7,
-      name: 'Moisturizing Hair Mask',
-      category: 'haircare',
-      price: 800,
-      originalPrice: null,
-      rating: 4.8,
-      reviews: 19,
-      image: 'https://images.pexels.com/photos/4465830/pexels-photo-4465830.jpeg?auto=compress&cs=tinysrgb&w=400',
-      description: 'Deep conditioning mask for dry and damaged hair repair.',
-      inStock: true,
-      bestseller: true
-    },
-    {
-      id: 8,
-      name: 'Satin Hair Bonnet',
-      category: 'tools',
-      price: 300,
-      originalPrice: null,
-      rating: 4.9,
-      reviews: 26,
-      image: 'https://images.pexels.com/photos/4041392/pexels-photo-4041392.jpeg?auto=compress&cs=tinysrgb&w=400',
-      description: 'Satin-lined bonnet to protect hair while sleeping.',
-      inStock: true,
-      bestseller: false
+  const handleCategoryChange = async (categoryId: string) => {
+    setSelectedCategory(categoryId);
+    if (searchQuery) {
+      setSearchQuery(''); // Clear search when changing category
     }
-  ];
+    await getProductsByCategory(categoryId);
+  };
 
-  const filteredProducts = products.filter(product => {
-    const matchesCategory = selectedCategory === 'all' || product.category === selectedCategory;
-    const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         product.description.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesCategory && matchesSearch;
-  });
+  const handleSearch = async (query: string) => {
+    setSearchQuery(query);
+    if (query.trim()) {
+      await searchProducts(query);
+    } else {
+      await getProductsByCategory(selectedCategory);
+    }
+  };
 
   const handleAddToCart = (product: any) => {
+    if (!product.inStock) {
+      alert('Sorry, this product is out of stock!');
+      return;
+    }
+    
     addToCart({
       id: product.id,
       name: product.name,
@@ -139,6 +53,43 @@ const Products = () => {
       quantity: 1
     });
   };
+
+  // Filter and search logic
+  const filteredProducts = products.filter(product => {
+    const matchesSearch = searchQuery === '' || 
+                         product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         product.description?.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesCategory = selectedCategory === 'all' || 
+                           product.category.toLowerCase().includes(selectedCategory.toLowerCase());
+    return matchesSearch && matchesCategory;
+  });
+
+  if (productsLoading || categoriesLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50 py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <Loader className="animate-spin h-16 w-16 text-yellow-600 mx-auto mb-4" />
+            <p className="text-gray-600">Loading products...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (productsError) {
+    return (
+      <div className="min-h-screen bg-gray-50 py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <AlertCircle className="h-16 w-16 text-red-500 mx-auto mb-4" />
+            <p className="text-red-600 text-lg">{productsError}</p>
+            <p className="text-gray-600 mt-2">Please check your ERPNext connection</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="pt-20">
@@ -166,7 +117,7 @@ const Products = () => {
                 type="text"
                 placeholder="Search products..."
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={(e) => handleSearch(e.target.value)}
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-full focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
               />
             </div>
@@ -176,14 +127,14 @@ const Products = () => {
               {categories.map((category) => (
                 <button
                   key={category.id}
-                  onClick={() => setSelectedCategory(category.id)}
+                  onClick={() => handleCategoryChange(category.id)}
                   className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
                     selectedCategory === category.id
                       ? 'bg-yellow-600 text-white'
                       : 'bg-gray-100 text-gray-700 hover:bg-yellow-100 hover:text-yellow-700'
                   }`}
                 >
-                  {category.name}
+                  {category.displayName}
                 </button>
               ))}
             </div>
@@ -256,11 +207,29 @@ const Products = () => {
                         }`}
                       />
                     ))}
-                    <span className="text-sm text-gray-600 ml-2">({product.reviews})</span>
+                    <span className="text-sm text-gray-600 ml-2">({product.rating})</span>
                   </div>
 
                   <h3 className="text-lg font-bold text-gray-900 mb-2">{product.name}</h3>
-                  <p className="text-gray-600 text-sm mb-4 leading-relaxed">{product.description}</p>
+                  <p className="text-gray-600 text-sm mb-4 leading-relaxed line-clamp-2">{product.description}</p>
+                  
+                  {/* Stock Status */}
+                  {product.inStock ? (
+                    <div className="flex items-center mb-2">
+                      <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
+                      <span className="text-sm text-green-600">
+                        {product.stockQuantity <= 5 
+                          ? `Only ${product.stockQuantity} left!` 
+                          : 'In Stock'
+                        }
+                      </span>
+                    </div>
+                  ) : (
+                    <div className="flex items-center mb-2">
+                      <div className="w-2 h-2 bg-red-500 rounded-full mr-2"></div>
+                      <span className="text-sm text-red-600">Out of Stock</span>
+                    </div>
+                  )}
                   
                   {/* Price */}
                   <div className="flex items-center justify-between mb-4">
@@ -272,6 +241,11 @@ const Products = () => {
                         </span>
                       )}
                     </div>
+                    {product.bestseller && (
+                      <span className="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded-full font-semibold">
+                        Bestseller
+                      </span>
+                    )}
                   </div>
 
                   {/* Add to Cart Button */}
