@@ -1,18 +1,18 @@
-import React from 'react';
+import { useState } from 'react';
 import { X, Minus, Plus, ShoppingBag, Trash2 } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useUI } from '../context/UIContext';
+import CheckoutModal from './CheckoutModal';
 
 const Cart = () => {
   const { cartItems, removeFromCart, updateQuantity, getTotalPrice, clearCart } = useCart();
   const { isCartOpen, closeCart } = useUI();
+  const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
 
   if (!isCartOpen) return null;
 
   const handleCheckout = () => {
-    alert('Checkout functionality would be implemented here');
-    clearCart();
-    closeCart();
+    setIsCheckoutOpen(true);
   };
 
   return (
@@ -103,7 +103,12 @@ const Cart = () => {
               
               <button
                 onClick={handleCheckout}
-                className="w-full bg-yellow-600 hover:bg-yellow-700 text-white py-3 rounded-full font-semibold text-lg transition-colors duration-200"
+                disabled={cartItems.length === 0}
+                className={`w-full py-3 rounded-full font-semibold text-lg transition-colors duration-200 ${
+                  cartItems.length === 0 
+                    ? 'bg-gray-300 text-gray-500 cursor-not-allowed' 
+                    : 'bg-yellow-600 hover:bg-yellow-700 text-white'
+                }`}
               >
                 Checkout
               </button>
@@ -118,6 +123,12 @@ const Cart = () => {
           )}
         </div>
       </div>
+
+      {/* Checkout Modal */}
+      <CheckoutModal 
+        isOpen={isCheckoutOpen} 
+        onClose={() => setIsCheckoutOpen(false)} 
+      />
     </div>
   );
 };
