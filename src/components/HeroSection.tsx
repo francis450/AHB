@@ -135,6 +135,7 @@ const HeroSection = () => {
             className="border-2 border-white hover:bg-white hover:text-gray-900 text-white px-8 py-4 rounded-full font-semibold text-lg flex items-center space-x-2 transition-all duration-300"
             whileHover={{ scale: 1.05, y: -2 }}
             whileTap={{ scale: 0.98 }}
+            onClick={() => { window.location.href = '/services'; }}
           >
             <span>View Services</span>
             <ArrowRight size={20} />
