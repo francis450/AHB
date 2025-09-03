@@ -127,7 +127,7 @@ const Contact = () => {
                   <Phone className="text-yellow-400 mt-1" size={24} />
                   <div>
                     <h3 className="font-semibold mb-1">Phone</h3>
-                    <p className="text-gray-300">+254 7115131131</p>
+                    <p className="text-gray-300">+254 712 676182</p>
                     <p className="text-gray-400 text-sm mt-1">Available during business hours</p>
                   </div>
                 </motion.div>
@@ -271,7 +271,7 @@ const Contact = () => {
                       value={formData.phone}
                       onChange={handleChange}
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-200"
-                      placeholder="+254 7115131131"
+                      placeholder="+254 712 676182"
                       whileFocus={{ scale: 1.02 }}
                     />
                   </div>
@@ -364,10 +364,10 @@ const Contact = () => {
             className="bg-white rounded-2xl shadow-lg overflow-hidden"
           >
             <InteractiveMap
-              center={[-1.286389, 36.817223]}
+              center={[-1.2842934186850374, 36.82384052889075]}
               zoom={15}
-              markerPosition={[-1.286389, 36.817223]}
-              popupContent="Alicia Hairline Beauty Salon"
+              markerPosition={[-1.2842934186850374, 36.82384052889075 ]}
+              popupContent="Alicia Hairline & Beauty"
               className="h-96 w-full"
             />
             
@@ -384,7 +384,7 @@ const Contact = () => {
                 >
                   <MapPin className="text-yellow-600 mx-auto mb-2" size={24} />
                   <h4 className="font-semibold text-gray-900 mb-1">Address</h4>
-                  <p className="text-gray-600 text-sm">Nairobi, Nairobi County, Kenya</p>
+                  <p className="text-gray-600 text-sm">Old mutual building,Kimathi street,3rd floor room 312</p>
                 </motion.div>
                 
                 <motion.div 
@@ -394,7 +394,7 @@ const Contact = () => {
                 >
                   <Clock className="text-yellow-600 mx-auto mb-2" size={24} />
                   <h4 className="font-semibold text-gray-900 mb-1">Hours</h4>
-                  <p className="text-gray-600 text-sm">Mon-Sat: 8AM-8PM<br />Sun: 10AM-6PM</p>
+                  <p className="text-gray-600 text-sm">Mon-Sat:9AM-7PM</p>
                 </motion.div>
                 
                 <motion.div 
@@ -404,7 +404,7 @@ const Contact = () => {
                 >
                   <Phone className="text-yellow-600 mx-auto mb-2" size={24} />
                   <h4 className="font-semibold text-gray-900 mb-1">Call Us</h4>
-                  <p className="text-gray-600 text-sm">+254 7115131131</p>
+                  <p className="text-gray-600 text-sm">+254 712 676182</p>
                 </motion.div>
               </div>
               
@@ -414,7 +414,7 @@ const Contact = () => {
               >
                 <motion.button 
                   className="bg-yellow-600 hover:bg-yellow-700 text-white px-6 py-3 rounded-full font-semibold inline-flex items-center space-x-2 transition-all duration-200"
-                  onClick={() => window.open('https://maps.google.com/?q=-1.286389,36.817223', '_blank')}
+                  onClick={() => window.open('https://maps.app.goo.gl/AxJBgQhQtyae6Xnp6', '_blank')}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
