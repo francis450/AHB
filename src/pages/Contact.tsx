@@ -49,13 +49,12 @@ const Contact = () => {
   };
 
   const workingHours = [
-    { day: 'Monday', hours: '8:00 AM - 8:00 PM', isOpen: true },
-    { day: 'Tuesday', hours: '8:00 AM - 8:00 PM', isOpen: true },
-    { day: 'Wednesday', hours: '8:00 AM - 8:00 PM', isOpen: true },
-    { day: 'Thursday', hours: '8:00 AM - 8:00 PM', isOpen: true },
-    { day: 'Friday', hours: '8:00 AM - 8:00 PM', isOpen: true },
-    { day: 'Saturday', hours: '8:00 AM - 8:00 PM', isOpen: true },
-    { day: 'Sunday', hours: '10:00 AM - 6:00 PM', isOpen: true }
+    { day: 'Monday', hours: '9:00 AM - 7:00 PM', isOpen: true },
+    { day: 'Tuesday', hours: '9:00 AM - 7:00 PM', isOpen: true },
+    { day: 'Wednesday', hours: '9:00 AM - 7:00 PM', isOpen: true },
+    { day: 'Thursday', hours: '9:00 AM - 7:00 PM', isOpen: true },
+    { day: 'Friday', hours: '9:00 AM - 7:00 PM', isOpen: true },
+    { day: 'Saturday', hours: '9:00 AM - 7:00 PM', isOpen: true },
   ];
 
   return (
@@ -140,7 +139,7 @@ const Contact = () => {
                   <Mail className="text-yellow-400 mt-1" size={24} />
                   <div>
                     <h3 className="font-semibold mb-1">Email</h3>
-                    <p className="text-gray-300">info@aliciahairline.com</p>
+                    <p className="text-gray-300">aliciahairlinebeauty@gmail.com</p>
                     <p className="text-gray-400 text-sm mt-1">We respond within 24 hours</p>
                   </div>
                 </motion.div>
