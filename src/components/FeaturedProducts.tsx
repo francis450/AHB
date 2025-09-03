@@ -250,6 +250,7 @@ const FeaturedProducts = () => {
             className="bg-transparent border-2 border-yellow-600 text-yellow-600 hover:bg-yellow-600 hover:text-white px-8 py-3 rounded-full font-semibold text-lg transition-all duration-300"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
+            onClick={() => { window.location.href = '/products'; }}
           >
             View All Products
           </motion.button>
