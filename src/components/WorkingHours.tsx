@@ -70,7 +70,7 @@ const WorkingHours = () => {
               </button>
               
               <p className="text-gray-400 text-sm">
-                Or call us at <span className="text-yellow-400 font-semibold">+254 7115131131</span>
+                Or call us at <span className="text-yellow-400 font-semibold">+254 712 676182</span>
               </p>
             </div>
             
