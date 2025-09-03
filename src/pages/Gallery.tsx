@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Play, Filter, Instagram, Facebook, Twitter, Search, RefreshCw } from 'lucide-react';
+import { Play, Filter, Instagram, Facebook, Twitter } from 'lucide-react';
 import { 
   useScrollAnimation, 
   slideUpVariants, 
@@ -11,65 +11,120 @@ import {
   staggeredChildrenVariants,
   scaleInVariants
 } from '../hooks/useScrollAnimation';
-import { useGallery, useGalleryFilters } from '../hooks/useGallery';
-import { ERPNextGalleryItem } from '../services/gallery';
 
 const Gallery = () => {
-  const [selectedMedia, setSelectedMedia] = useState<ERPNextGalleryItem | null>(null);
-  
-  // Fetch gallery data from ERPNext
-  const { items = [], categories = [], loading, error, refetch } = useGallery();
-  
-  // Handle filtering and search
-  const {
-    activeFilter,
-    setActiveFilter,
-    searchQuery,
-    setSearchQuery,
-    filteredItems,
-    filters
-  } = useGalleryFilters(items, categories);
+  const [activeFilter, setActiveFilter] = useState('all');
+  const [selectedMedia, setSelectedMedia] = useState<any>(null);
+
+  const filters = [
+    { id: 'all', name: 'All Media' },
+    { id: 'images', name: 'Photos' },
+    { id: 'videos', name: 'Videos' },
+    { id: 'hair-styling', name: 'Hair Styling' },
+    { id: 'wig-installation', name: 'Wig Installation' },
+    { id: 'treatments', name: 'Treatments' },
+    { id: 'before-after', name: 'Before & After' }
+  ];
+
+  const galleryItems = [
+    {
+      id: 1,
+      type: 'image',
+      category: 'hair-styling',
+      title: 'Elegant Wedding Style',
+      image: 'https://images.pexels.com/photos/3065209/pexels-photo-3065209.jpeg?auto=compress&cs=tinysrgb&w=600',
+      description: 'Beautiful bridal hairstyle for a perfect wedding day'
+    },
+    {
+      id: 2,
+      type: 'video',
+      category: 'wig-installation',
+      title: 'Premium Wig Installation Process',
+      image: 'https://images.pexels.com/photos/3373727/pexels-photo-3373727.jpeg?auto=compress&cs=tinysrgb&w=600',
+      videoUrl: 'https://www.example.com/video1',
+      description: 'Step-by-step wig installation demonstration'
+    },
+    {
+      id: 3,
+      type: 'image',
+      category: 'treatments',
+      title: 'Hair Treatment Results',
+      image: 'https://images.pexels.com/photos/3997989/pexels-photo-3997989.jpeg?auto=compress&cs=tinysrgb&w=600',
+      description: 'Amazing results from our deep conditioning treatment'
+    },
+    {
+      id: 4,
+      type: 'video',
+      category: 'hair-styling',
+      title: 'Quick Styling Tutorial',
+      image: 'https://images.pexels.com/photos/3178786/pexels-photo-3178786.jpeg?auto=compress&cs=tinysrgb&w=600',
+      videoUrl: 'https://www.example.com/video2',
+      description: 'Easy everyday styling tips and tricks'
+    },
+    {
+      id: 5,
+      type: 'image',
+      category: 'before-after',
+      title: 'Transformation Tuesday',
+      image: 'https://images.pexels.com/photos/3065209/pexels-photo-3065209.jpeg?auto=compress&cs=tinysrgb&w=600',
+      description: 'Complete hair makeover transformation'
+    },
+    {
+      id: 6,
+      type: 'video',
+      category: 'wig-installation',
+      title: 'Customer Trying New Wig',
+      image: 'https://images.pexels.com/photos/3373727/pexels-photo-3373727.jpeg?auto=compress&cs=tinysrgb&w=600',
+      videoUrl: 'https://www.example.com/video3',
+      description: 'Happy customer experiencing our premium wig selection'
+    },
+    {
+      id: 7,
+      type: 'image',
+      category: 'hair-styling',
+      title: 'Natural Hair Styling',
+      image: 'https://images.pexels.com/photos/3997989/pexels-photo-3997989.jpeg?auto=compress&cs=tinysrgb&w=600',
+      description: 'Beautiful natural hair styling and care'
+    },
+    {
+      id: 8,
+      type: 'video',
+      category: 'treatments',
+      title: 'Hair Treatment Process',
+      image: 'https://images.pexels.com/photos/4465830/pexels-photo-4465830.jpeg?auto=compress&cs=tinysrgb&w=600',
+      videoUrl: 'https://www.example.com/video4',
+      description: 'Professional hair treatment in progress'
+    },
+    {
+      id: 9,
+      type: 'image',
+      category: 'before-after',
+      title: 'Color Transformation',
+      image: 'https://images.pexels.com/photos/3178786/pexels-photo-3178786.jpeg?auto=compress&cs=tinysrgb&w=600',
+      description: 'Stunning hair color transformation'
+    }
+  ];
+
   const { ref: heroRef, controls: heroControls } = useScrollAnimation();
   const { ref: filtersRef, controls: filtersControls } = useScrollAnimation();
   const { ref: galleryRef, controls: galleryControls } = useScrollAnimation();
   const { ref: socialRef, controls: socialControls } = useScrollAnimation();
 
-  const openModal = (item: ERPNextGalleryItem) => {
+  const filteredItems = activeFilter === 'all' 
+    ? galleryItems 
+    : galleryItems.filter(item => 
+        item.category === activeFilter || 
+        (activeFilter === 'images' && item.type === 'image') ||
+        (activeFilter === 'videos' && item.type === 'video')
+      );
+
+  const openModal = (item: any) => {
     setSelectedMedia(item);
   };
 
   const closeModal = () => {
     setSelectedMedia(null);
   };
-
-  // Loading state
-  if (loading) {
-    return (
-      <div className="pt-20 min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <RefreshCw className="animate-spin h-8 w-8 text-yellow-600 mx-auto mb-4" />
-          <p className="text-gray-600">Loading gallery...</p>
-        </div>
-      </div>
-    );
-  }
-
-  // Error state
-  if (error) {
-    return (
-      <div className="pt-20 min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <p className="text-red-600 mb-4">{error}</p>
-          <button 
-            onClick={refetch}
-            className="bg-yellow-600 text-white px-4 py-2 rounded-lg hover:bg-yellow-700 transition-colors"
-          >
-            Try Again
-          </button>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="pt-20">
@@ -98,7 +153,7 @@ const Gallery = () => {
         </div>
       </motion.section>
 
-      {/* Filter Buttons and Search */}
+      {/* Filter Buttons */}
       <motion.section 
         ref={filtersRef}
         initial="hidden"
@@ -107,24 +162,6 @@ const Gallery = () => {
         className="py-8 bg-white border-b"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Search Bar */}
-          <motion.div 
-            variants={staggeredChildrenVariants}
-            className="max-w-md mx-auto mb-6"
-          >
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
-              <input
-                type="text"
-                placeholder="Search gallery..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
-              />
-            </div>
-          </motion.div>
-
-          {/* Filter Buttons */}
           <motion.div 
             variants={containerVariants}
             className="flex flex-wrap justify-center gap-3"
@@ -148,23 +185,11 @@ const Gallery = () => {
               </motion.button>
             ))}
           </motion.div>
-          
           <motion.div 
             variants={staggeredChildrenVariants}
             className="text-center mt-4 text-sm text-gray-600"
           >
             Showing {filteredItems.length} items
-            {searchQuery && (
-              <span className="ml-2">
-                for "{searchQuery}"
-                <button 
-                  onClick={() => setSearchQuery('')}
-                  className="ml-2 text-yellow-600 hover:text-yellow-700"
-                >
-                  Clear
-                </button>
-              </span>
-            )}
           </motion.div>
         </div>
       </motion.section>
@@ -184,7 +209,7 @@ const Gallery = () => {
           >
             {filteredItems.map((item, index) => (
               <motion.div
-                key={item.name}
+                key={item.id}
                 variants={staggeredChildrenVariants}
                 custom={index}
                 className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 transform group cursor-pointer"
@@ -198,19 +223,15 @@ const Gallery = () => {
               >
                 <div className="relative overflow-hidden">
                   <motion.img
-                    src={item.thumbnail_url || item.image_url || 'https://via.placeholder.com/400x300?text=No+Image'}
+                    src={item.image}
                     alt={item.title}
                     className="w-full h-64 object-cover"
                     whileHover={{ scale: 1.1 }}
                     transition={{ duration: 0.4 }}
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement;
-                      target.src = 'https://via.placeholder.com/400x300?text=No+Image';
-                    }}
                   />
                   
                   {/* Overlay for videos */}
-                  {item.media_type === 'Video' && (
+                  {item.type === 'video' && (
                     <motion.div 
                       className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center"
                       whileHover={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
@@ -234,23 +255,9 @@ const Gallery = () => {
                     transition={{ delay: 0.2 + index * 0.1 }}
                   >
                     <span className="bg-yellow-600 text-white px-3 py-1 rounded-full text-xs font-semibold">
-                      {item.media_type}
+                      {item.type === 'video' ? 'Video' : 'Photo'}
                     </span>
                   </motion.div>
-
-                  {/* Featured Badge */}
-                  {item.is_featured && (
-                    <motion.div 
-                      className="absolute top-4 right-4"
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.3 + index * 0.1 }}
-                    >
-                      <span className="bg-gradient-to-r from-yellow-400 to-yellow-600 text-white px-2 py-1 rounded-full text-xs font-semibold">
-                        Featured
-                      </span>
-                    </motion.div>
-                  )}
                 </div>
 
                 <motion.div 
@@ -264,20 +271,11 @@ const Gallery = () => {
                     {item.title}
                   </motion.h3>
                   <motion.p 
-                    className="text-gray-600 text-sm leading-relaxed mb-2"
+                    className="text-gray-600 text-sm leading-relaxed"
                     variants={staggeredChildrenVariants}
                   >
                     {item.description}
                   </motion.p>
-                  <motion.div 
-                    className="flex items-center justify-between text-xs text-gray-500"
-                    variants={staggeredChildrenVariants}
-                  >
-                    <span className="bg-gray-100 px-2 py-1 rounded">{item.category}</span>
-                    {item.tags && (
-                      <span className="truncate ml-2">{item.tags}</span>
-                    )}
-                  </motion.div>
                 </motion.div>
               </motion.div>
             ))}
@@ -393,35 +391,17 @@ const Gallery = () => {
           >
             <div className="bg-white rounded-2xl overflow-hidden">
               <div className="relative">
-                {selectedMedia.media_type === 'Video' && selectedMedia.video_url ? (
-                  <div className="bg-black flex justify-center items-center max-h-[70vh]">
-                    <video
-                      src={selectedMedia.video_url}
-                      className="w-full h-auto max-h-[70vh] object-contain"
-                      controls
-                      autoPlay
-                      playsInline
-                    >
-                      Your browser does not support the video tag.
-                    </video>
-                  </div>
-                ) : (
-                  <motion.img
-                    src={selectedMedia.image_url || 'https://via.placeholder.com/600x400?text=No+Image'}
-                    alt={selectedMedia.title}
-                    className="w-full h-auto max-h-[70vh] object-contain"
-                    initial={{ scale: 0.9, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    transition={{ delay: 0.2, duration: 0.4 }}
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement;
-                      target.src = 'https://via.placeholder.com/600x400?text=No+Image';
-                    }}
-                  />
-                )}
+                <motion.img
+                  src={selectedMedia.image}
+                  alt={selectedMedia.title}
+                  className="w-full h-auto max-h-[70vh] object-contain"
+                  initial={{ scale: 0.9, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ delay: 0.2, duration: 0.4 }}
+                />
                 <motion.button
                   onClick={closeModal}
-                  className="absolute top-4 right-4 bg-white bg-opacity-80 hover:bg-opacity-100 rounded-full p-2 transition-all duration-200 z-10"
+                  className="absolute top-4 right-4 bg-white bg-opacity-80 hover:bg-opacity-100 rounded-full p-2 transition-all duration-200"
                   initial={{ scale: 0, rotate: -180 }}
                   animate={{ scale: 1, rotate: 0 }}
                   transition={{ delay: 0.3, duration: 0.3 }}
