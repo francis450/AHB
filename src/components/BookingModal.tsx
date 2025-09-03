@@ -105,7 +105,7 @@ const BookingModal = () => {
                   onChange={handleChange}
                   required
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
-                  placeholder="+254 7115131131"
+                  placeholder="+254 712 676182"
                 />
               </div>
 
