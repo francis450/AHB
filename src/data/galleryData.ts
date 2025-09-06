@@ -7,7 +7,6 @@ export interface GalleryItem {
   thumbnail: string; // For images: always required. For videos: optional (will auto-generate if missing)
   fullSize: string;
   videoUrl?: string;
-  duration?: string; // for videos (e.g., "2:30")
   isVertical?: boolean; // for videos - true if portrait/vertical orientation
   tags: string[];
   uploadDate: string;
@@ -24,10 +23,9 @@ export const galleryItems: GalleryItem[] = [
     thumbnail: '/gallery/images/wig-installation/installation-thumb.jpg',
     fullSize: '/gallery/images/wig-installation/installation-full.jpg',
     videoUrl: '/gallery/videos/human-hair/8" 5x5 CLOSURE VIETNAMESE BOB.mp4',
-    duration: '3:45',
     isVertical: true, // Instagram Reels format (464x832)
     tags: ['vietnamese-bob', 'closure', '8-inch', 'wig-installation', 'short-hair'],
-    uploadDate: '2024-01-20'
+    uploadDate: '2025-09-06'
   },
   {
     id: '2',
@@ -38,10 +36,9 @@ export const galleryItems: GalleryItem[] = [
     thumbnail: '/gallery/images/hair-styling/tutorial-thumb.jpg',
     fullSize: '/gallery/images/hair-styling/tutorial-full.jpg',
     videoUrl: '/gallery/videos/human-hair/12" D.D HUMAN HAIR 13x4 FRONTAL GLUELESS&GLUE.mp4',
-    duration: '2:15',
     isVertical: true, // Assuming this is also Instagram Reels format
     tags: ['deep-wave', 'frontal', '12-inch', 'glueless', 'glue-method', '13x4'],
-    uploadDate: '2024-02-01'
+    uploadDate: '2025-09-06'
   },
   {
     id: '3',
@@ -52,10 +49,9 @@ export const galleryItems: GalleryItem[] = [
     thumbnail: '/gallery/images/wig-installation/lace-front-thumb.jpg',
     fullSize: '/gallery/images/wig-installation/lace-front-full.jpg',
     videoUrl: '/gallery/videos/human-hair/13x4 BODY WAVE WIGS GLUELESS&GLUE.mp4',
-    duration: '4:20',
     isVertical: true, // Assuming Instagram Reels format
     tags: ['body-wave', 'glueless', 'glue-method', '13x4', 'lace-front'],
-    uploadDate: '2024-02-10'
+    uploadDate: '2025-09-06'
   },
   {
     id: '4',
@@ -66,10 +62,9 @@ export const galleryItems: GalleryItem[] = [
     thumbnail: '/gallery/images/treatments/keratin-thumb.jpg',
     fullSize: '/gallery/images/treatments/keratin-full.jpg',
     videoUrl: '/gallery/videos/human-hair/14" D.D HUMAN HAIR 13x4 FRONTAL GLUELESS&GLUE.mp4',
-    duration: '5:10',
     isVertical: true,
     tags: ['deep-wave', '14-inch', 'frontal', 'glueless', 'glue-method'],
-    uploadDate: '2024-02-20'
+    uploadDate: '2025-09-06'
   },
   {
     id: '5',
@@ -80,10 +75,9 @@ export const galleryItems: GalleryItem[] = [
     thumbnail: '', // No thumbnail provided - will auto-generate
     fullSize: '', // Not needed for videos without custom thumbnails
     videoUrl: '/gallery/videos/human-hair/16" 5x5 closure vietnamese hair.mp4',
-    duration: '2:45',
     isVertical: true,
     tags: ['vietnamese-hair', '16-inch', '5x5-closure', 'natural-texture'],
-    uploadDate: '2024-03-05'
+    uploadDate: '2025-09-06'
   },
   {
     id: '6',
@@ -94,10 +88,9 @@ export const galleryItems: GalleryItem[] = [
     thumbnail: '', // No thumbnail provided - will auto-generate
     fullSize: '', // Not needed for videos without custom thumbnails
     videoUrl: '/gallery/videos/human-hair/16" 5x5 vietnamese hair.mp4',
-    duration: '3:15',
     isVertical: true,
     tags: ['vietnamese-hair', '16-inch', 'styling', 'natural-hair'],
-    uploadDate: '2024-03-06'
+    uploadDate: '2025-09-06'
   },
   {
     id: '7',
@@ -108,10 +101,9 @@ export const galleryItems: GalleryItem[] = [
     thumbnail: '', // No thumbnail provided - will auto-generate
     fullSize: '', // Not needed for videos without custom thumbnails
     videoUrl: '/gallery/videos/human-hair/16" D.D HUMAN HAIR 13x4 FRONTAL GLUELESS&GLUE.mp4',
-    duration: '4:30',
     isVertical: true,
     tags: ['deep-wave', '16-inch', 'frontal', 'glueless', 'glue-method'],
-    uploadDate: '2024-03-07'
+    uploadDate: '2025-09-06'
   },
   {
     id: '8',
@@ -122,10 +114,9 @@ export const galleryItems: GalleryItem[] = [
     thumbnail: '', // No thumbnail provided - will auto-generate
     fullSize: '', // Not needed for videos without custom thumbnails
     videoUrl: '/gallery/videos/human-hair/18" D.D HUMAN HAIR 13X4 FRONTAL.mp4',
-    duration: '5:00',
     isVertical: true,
     tags: ['deep-wave', '18-inch', 'long-hair', 'frontal', 'glamorous'],
-    uploadDate: '2024-03-08'
+    uploadDate: '2025-09-06'
   },
   {
     id: '9',
@@ -136,10 +127,9 @@ export const galleryItems: GalleryItem[] = [
     thumbnail: '', // No thumbnail provided - will auto-generate
     fullSize: '', // Not needed for videos without custom thumbnails
     videoUrl: '/gallery/videos/human-hair/18" HUMAN HAIR PIXIE CURLY .mp4',
-    duration: '3:20',
     isVertical: true,
     tags: ['pixie-cut', 'curly', '18-inch', 'texture', 'natural-curls'],
-    uploadDate: '2024-03-09'
+    uploadDate: '2025-09-06'
   },
   {
     id: '10',
@@ -150,10 +140,9 @@ export const galleryItems: GalleryItem[] = [
     thumbnail: '', // No thumbnail provided - will auto-generate
     fullSize: '', // Not needed for videos without custom thumbnails
     videoUrl: '/gallery/videos/human-hair/18" HUMAN HAIR PIXIE CURLY.mp4',
-    duration: '2:50',
     isVertical: true,
     tags: ['pixie-cut', 'curly', '18-inch', 'styling-variations', 'curl-definition'],
-    uploadDate: '2024-03-10'
+    uploadDate: '2025-09-06'
   },
   {
     id: '11',
@@ -164,10 +153,9 @@ export const galleryItems: GalleryItem[] = [
     thumbnail: '', // No thumbnail provided - will auto-generate
     fullSize: '', // Not needed for videos without custom thumbnails
     videoUrl: '/gallery/videos/human-hair/20" D.D HUMAN HAIR 13x4 FRONTAL GLUELESS&GLUE.mp4',
-    duration: '5:45',
     isVertical: true,
     tags: ['deep-wave', '20-inch', 'extra-long', 'frontal', 'glueless', 'glue-method'],
-    uploadDate: '2024-03-11'
+    uploadDate: '2025-09-06'
   },
   {
     id: '12',
@@ -178,10 +166,9 @@ export const galleryItems: GalleryItem[] = [
     thumbnail: '', // No thumbnail provided - will auto-generate
     fullSize: '', // Not needed for videos without custom thumbnails
     videoUrl: '/gallery/videos/human-hair/20" HUMAN HAIR FUMI CURLY .mp4',
-    duration: '4:15',
     isVertical: true,
     tags: ['fumi-curly', '20-inch', 'african-texture', 'natural-curls', 'long-hair'],
-    uploadDate: '2024-03-12'
+    uploadDate: '2025-09-06'
   },
   {
     id: '13',
@@ -192,10 +179,9 @@ export const galleryItems: GalleryItem[] = [
     thumbnail: '', // No thumbnail provided - will auto-generate
     fullSize: '', // Not needed for videos without custom thumbnails
     videoUrl: '/gallery/videos/human-hair/22" D.D HUMAN HAIR 13x4 FRONTAL GLUELESS&GLUE.mp4',
-    duration: '6:00',
     isVertical: true,
     tags: ['deep-wave', '22-inch', 'ultra-long', 'frontal', 'dramatic-length'],
-    uploadDate: '2024-03-13'
+    uploadDate: '2025-09-06'
   },
   {
     id: '14',
@@ -206,10 +192,9 @@ export const galleryItems: GalleryItem[] = [
     thumbnail: '', // No thumbnail provided - will auto-generate
     fullSize: '', // Not needed for videos without custom thumbnails
     videoUrl: '/gallery/videos/human-hair/BLENDED WIGS .mp4',
-    duration: '4:45',
     isVertical: true,
     tags: ['blended-wigs', 'color-blending', 'texture-mixing', 'natural-look'],
-    uploadDate: '2024-03-14'
+    uploadDate: '2025-09-06'
   },
   {
     id: '15',
@@ -220,10 +205,9 @@ export const galleryItems: GalleryItem[] = [
     thumbnail: '', // No thumbnail provided - will auto-generate
     fullSize: '', // Not needed for videos without custom thumbnails
     videoUrl: '/gallery/videos/human-hair/FRINGE WATER WAVE GLUELESS.mp4',
-    duration: '3:30',
     isVertical: true,
     tags: ['fringe', 'water-wave', 'glueless', 'trendy', 'bangs'],
-    uploadDate: '2024-03-15'
+    uploadDate: '2025-09-06'
   },
 ];
 
