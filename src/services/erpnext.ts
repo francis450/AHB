@@ -193,7 +193,7 @@ export class ERPNextService {
       
       // Fetch prices and stock in parallel
       const [priceMap, stockMap] = await Promise.all([
-        this.getItemPrices(itemCodes, 'Website Price'),
+        this.getItemPrices(itemCodes, 'Selling Price'),
         this.getItemsStock(itemCodes)
       ]);
       
@@ -224,7 +224,7 @@ export class ERPNextService {
       
       // Fetch price and stock for this item in parallel
       const [price, stockInfo] = await Promise.all([
-        this.getItemPrice(item.item_code, 'Website Price'),
+        this.getItemPrice(item.item_code, 'Selling Price'),
         this.getItemStock(item.item_code)
       ]);
       
@@ -446,7 +446,7 @@ export class ERPNextService {
       
       // Fetch prices and stock for search results in parallel
       const [priceMap, stockMap] = await Promise.all([
-        this.getItemPrices(itemCodes, 'Website Price'),
+        this.getItemPrices(itemCodes, 'Selling Price'),
         this.getItemsStock(itemCodes)
       ]);
       
@@ -498,7 +498,7 @@ export class ERPNextService {
       
       // Fetch prices and stock in parallel
       const [priceMap, stockMap] = await Promise.all([
-        ERPNextService.getItemPrices(itemCodes, 'Website Price'),
+        ERPNextService.getItemPrices(itemCodes, 'Selling Price'),
         ERPNextService.getItemsStock(itemCodes)
       ]);
       
@@ -534,7 +534,7 @@ export class ERPNextService {
   }
 
   // Fetch item price from Item Price doctype
-  static async getItemPrice(itemCode: string, priceList: string = 'Website Price'): Promise<number> {
+  static async getItemPrice(itemCode: string, priceList: string = 'Selling Price'): Promise<number> {
     try {
       const params = new URLSearchParams();
       params.append('fields', JSON.stringify(['price_list_rate', 'currency']));
@@ -556,7 +556,7 @@ export class ERPNextService {
   }
 
   // Fetch multiple item prices in batch
-  static async getItemPrices(itemCodes: string[], priceList: string = 'Website Price'): Promise<Record<string, number>> {
+  static async getItemPrices(itemCodes: string[], priceList: string = 'Selling Price'): Promise<Record<string, number>> {
     try {
       const params = new URLSearchParams();
       params.append('fields', JSON.stringify(['item_code', 'price_list_rate']));
