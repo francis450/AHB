@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Play, Filter, Instagram, Facebook, Twitter } from 'lucide-react';
+import { Play, Filter, Instagram, Facebook, Twitter, Clock } from 'lucide-react';
 import { 
   useScrollAnimation, 
   slideUpVariants, 
@@ -11,10 +11,14 @@ import {
   staggeredChildrenVariants,
   scaleInVariants
 } from '../hooks/useScrollAnimation';
+import { galleryItems, getItemsByCategory, GalleryItem } from '../data/galleryData';
+import VideoPlayer from '../components/VideoPlayer';
+import LazyImage from '../components/LazyImage';
+import VideoThumbnail from '../components/VideoThumbnail';
 
 const Gallery = () => {
   const [activeFilter, setActiveFilter] = useState('all');
-  const [selectedMedia, setSelectedMedia] = useState<any>(null);
+  const [selectedMedia, setSelectedMedia] = useState<GalleryItem | null>(null);
 
   const filters = [
     { id: 'all', name: 'All Media' },
@@ -26,99 +30,14 @@ const Gallery = () => {
     { id: 'before-after', name: 'Before & After' }
   ];
 
-  const galleryItems = [
-    {
-      id: 1,
-      type: 'image',
-      category: 'hair-styling',
-      title: 'Elegant Wedding Style',
-      image: 'https://images.pexels.com/photos/3065209/pexels-photo-3065209.jpeg?auto=compress&cs=tinysrgb&w=600',
-      description: 'Beautiful bridal hairstyle for a perfect wedding day'
-    },
-    {
-      id: 2,
-      type: 'video',
-      category: 'wig-installation',
-      title: 'Premium Wig Installation Process',
-      image: 'https://images.pexels.com/photos/3373727/pexels-photo-3373727.jpeg?auto=compress&cs=tinysrgb&w=600',
-      videoUrl: 'https://www.example.com/video1',
-      description: 'Step-by-step wig installation demonstration'
-    },
-    {
-      id: 3,
-      type: 'image',
-      category: 'treatments',
-      title: 'Hair Treatment Results',
-      image: 'https://images.pexels.com/photos/3997989/pexels-photo-3997989.jpeg?auto=compress&cs=tinysrgb&w=600',
-      description: 'Amazing results from our deep conditioning treatment'
-    },
-    {
-      id: 4,
-      type: 'video',
-      category: 'hair-styling',
-      title: 'Quick Styling Tutorial',
-      image: 'https://images.pexels.com/photos/3178786/pexels-photo-3178786.jpeg?auto=compress&cs=tinysrgb&w=600',
-      videoUrl: 'https://www.example.com/video2',
-      description: 'Easy everyday styling tips and tricks'
-    },
-    {
-      id: 5,
-      type: 'image',
-      category: 'before-after',
-      title: 'Transformation Tuesday',
-      image: 'https://images.pexels.com/photos/3065209/pexels-photo-3065209.jpeg?auto=compress&cs=tinysrgb&w=600',
-      description: 'Complete hair makeover transformation'
-    },
-    {
-      id: 6,
-      type: 'video',
-      category: 'wig-installation',
-      title: 'Customer Trying New Wig',
-      image: 'https://images.pexels.com/photos/3373727/pexels-photo-3373727.jpeg?auto=compress&cs=tinysrgb&w=600',
-      videoUrl: 'https://www.example.com/video3',
-      description: 'Happy customer experiencing our premium wig selection'
-    },
-    {
-      id: 7,
-      type: 'image',
-      category: 'hair-styling',
-      title: 'Natural Hair Styling',
-      image: 'https://images.pexels.com/photos/3997989/pexels-photo-3997989.jpeg?auto=compress&cs=tinysrgb&w=600',
-      description: 'Beautiful natural hair styling and care'
-    },
-    {
-      id: 8,
-      type: 'video',
-      category: 'treatments',
-      title: 'Hair Treatment Process',
-      image: 'https://images.pexels.com/photos/4465830/pexels-photo-4465830.jpeg?auto=compress&cs=tinysrgb&w=600',
-      videoUrl: 'https://www.example.com/video4',
-      description: 'Professional hair treatment in progress'
-    },
-    {
-      id: 9,
-      type: 'image',
-      category: 'before-after',
-      title: 'Color Transformation',
-      image: 'https://images.pexels.com/photos/3178786/pexels-photo-3178786.jpeg?auto=compress&cs=tinysrgb&w=600',
-      description: 'Stunning hair color transformation'
-    }
-  ];
-
   const { ref: heroRef, controls: heroControls } = useScrollAnimation();
   const { ref: filtersRef, controls: filtersControls } = useScrollAnimation();
   const { ref: galleryRef, controls: galleryControls } = useScrollAnimation();
   const { ref: socialRef, controls: socialControls } = useScrollAnimation();
 
-  const filteredItems = activeFilter === 'all' 
-    ? galleryItems 
-    : galleryItems.filter(item => 
-        item.category === activeFilter || 
-        (activeFilter === 'images' && item.type === 'image') ||
-        (activeFilter === 'videos' && item.type === 'video')
-      );
+  const filteredItems = getItemsByCategory(activeFilter);
 
-  const openModal = (item: any) => {
+  const openModal = (item: GalleryItem) => {
     setSelectedMedia(item);
   };
 
@@ -222,18 +141,27 @@ const Gallery = () => {
                 whileTap={{ scale: 0.98 }}
               >
                 <div className="relative overflow-hidden">
-                  <motion.img
-                    src={item.image}
-                    alt={item.title}
-                    className="w-full h-64 object-cover"
-                    whileHover={{ scale: 1.1 }}
-                    transition={{ duration: 0.4 }}
-                  />
+                  {item.type === 'video' ? (
+                    // For videos, use VideoThumbnail component which handles missing thumbnails
+                    <VideoThumbnail
+                      videoSrc={item.videoUrl || ''}
+                      fallbackImage={item.thumbnail}
+                      title={item.title}
+                      className="w-full h-64 group-hover:scale-110 transition-transform duration-400"
+                    />
+                  ) : (
+                    // For images, use LazyImage component
+                    <LazyImage
+                      src={item.thumbnail}
+                      alt={item.title}
+                      className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-400"
+                    />
+                  )}
                   
-                  {/* Overlay for videos */}
-                  {item.type === 'video' && (
+                  {/* Overlay for videos - only show for videos without thumbnails or as backup */}
+                  {item.type === 'video' && item.thumbnail && (
                     <motion.div 
-                      className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center"
+                      className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                       whileHover={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
                       transition={{ duration: 0.3 }}
                     >
@@ -258,6 +186,21 @@ const Gallery = () => {
                       {item.type === 'video' ? 'Video' : 'Photo'}
                     </span>
                   </motion.div>
+
+                  {/* Duration Badge for Videos */}
+                  {item.type === 'video' && item.duration && (
+                    <motion.div 
+                      className="absolute bottom-4 right-4"
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.3 + index * 0.1 }}
+                    >
+                      <span className="bg-black bg-opacity-70 text-white px-2 py-1 rounded-full text-xs font-semibold flex items-center space-x-1">
+                        <Clock size={12} />
+                        <span>{item.duration}</span>
+                      </span>
+                    </motion.div>
+                  )}
                 </div>
 
                 <motion.div 
@@ -276,6 +219,21 @@ const Gallery = () => {
                   >
                     {item.description}
                   </motion.p>
+                  
+                  {/* Tags */}
+                  <motion.div 
+                    className="flex flex-wrap gap-2 mt-3"
+                    variants={staggeredChildrenVariants}
+                  >
+                    {item.tags.slice(0, 3).map((tag, tagIndex) => (
+                      <span
+                        key={tagIndex}
+                        className="bg-gray-100 text-gray-600 px-2 py-1 rounded-full text-xs"
+                      >
+                        #{tag}
+                      </span>
+                    ))}
+                  </motion.div>
                 </motion.div>
               </motion.div>
             ))}
@@ -380,45 +338,98 @@ const Gallery = () => {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.3 }}
+        >        <motion.div 
+          className={`max-w-6xl max-h-[90vh] w-full mx-4 ${
+            selectedMedia.type === 'video' ? 'flex items-center justify-center' : ''
+          }`} 
+          onClick={(e) => e.stopPropagation()}
+          initial={{ scale: 0.8, opacity: 0, y: 50 }}
+          animate={{ scale: 1, opacity: 1, y: 0 }}
+          exit={{ scale: 0.8, opacity: 0, y: 50 }}
+          transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] as any }}
         >
-          <motion.div 
-            className="max-w-4xl max-h-[90vh] mx-4" 
-            onClick={(e) => e.stopPropagation()}
-            initial={{ scale: 0.8, opacity: 0, y: 50 }}
-            animate={{ scale: 1, opacity: 1, y: 0 }}
-            exit={{ scale: 0.8, opacity: 0, y: 50 }}
-            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] as any }}
-          >
-            <div className="bg-white rounded-2xl overflow-hidden">
+          <div className={`bg-white rounded-2xl overflow-hidden ${
+            selectedMedia.type === 'video' ? 'max-w-4xl' : ''
+          }`}>
               <div className="relative">
-                <motion.img
-                  src={selectedMedia.image}
-                  alt={selectedMedia.title}
-                  className="w-full h-auto max-h-[70vh] object-contain"
-                  initial={{ scale: 0.9, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  transition={{ delay: 0.2, duration: 0.4 }}
-                />
+                {selectedMedia.type === 'video' && selectedMedia.videoUrl ? (
+                  <div className="flex items-center justify-center bg-black">
+                    <VideoPlayer
+                      src={selectedMedia.videoUrl}
+                      poster={selectedMedia.fullSize}
+                      title={selectedMedia.title}
+                      className="max-h-[70vh]"
+                      controls={true}
+                      isVertical={selectedMedia.isVertical}
+                    />
+                  </div>
+                ) : (
+                  <LazyImage
+                    src={selectedMedia.fullSize}
+                    alt={selectedMedia.title}
+                    className="w-full h-auto max-h-[70vh] object-contain"
+                  />
+                )}
+                
                 <motion.button
                   onClick={closeModal}
-                  className="absolute top-4 right-4 bg-white bg-opacity-80 hover:bg-opacity-100 rounded-full p-2 transition-all duration-200"
+                  className="absolute top-4 right-4 bg-white bg-opacity-80 hover:bg-opacity-100 rounded-full p-2 transition-all duration-200 z-10"
                   initial={{ scale: 0, rotate: -180 }}
                   animate={{ scale: 1, rotate: 0 }}
                   transition={{ delay: 0.3, duration: 0.3 }}
                   whileHover={{ scale: 1.1, rotate: 90 }}
                   whileTap={{ scale: 0.9 }}
                 >
-                  ×
+                  <span className="text-gray-700 text-xl font-bold">×</span>
                 </motion.button>
               </div>
+              
               <motion.div 
                 className="p-6"
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.3, duration: 0.4 }}
               >
-                <h3 className="text-2xl font-bold text-gray-900 mb-2">{selectedMedia.title}</h3>
-                <p className="text-gray-600">{selectedMedia.description}</p>
+                <div className="flex items-center justify-between mb-4">
+                  <div>
+                    <h3 className="text-2xl font-bold text-gray-900 mb-2">{selectedMedia.title}</h3>
+                    <div className="flex items-center space-x-4 text-sm text-gray-500 mb-3">
+                      <span className="capitalize">{selectedMedia.category.replace('-', ' ')}</span>
+                      {selectedMedia.type === 'video' && selectedMedia.duration && (
+                        <>
+                          <span>•</span>
+                          <span className="flex items-center space-x-1">
+                            <Clock size={14} />
+                            <span>{selectedMedia.duration}</span>
+                          </span>
+                        </>
+                      )}
+                      <span>•</span>
+                      <span>{new Date(selectedMedia.uploadDate).toLocaleDateString()}</span>
+                    </div>
+                  </div>
+                  <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                    selectedMedia.type === 'video' 
+                      ? 'bg-red-100 text-red-800' 
+                      : 'bg-blue-100 text-blue-800'
+                  }`}>
+                    {selectedMedia.type === 'video' ? 'Video' : 'Photo'}
+                  </span>
+                </div>
+                
+                <p className="text-gray-600 mb-4">{selectedMedia.description}</p>
+                
+                {/* Tags */}
+                <div className="flex flex-wrap gap-2">
+                  {selectedMedia.tags.map((tag, index) => (
+                    <span
+                      key={index}
+                      className="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-sm"
+                    >
+                      #{tag}
+                    </span>
+                  ))}
+                </div>
               </motion.div>
             </div>
           </motion.div>
