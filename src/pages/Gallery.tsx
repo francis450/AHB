@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Play, Filter, Instagram, Facebook, Twitter, Clock } from 'lucide-react';
+import { Play, Filter, Instagram, Facebook, Twitter } from 'lucide-react';
 import { 
   useScrollAnimation, 
   slideUpVariants, 
@@ -186,21 +186,6 @@ const Gallery = () => {
                       {item.type === 'video' ? 'Video' : 'Photo'}
                     </span>
                   </motion.div>
-
-                  {/* Duration Badge for Videos */}
-                  {item.type === 'video' && item.duration && (
-                    <motion.div 
-                      className="absolute bottom-4 right-4"
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.3 + index * 0.1 }}
-                    >
-                      <span className="bg-black bg-opacity-70 text-white px-2 py-1 rounded-full text-xs font-semibold flex items-center space-x-1">
-                        <Clock size={12} />
-                        <span>{item.duration}</span>
-                      </span>
-                    </motion.div>
-                  )}
                 </div>
 
                 <motion.div 
