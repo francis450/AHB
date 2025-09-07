@@ -102,17 +102,18 @@ const Services = () => {
     : services.filter(service => service.category === selectedCategory);
 
   return (
-    <div className="pt-20">
+    <div>
       {/* Hero Section */}
-      <section className="py-20 bg-gradient-to-br from-yellow-50 to-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            Our <span className="text-yellow-600" style={{ fontFamily: 'Yellowtail, cursive' }}>Premium Services</span>
+      <section 
+        className="py-20 bg-cover bg-center bg-no-repeat relative"
+        style={{
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/images/company-banner.jpg')`
+        }}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
+            Our <span className="text-yellow-400" style={{ fontFamily: 'Yellowtail, cursive' }}>Premium Services</span>
           </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
-            Discover our comprehensive range of luxury hair and beauty services, 
-            each designed to enhance your natural beauty with precision and care.
-          </p>
           <button
             onClick={openBooking}
             className="bg-yellow-600 hover:bg-yellow-700 text-white px-8 py-3 rounded-full font-semibold text-lg transition-all duration-200 transform hover:scale-105"

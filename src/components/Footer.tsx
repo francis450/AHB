@@ -29,7 +29,7 @@ const Footer = () => {
               Elevating beauty with elegance and professionalism.
             </p>
             <div className="flex space-x-3">
-              <a href="#" className="text-gray-400 hover:text-yellow-400 transition-colors">
+              <a target='_blank' href="https://www.instagram.com/aliciahairline.ke/" className="text-gray-400 hover:text-yellow-400 transition-colors">
                 <Instagram size={20} />
               </a>
               <a href="#" className="text-gray-400 hover:text-yellow-400 transition-colors">
@@ -72,8 +72,7 @@ const Footer = () => {
               <div className="flex items-start space-x-3">
                 <MapPin className="text-yellow-400 mt-1" size={16} />
                 <p className="text-gray-300 text-sm">
-                  Nairobi, Nairobi County<br />
-                  Kenya
+                  Rm312, 3rd floor Old Mutual Building, along Kimathi street
                 </p>
               </div>
               <div className="flex items-center space-x-3">
