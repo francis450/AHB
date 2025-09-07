@@ -104,10 +104,6 @@ const Products = () => {
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
             Premium <span className="text-yellow-400" style={{ fontFamily: 'Yellowtail, cursive' }}>Beauty Products</span>
           </h1>
-          <p className="text-xl text-gray-100 max-w-3xl mx-auto mb-8">
-            Carefully curated collection of professional-grade hair care and beauty products 
-            for salon-quality results at home.
-          </p>
         </div>
       </section>
 
