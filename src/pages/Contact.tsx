@@ -117,8 +117,7 @@ const Contact = () => {
                   <div>
                     <h3 className="font-semibold mb-1">Location</h3>
                     <p className="text-gray-300">
-                      Nairobi, Nairobi County<br />
-                      Kenya
+                      Rm312, 3rd floor Old Mutual Building, along Kimathi street
                     </p>
                   </div>
                 </motion.div>
