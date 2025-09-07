@@ -114,10 +114,6 @@ const Services = () => {
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
             Our <span className="text-yellow-400" style={{ fontFamily: 'Yellowtail, cursive' }}>Premium Services</span>
           </h1>
-          <p className="text-xl text-gray-100 max-w-3xl mx-auto mb-8">
-            Discover our comprehensive range of luxury hair and beauty services, 
-            each designed to enhance your natural beauty with precision and care.
-          </p>
           <button
             onClick={openBooking}
             className="bg-yellow-600 hover:bg-yellow-700 text-white px-8 py-3 rounded-full font-semibold text-lg transition-all duration-200 transform hover:scale-105"
