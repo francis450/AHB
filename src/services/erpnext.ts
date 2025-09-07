@@ -3,7 +3,7 @@ import axios from 'axios';
 // ERPNext API Configuration
 const ERPNEXT_CONFIG = {
   // Always use the full ERPNext URL (no proxy)
-  baseURL: import.meta.env.VITE_ERPNEXT_URL || 'https://your-erpnext-site.com',
+  baseURL: import.meta.env.VITE_ERPNEXT_URL || 'https://alicia.boraerp.co.ke',
   apiKey: import.meta.env.VITE_ERPNEXT_API_KEY || '',
   apiSecret: import.meta.env.VITE_ERPNEXT_API_SECRET || '',
 };
