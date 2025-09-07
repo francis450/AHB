@@ -13,7 +13,7 @@ const About = () => {
     {
       name: 'MAGGIE',
       role: 'Founder & Master Stylist',
-      image: '',
+      image: '/images/maggie.jpg',
       bio: 'With over 10 years of experience, MAGGIE is a certified master stylist specializing in luxury hair treatments and wig installations.'
     },
     {
