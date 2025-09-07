@@ -24,23 +24,31 @@ const VideoThumbnail: React.FC<VideoThumbnailProps> = ({
   const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
-    const video = videoRef.current;
-    const canvas = canvasRef.current;
-    
-    if (!video || !canvas) return;
+    const generateThumbnailFromVideo = () => {
+      const video = videoRef.current;
+      const canvas = canvasRef.current;
+      
+      if (!video || !canvas) {
+        console.error('❌ Video or canvas element not found');
+        return;
+      }
 
-    const generateThumbnail = () => {
-      try {
-        // Wait a bit for the video to load some frames
-        video.currentTime = 1; // Seek to 1 second to avoid black frames
-        
-        const handleSeeked = () => {
+      console.log('🎬 Starting video thumbnail generation...');
+
+      const handleSeeked = async () => {
+        try {
+          console.log('⚡ Video seeked, generating thumbnail...');
           const ctx = canvas.getContext('2d');
-          if (!ctx) return;
+          if (!ctx) {
+            console.error('❌ Could not get canvas 2d context');
+            return;
+          }
 
           // Set canvas dimensions to match video
           canvas.width = video.videoWidth;
           canvas.height = video.videoHeight;
+
+          console.log(`📐 Canvas dimensions: ${canvas.width}x${canvas.height}`);
 
           // Draw video frame to canvas
           ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
@@ -50,41 +58,57 @@ const VideoThumbnail: React.FC<VideoThumbnailProps> = ({
           setThumbnailUrl(dataUrl);
           setIsLoading(false);
           
-          // Call callback if provided
+          console.log('🖼️ Thumbnail generated successfully');
+          
+          // Call callback with the generated thumbnail
           onThumbnailGenerated?.(dataUrl);
           
           video.removeEventListener('seeked', handleSeeked);
-        };
+        } catch (error) {
+          console.error('❌ Error generating thumbnail:', error);
+          setHasError(true);
+          setIsLoading(false);
+        }
+      };
 
+      const handleLoadedMetadata = () => {
+        console.log('📹 Video metadata loaded, duration:', video.duration);
+        // Seek to 1 second to avoid black frames
+        const seekTime = Math.min(1, video.duration * 0.1);
+        console.log('⏰ Seeking to time:', seekTime);
+        video.currentTime = seekTime;
         video.addEventListener('seeked', handleSeeked);
-      } catch (error) {
-        console.error('Error generating thumbnail:', error);
+      };
+
+      const handleError = (event: Event) => {
+        console.error('❌ Error loading video for thumbnail generation:', event);
+        console.error('Video src:', videoSrc);
         setHasError(true);
         setIsLoading(false);
+      };
+
+      if (!videoSrc) {
+        setHasError(true);
+        setIsLoading(false);
+        return;
       }
+
+      console.log('🎥 Setting up video event listeners...');
+      video.addEventListener('loadedmetadata', handleLoadedMetadata);
+      video.addEventListener('error', handleError);
+
+      // Set video source
+      console.log('📡 Loading video source:', videoSrc);
+      video.src = videoSrc;
+      video.preload = 'metadata';
+
+      return () => {
+        video.removeEventListener('loadedmetadata', handleLoadedMetadata);
+        video.removeEventListener('error', handleError);
+      };
     };
 
-    const handleLoadedMetadata = () => {
-      generateThumbnail();
-    };
-
-    const handleError = () => {
-      console.error('Error loading video for thumbnail generation');
-      setHasError(true);
-      setIsLoading(false);
-    };
-
-    video.addEventListener('loadedmetadata', handleLoadedMetadata);
-    video.addEventListener('error', handleError);
-
-    // Set video source
-    video.src = videoSrc;
-    video.preload = 'metadata';
-
-    return () => {
-      video.removeEventListener('loadedmetadata', handleLoadedMetadata);
-      video.removeEventListener('error', handleError);
-    };
+    generateThumbnailFromVideo();
   }, [videoSrc, onThumbnailGenerated]);
 
   // Determine what to display

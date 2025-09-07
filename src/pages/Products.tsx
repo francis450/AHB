@@ -92,17 +92,18 @@ const Products = () => {
   }
 
   return (
-    <div className="pt-20">
+    <div>
       {/* Hero Section */}
-      <section className="py-20 bg-gradient-to-br from-yellow-50 to-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            Premium <span className="text-yellow-600" style={{ fontFamily: 'Yellowtail, cursive' }}>Beauty Products</span>
+      <section 
+        className="py-20 bg-cover bg-center bg-no-repeat relative"
+        style={{
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/images/company-banner.jpg')`
+        }}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
+            Premium <span className="text-yellow-400" style={{ fontFamily: 'Yellowtail, cursive' }}>Beauty Products</span>
           </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
-            Carefully curated collection of professional-grade hair care and beauty products 
-            for salon-quality results at home.
-          </p>
         </div>
       </section>
 
