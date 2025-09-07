@@ -29,7 +29,7 @@ const Footer = () => {
               Elevating beauty with elegance and professionalism.
             </p>
             <div className="flex space-x-3">
-              <a href="#" className="text-gray-400 hover:text-yellow-400 transition-colors">
+              <a target='_blank' href="https://www.instagram.com/aliciahairline.ke/" className="text-gray-400 hover:text-yellow-400 transition-colors">
                 <Instagram size={20} />
               </a>
               <a href="#" className="text-gray-400 hover:text-yellow-400 transition-colors">
