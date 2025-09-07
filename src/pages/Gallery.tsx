@@ -65,13 +65,6 @@ const Gallery = () => {
           >
             Our <span className="text-yellow-400" style={{ fontFamily: 'Yellowtail, cursive' }}>Gallery</span>
           </motion.h1>
-          <motion.p 
-            variants={staggeredChildrenVariants}
-            className="text-xl text-gray-100 max-w-3xl mx-auto mb-8"
-          >
-            Explore our portfolio of stunning transformations, professional work, and behind-the-scenes moments. 
-            See the artistry and skill that goes into every service we provide.
-          </motion.p>
         </div>
       </motion.section>
 
