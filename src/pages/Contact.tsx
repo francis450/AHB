@@ -65,18 +65,21 @@ const Contact = () => {
         initial="hidden"
         animate={heroControls}
         variants={slideUpVariants}
-        className="py-20 bg-gradient-to-br from-yellow-50 to-white"
+        className="py-20 bg-cover bg-center bg-no-repeat relative"
+        style={{
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/images/company-banner.jpg')`
+        }}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
           <motion.h1 
             variants={staggeredChildrenVariants}
-            className="text-4xl md:text-5xl font-bold text-gray-900 mb-6"
+            className="text-4xl md:text-5xl font-bold text-white mb-6"
           >
-            Get in <span className="text-yellow-600" style={{ fontFamily: 'Yellowtail, cursive' }}>Touch</span>
+            Get in <span className="text-yellow-400" style={{ fontFamily: 'Yellowtail, cursive' }}>Touch</span>
           </motion.h1>
           <motion.p 
             variants={staggeredChildrenVariants}
-            className="text-xl text-gray-600 max-w-3xl mx-auto mb-8"
+            className="text-xl text-gray-100 max-w-3xl mx-auto mb-8"
           >
             We're here to help with all your beauty needs. Reach out to us for appointments, 
             consultations, or any questions about our services and products.
