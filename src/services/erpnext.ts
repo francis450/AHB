@@ -202,7 +202,7 @@ export class ERPNextService {
         ...item,
         price: priceMap[item.item_code] || 0,
         actualQty: stockMap[item.item_code]?.actualQty || 0,
-        inStock: stockMap[item.item_code]?.inStock || false,
+        inStock: true, // Always set as in stock to allow ordering regardless of actual stock
         website_image: this.getAbsoluteImageUrl(item.website_image),
         thumbnail: this.getAbsoluteImageUrl(item.thumbnail),
         slideshow: item.slideshow ? this.getAbsoluteImageUrl(item.slideshow) : undefined,
@@ -232,7 +232,7 @@ export class ERPNextService {
         ...item,
         price,
         actualQty: stockInfo.actualQty,
-        inStock: stockInfo.inStock,
+        inStock: true, // Always set as in stock to allow ordering regardless of actual stock
         website_image: this.getAbsoluteImageUrl(item.website_image),
         thumbnail: this.getAbsoluteImageUrl(item.thumbnail),
         slideshow: item.slideshow ? this.getAbsoluteImageUrl(item.slideshow) : undefined,
@@ -455,7 +455,7 @@ export class ERPNextService {
         ...item,
         price: priceMap[item.item_code] || 0,
         actualQty: stockMap[item.item_code]?.actualQty || 0,
-        inStock: stockMap[item.item_code]?.inStock || false,
+        inStock: true, // Always set as in stock to allow ordering regardless of actual stock
         website_image: this.getAbsoluteImageUrl(item.website_image),
         thumbnail: this.getAbsoluteImageUrl(item.thumbnail),
         slideshow: item.slideshow ? this.getAbsoluteImageUrl(item.slideshow) : undefined,
@@ -507,7 +507,7 @@ export class ERPNextService {
         ...item,
         price: priceMap[item.item_code] || 0,
         actualQty: stockMap[item.item_code]?.actualQty || 0,
-        inStock: stockMap[item.item_code]?.inStock || false,
+        inStock: true, // Always set as in stock to allow ordering regardless of actual stock
         website_image: ERPNextService.getAbsoluteImageUrl(item.website_image),
         thumbnail: ERPNextService.getAbsoluteImageUrl(item.thumbnail),
         slideshow: item.slideshow ? ERPNextService.getAbsoluteImageUrl(item.slideshow) : undefined,
