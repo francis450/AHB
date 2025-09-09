@@ -30,7 +30,7 @@ export const useFeaturedProducts = () => {
       image: item.website_image || item.thumbnail || 'https://via.placeholder.com/400x300?text=No+Image',
       category: item.item_group || 'Uncategorized',
       description: item.short_description || item.description || '',
-      inStock: item.inStock || false,
+      inStock: true, // Always mark as in stock to allow ordering
       stockQuantity: item.actualQty || 0,
       itemCode: item.item_code,
       bestseller: index < 2 // Mark first 2 items as bestsellers
