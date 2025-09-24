@@ -23,3 +23,22 @@ dist-ssr
 *.sln
 *.sw?
 .env
+
+# Large video files (prevent future GitHub size limit issues)
+*.MOV
+*.mov
+*.avi
+*.AVI
+*.mkv
+*.MKV
+# Exclude banner videos and other large files
+*BANNER*
+*banner*
+# Allow gallery MP4 videos (they're under GitHub's 100MB limit)
+# *.mp4 files in public/gallery/videos/ are allowed
+
+# Temporary video processing files
+*.tmp.mp4
+*.tmp.mov
+temp_videos/
+video_processing/
