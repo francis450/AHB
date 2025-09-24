@@ -13,7 +13,7 @@ const About = () => {
     {
       name: 'MAGGIE',
       role: 'Founder & Master Stylist',
-      image: 'https://instagram.fmba3-1.fna.fbcdn.net/v/t51.2885-19/472005929_1112924050028809_8228514537609002332_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDgwLmMyIn0&_nc_ht=instagram.fmba3-1.fna.fbcdn.net&_nc_cat=101&_nc_oc=Q6cZ2QEb6hMTV4iDXBGMWUHEbNs3Uf5aJIrg517g5K0yoSjLUPqFreCHJnVI-9Dbg19Waxo&_nc_ohc=9j8E3my1bIYQ7kNvwH5Q3hT&_nc_gid=SXBoXSthWuXhtcNYc8rxiA&edm=APoiHPcBAAAA&ccb=7-5&oh=00_Afb9f0ieXlAn6R8lZibSP4nbyM3Oj__NqwQgooQ8H2JF-A&oe=68BE5BE5&_nc_sid=22de04',
+      image: '/images/maggie.jpg',
       bio: 'With over 10 years of experience, MAGGIE is a certified master stylist specializing in luxury hair treatments and wig installations.'
     },
     {

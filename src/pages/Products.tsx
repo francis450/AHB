@@ -40,11 +40,7 @@ const Products = () => {
   };
 
   const handleAddToCart = (product: any) => {
-    if (!product.inStock) {
-      alert('Sorry, this product is out of stock!');
-      return;
-    }
-    
+    // Allow adding all products to cart regardless of stock status
     addToCart({
       id: product.id,
       name: product.name,
@@ -92,17 +88,18 @@ const Products = () => {
   }
 
   return (
-    <div className="pt-20">
+    <div>
       {/* Hero Section */}
-      <section className="py-20 bg-gradient-to-br from-yellow-50 to-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            Premium <span className="text-yellow-600" style={{ fontFamily: 'Yellowtail, cursive' }}>Beauty Products</span>
+      <section 
+        className="py-20 bg-cover bg-center bg-no-repeat relative"
+        style={{
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/images/company-banner.jpg')`
+        }}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
+            Premium <span className="text-yellow-400" style={{ fontFamily: 'Yellowtail, cursive' }}>Beauty Products</span>
           </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
-            Carefully curated collection of professional-grade hair care and beauty products 
-            for salon-quality results at home.
-          </p>
         </div>
       </section>
 
@@ -183,13 +180,6 @@ const Products = () => {
                       </span>
                     )}
                   </div>
-
-                  {/* Stock Status */}
-                  {!product.inStock && (
-                    <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-                      <span className="text-white font-semibold">Out of Stock</span>
-                    </div>
-                  )}
                 </div>
 
                 {/* Product Info */}
@@ -213,21 +203,13 @@ const Products = () => {
                   <h3 className="text-lg font-bold text-gray-900 mb-2">{product.name}</h3>
                   <p className="text-gray-600 text-sm mb-4 leading-relaxed line-clamp-2">{product.description}</p>
                   
-                  {/* Stock Status */}
-                  {product.inStock ? (
+                  {/* Show availability notice for low stock items */}
+                  {product.stockQuantity > 0 && product.stockQuantity <= 5 && (
                     <div className="flex items-center mb-2">
-                      <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
-                      <span className="text-sm text-green-600">
-                        {product.stockQuantity <= 5 
-                          ? `Only ${product.stockQuantity} left!` 
-                          : 'In Stock'
-                        }
+                      <div className="w-2 h-2 bg-orange-500 rounded-full mr-2"></div>
+                      <span className="text-sm text-orange-600">
+                        Only {product.stockQuantity} left in stock!
                       </span>
-                    </div>
-                  ) : (
-                    <div className="flex items-center mb-2">
-                      <div className="w-2 h-2 bg-red-500 rounded-full mr-2"></div>
-                      <span className="text-sm text-red-600">Out of Stock</span>
                     </div>
                   )}
                   
@@ -251,15 +233,10 @@ const Products = () => {
                   {/* Add to Cart Button */}
                   <button
                     onClick={() => handleAddToCart(product)}
-                    disabled={!product.inStock}
-                    className={`w-full px-4 py-3 rounded-full font-semibold text-sm flex items-center justify-center space-x-2 transition-all duration-200 transform hover:scale-105 ${
-                      product.inStock
-                        ? 'bg-yellow-600 hover:bg-yellow-700 text-white'
-                        : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                    }`}
+                    className="w-full px-4 py-3 rounded-full font-semibold text-sm flex items-center justify-center space-x-2 transition-all duration-200 transform hover:scale-105 bg-yellow-600 hover:bg-yellow-700 text-white"
                   >
                     <ShoppingBag size={16} />
-                    <span>{product.inStock ? 'Add to Cart' : 'Out of Stock'}</span>
+                    <span>Add to Cart</span>
                   </button>
                 </div>
               </div>
