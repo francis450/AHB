@@ -8,7 +8,10 @@ export interface GalleryItem {
   fullSize: string;
   videoUrl?: string;
   isVertical?: boolean; // for videos - true if portrait/vertical orientation
+<<<<<<< HEAD
   duration?: string; // video duration in human readable format
+=======
+>>>>>>> f0c516aeb6b0af008a79402205d16f46036e1430
   tags: string[];
   uploadDate: string;
 }
@@ -19,6 +22,7 @@ export const galleryItems: GalleryItem[] = [
     id: '1',
     type: 'video',
     category: 'wig-installation',
+<<<<<<< HEAD
     title: '16" Vietnamese Hair 5x5 Closure',
     description: 'Beautiful 16-inch Vietnamese human hair with 5x5 closure installation showcasing natural texture and volume.',
     thumbnail: '', // No thumbnail provided - will auto-generate
@@ -26,6 +30,15 @@ export const galleryItems: GalleryItem[] = [
     videoUrl: '/gallery/videos/human-hair/16" 5x5 closure vietnamese hair.mp4',
     isVertical: true,
     tags: ['vietnamese-hair', '16-inch', '5x5-closure', 'natural-texture'],
+=======
+    title: '8" Vietnamese Bob Closure Installation',
+    description: 'Professional 5x5 closure installation showcasing a beautiful Vietnamese bob hairstyle with natural finish.',
+    thumbnail: '/gallery/images/wig-installation/installation-thumb.jpg',
+    fullSize: '/gallery/images/wig-installation/installation-full.jpg',
+    videoUrl: '/gallery/videos/human-hair/8" 5x5 CLOSURE VIETNAMESE BOB.mp4',
+    isVertical: true, // Instagram Reels format (464x832)
+    tags: ['vietnamese-bob', 'closure', '8-inch', 'wig-installation', 'short-hair'],
+>>>>>>> f0c516aeb6b0af008a79402205d16f46036e1430
     uploadDate: '2025-09-06'
   },
   {
@@ -71,6 +84,7 @@ export const galleryItems: GalleryItem[] = [
     id: '5',
     type: 'video',
     category: 'wig-installation',
+<<<<<<< HEAD
     title: '10" Double Drawn Frontal Installation',
     description: 'Professional 10-inch double drawn human hair with 13x4 frontal using both glueless and glue methods.',
     thumbnail: '', // No thumbnail provided - will auto-generate
@@ -78,6 +92,15 @@ export const galleryItems: GalleryItem[] = [
     videoUrl: '/gallery/videos/human-hair/10" D.D DOUBLE DRAWN HUMAN HAIR 13x4 FRONTAL GLUELESS&GLUE.mp4',
     isVertical: true,
     tags: ['double-drawn', '10-inch', 'frontal', 'glueless', 'glue-method'],
+=======
+    title: '16" Vietnamese Hair 5x5 Closure',
+    description: 'Beautiful 16-inch Vietnamese human hair with 5x5 closure installation showcasing natural texture and volume.',
+    thumbnail: '', // No thumbnail provided - will auto-generate
+    fullSize: '', // Not needed for videos without custom thumbnails
+    videoUrl: '/gallery/videos/human-hair/16" 5x5 closure vietnamese hair.mp4',
+    isVertical: true,
+    tags: ['vietnamese-hair', '16-inch', '5x5-closure', 'natural-texture'],
+>>>>>>> f0c516aeb6b0af008a79402205d16f46036e1430
     uploadDate: '2025-09-06'
   },
   {

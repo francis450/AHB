@@ -8,6 +8,7 @@ interface VideoThumbnailProps {
   title: string;
   className?: string;
   onThumbnailGenerated?: (thumbnailUrl: string) => void;
+<<<<<<< HEAD
   lazy?: boolean;
   quality?: number;
 }
@@ -15,14 +16,22 @@ interface VideoThumbnailProps {
 // Thumbnail cache to avoid regenerating the same thumbnails
 const thumbnailCache = new Map<string, string>();
 
+=======
+}
+
+>>>>>>> f0c516aeb6b0af008a79402205d16f46036e1430
 const VideoThumbnail: React.FC<VideoThumbnailProps> = ({
   videoSrc,
   fallbackImage,
   title,
   className = "",
+<<<<<<< HEAD
   onThumbnailGenerated,
   lazy = true,
   quality = 0.7
+=======
+  onThumbnailGenerated
+>>>>>>> f0c516aeb6b0af008a79402205d16f46036e1430
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);

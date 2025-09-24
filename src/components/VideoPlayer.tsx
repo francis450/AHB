@@ -10,9 +10,12 @@ interface VideoPlayerProps {
   autoPlay?: boolean;
   controls?: boolean;
   isVertical?: boolean;
+<<<<<<< HEAD
   lazy?: boolean;
   onLoadStart?: () => void;
   onCanPlay?: () => void;
+=======
+>>>>>>> f0c516aeb6b0af008a79402205d16f46036e1430
 }
 
 const VideoPlayer: React.FC<VideoPlayerProps> = ({ 
@@ -22,10 +25,14 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
   className = "",
   autoPlay = false,
   controls = true,
+<<<<<<< HEAD
   isVertical = false,
   lazy = true,
   onLoadStart,
   onCanPlay
+=======
+  isVertical = false
+>>>>>>> f0c516aeb6b0af008a79402205d16f46036e1430
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -33,6 +40,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
   const [showControls, setShowControls] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
   const [videoAspectRatio, setVideoAspectRatio] = useState<number | null>(null);
+<<<<<<< HEAD
   const [shouldLoad, setShouldLoad] = useState(!lazy);
   const [hasError, setHasError] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -51,10 +59,17 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
   useEffect(() => {
     const video = videoRef.current;
     if (video && shouldLoad) {
+=======
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (video) {
+>>>>>>> f0c516aeb6b0af008a79402205d16f46036e1430
       const handleLoadedMetadata = () => {
         const aspectRatio = video.videoWidth / video.videoHeight;
         setVideoAspectRatio(aspectRatio);
         setIsLoading(false);
+<<<<<<< HEAD
         onCanPlay?.();
       };
       
@@ -79,6 +94,14 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
       };
     }
   }, [src, shouldLoad, onLoadStart, onCanPlay]);
+=======
+      };
+      
+      video.addEventListener('loadedmetadata', handleLoadedMetadata);
+      return () => video.removeEventListener('loadedmetadata', handleLoadedMetadata);
+    }
+  }, [src]);
+>>>>>>> f0c516aeb6b0af008a79402205d16f46036e1430
 
   // Determine if video is vertical (aspect ratio < 1)
   const isVideoVertical = videoAspectRatio !== null ? videoAspectRatio < 1 : isVertical;
@@ -115,6 +138,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
     setIsLoading(false);
   };
 
+<<<<<<< HEAD
   const initializeVideo = () => {
     if (lazy && !shouldLoad) {
       setShouldLoad(true);
@@ -126,6 +150,11 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
   const handleVideoClick = () => {
     if (controls) {
       initializeVideo();
+=======
+  const handleVideoClick = () => {
+    if (controls) {
+      togglePlay();
+>>>>>>> f0c516aeb6b0af008a79402205d16f46036e1430
     }
   };
 
@@ -144,6 +173,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
 
   return (
     <div className={containerClasses}>
+<<<<<<< HEAD
       {shouldLoad ? (
         <video
           ref={videoRef}
@@ -213,6 +243,39 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
               Try downloading instead
             </a>
           </div>
+=======
+      <video
+        ref={videoRef}
+        poster={poster}
+        className={videoClasses}
+        preload="metadata"
+        muted={isMuted}
+        autoPlay={autoPlay}
+        onLoadedData={handleLoadedData}
+        onPlay={() => setIsPlaying(true)}
+        onPause={() => setIsPlaying(false)}
+        onClick={handleVideoClick}
+        onMouseEnter={() => setShowControls(true)}
+        onMouseLeave={() => setShowControls(controls)}
+      >
+        <source src={src} type="video/mp4" />
+        <p className="text-white p-4">
+          Your browser doesn't support video playback. 
+          <a href={src} className="text-yellow-400 underline ml-2">
+            Download the video
+          </a>
+        </p>
+      </video>
+
+      {/* Loading Spinner */}
+      {isLoading && (
+        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <motion.div
+            className="w-8 h-8 border-2 border-yellow-400 border-t-transparent rounded-full"
+            animate={{ rotate: 360 }}
+            transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+          />
+>>>>>>> f0c516aeb6b0af008a79402205d16f46036e1430
         </div>
       )}
 
@@ -281,9 +344,15 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
       )}
 
       {/* Center Play Button for Initial State */}
+<<<<<<< HEAD
       {!isPlaying && !isLoading && shouldLoad && !hasError && (
         <motion.button
           onClick={initializeVideo}
+=======
+      {!isPlaying && !isLoading && (
+        <motion.button
+          onClick={togglePlay}
+>>>>>>> f0c516aeb6b0af008a79402205d16f46036e1430
           className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 hover:bg-opacity-50 transition-all duration-300"
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
@@ -291,7 +360,11 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
           whileTap={{ scale: 0.95 }}
         >
           <div className="bg-white bg-opacity-90 rounded-full p-6">
+<<<<<<< HEAD
             <Play className="text-yellow-600" size={isMobile ? 40 : 32} fill="currentColor" />
+=======
+            <Play className="text-yellow-600" size={32} fill="currentColor" />
+>>>>>>> f0c516aeb6b0af008a79402205d16f46036e1430
           </div>
         </motion.button>
       )}
