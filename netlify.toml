@@ -1,0 +1,27 @@
+[build]
+  command = "npm run build:full"
+  publish = "dist"
+
+# Build plugins for video processing
+[[plugins]]
+  package = "netlify-plugin-ffmpeg"
+
+[build.environment]
+  NODE_VERSION = "18"
+
+# Custom build hook for video conversion
+[[build.processing]]
+  skip_processing = false
+
+# Headers for video files
+[[headers]]
+  for = "*.mp4"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000"
+    Content-Type = "video/mp4"
+
+[[headers]]
+  for = "*.webm"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000"
+    Content-Type = "video/webm"
