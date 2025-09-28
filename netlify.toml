@@ -1,9 +1,17 @@
 [build]
-  command = "npm run build:videos && npm run build"
+  command = "npm run build:full"
   publish = "dist"
+
+# Build plugins for video processing
+[[plugins]]
+  package = "netlify-plugin-ffmpeg"
 
 [build.environment]
   NODE_VERSION = "18"
+
+# Custom build hook for video conversion
+[[build.processing]]
+  skip_processing = false
 
 # Headers for video files
 [[headers]]

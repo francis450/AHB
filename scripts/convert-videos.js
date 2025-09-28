@@ -7,17 +7,6 @@ import path from 'path';
 
 const execAsync = promisify(exec);
 
-// Check if FFmpeg is available
-async function checkFFmpeg() {
-  try {
-    await execAsync('ffmpeg -version');
-    return true;
-  } catch (error) {
-    console.log('⚠️  FFmpeg not available in build environment');
-    return false;
-  }
-}
-
 const VIDEO_CONFIG = {
   // Web-optimized settings
   web: {
@@ -78,15 +67,6 @@ async function processVideos() {
   const outputDir = 'public/gallery/videos/optimized';
 
   try {
-    // Check if FFmpeg is available
-    const ffmpegAvailable = await checkFFmpeg();
-
-    if (!ffmpegAvailable) {
-      console.log('🔄 Skipping video conversion - FFmpeg not available');
-      console.log('💡 Videos will be served in original format with fallback handling');
-      return;
-    }
-
     // Create output directory
     await fs.mkdir(outputDir, { recursive: true });
 
@@ -128,8 +108,7 @@ async function processVideos() {
 
   } catch (error) {
     console.error('❌ Video conversion failed:', error);
-    // Don't exit with error code - allow build to continue
-    console.log('⚠️  Continuing build without video optimization');
+    process.exit(1);
   }
 }
 
