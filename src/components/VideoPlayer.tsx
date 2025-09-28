@@ -10,9 +10,12 @@ interface VideoPlayerProps {
   autoPlay?: boolean;
   controls?: boolean;
   isVertical?: boolean;
+<<<<<<< HEAD
   lazy?: boolean;
   onLoadStart?: () => void;
   onCanPlay?: () => void;
+=======
+>>>>>>> f0c516aeb6b0af008a79402205d16f46036e1430
 }
 
 const VideoPlayer: React.FC<VideoPlayerProps> = ({ 
@@ -22,10 +25,14 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
   className = "",
   autoPlay = false,
   controls = true,
+<<<<<<< HEAD
   isVertical = false,
   lazy = true,
   onLoadStart,
   onCanPlay
+=======
+  isVertical = false
+>>>>>>> f0c516aeb6b0af008a79402205d16f46036e1430
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -33,46 +40,36 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
   const [showControls, setShowControls] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
   const [videoAspectRatio, setVideoAspectRatio] = useState<number | null>(null);
+<<<<<<< HEAD
   const [shouldLoad, setShouldLoad] = useState(!lazy);
   const [hasError, setHasError] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [hasInteracted, setHasInteracted] = useState(false);
-  const [isFullscreen, setIsFullscreen] = useState(false);
-  const [canAutoplay, setCanAutoplay] = useState(false);
 
   useEffect(() => {
-    // Detect mobile devices and autoplay capability
+    // Detect mobile devices
     const checkMobile = () => {
-      const isMobileDevice = window.innerWidth < 768 || /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-      setIsMobile(isMobileDevice);
-
-      // Most mobile browsers don't support autoplay without user interaction
-      setCanAutoplay(!isMobileDevice || hasInteracted);
+      setIsMobile(window.innerWidth < 768 || /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
     };
-
+    
     checkMobile();
     window.addEventListener('resize', checkMobile);
-
-    // Listen for fullscreen changes
-    const handleFullscreenChange = () => {
-      setIsFullscreen(!!document.fullscreenElement);
-    };
-
-    document.addEventListener('fullscreenchange', handleFullscreenChange);
-
-    return () => {
-      window.removeEventListener('resize', checkMobile);
-      document.removeEventListener('fullscreenchange', handleFullscreenChange);
-    };
-  }, [hasInteracted]);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   useEffect(() => {
     const video = videoRef.current;
     if (video && shouldLoad) {
+=======
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (video) {
+>>>>>>> f0c516aeb6b0af008a79402205d16f46036e1430
       const handleLoadedMetadata = () => {
         const aspectRatio = video.videoWidth / video.videoHeight;
         setVideoAspectRatio(aspectRatio);
         setIsLoading(false);
+<<<<<<< HEAD
         onCanPlay?.();
       };
       
@@ -97,33 +94,26 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
       };
     }
   }, [src, shouldLoad, onLoadStart, onCanPlay]);
+=======
+      };
+      
+      video.addEventListener('loadedmetadata', handleLoadedMetadata);
+      return () => video.removeEventListener('loadedmetadata', handleLoadedMetadata);
+    }
+  }, [src]);
+>>>>>>> f0c516aeb6b0af008a79402205d16f46036e1430
 
   // Determine if video is vertical (aspect ratio < 1)
   const isVideoVertical = videoAspectRatio !== null ? videoAspectRatio < 1 : isVertical;
 
-  const togglePlay = async () => {
+  const togglePlay = () => {
     if (videoRef.current) {
-      setHasInteracted(true);
-
-      try {
-        if (isPlaying) {
-          videoRef.current.pause();
-          setIsPlaying(false);
-        } else {
-          // Handle mobile play restrictions
-          const playPromise = videoRef.current.play();
-          if (playPromise !== undefined) {
-            await playPromise;
-            setIsPlaying(true);
-          }
-        }
-      } catch (error) {
-        console.warn('Video play failed:', error);
-        // On mobile, show a more user-friendly message
-        if (isMobile) {
-          setHasError(true);
-        }
+      if (isPlaying) {
+        videoRef.current.pause();
+      } else {
+        videoRef.current.play();
       }
+      setIsPlaying(!isPlaying);
     }
   };
 
@@ -148,6 +138,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
     setIsLoading(false);
   };
 
+<<<<<<< HEAD
   const initializeVideo = () => {
     if (lazy && !shouldLoad) {
       setShouldLoad(true);
@@ -158,15 +149,16 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
 
   const handleVideoClick = () => {
     if (controls) {
-      if (!shouldLoad) {
-        initializeVideo();
-      } else {
-        togglePlay();
-      }
+      initializeVideo();
+=======
+  const handleVideoClick = () => {
+    if (controls) {
+      togglePlay();
+>>>>>>> f0c516aeb6b0af008a79402205d16f46036e1430
     }
   };
 
-  // Dynamic container classes based on video orientation and device
+  // Dynamic container classes based on video orientation
   const containerClasses = `relative bg-black rounded-lg overflow-hidden ${className} ${
     isVideoVertical 
       ? 'max-w-sm mx-auto' // Vertical videos: smaller, centered
@@ -181,36 +173,27 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
 
   return (
     <div className={containerClasses}>
+<<<<<<< HEAD
       {shouldLoad ? (
         <video
           ref={videoRef}
           poster={poster}
           className={videoClasses}
           preload={isMobile ? "none" : "metadata"}
-          controlsList={isMobile ? "nodownload nofullscreen" : "nodownload"}
           muted={isMuted}
-          autoPlay={autoPlay && canAutoplay && hasInteracted}
+          autoPlay={autoPlay && !isMobile}
           onLoadedData={handleLoadedData}
           onPlay={() => setIsPlaying(true)}
           onPause={() => setIsPlaying(false)}
           onClick={handleVideoClick}
           onMouseEnter={() => setShowControls(true)}
           onMouseLeave={() => setShowControls(controls)}
-          onError={(e) => {
-            console.error('Video loading error:', e);
-            console.error('Video src:', src);
-            setHasError(true);
-            setIsLoading(false);
-          }}
           playsInline
-          crossOrigin="anonymous"
-          webkit-playsinline="true"
-          x5-playsinline="true"
         >
           <source src={src} type="video/mp4" />
           <p className="text-white p-4">
-            Your browser doesn't support video playback.
-            <a href={src} className="text-yellow-400 underline ml-2" target="_blank" rel="noopener noreferrer">
+            Your browser doesn't support video playback. 
+            <a href={src} className="text-yellow-400 underline ml-2">
               Download the video
             </a>
           </p>
@@ -242,17 +225,11 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
         <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <motion.div className="flex flex-col items-center space-y-2">
             <motion.div
-              className={`border-2 border-yellow-400 border-t-transparent rounded-full ${
-                isMobile ? 'w-6 h-6' : 'w-8 h-8'
-              }`}
+              className="w-8 h-8 border-2 border-yellow-400 border-t-transparent rounded-full"
               animate={{ rotate: 360 }}
               transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
             />
-            <span className={`text-white ${
-              isMobile ? 'text-xs' : 'text-sm'
-            }`}>
-              {isMobile ? 'Loading...' : 'Loading video...'}
-            </span>
+            <span className="text-white text-sm">Loading video...</span>
           </motion.div>
         </div>
       )}
@@ -261,34 +238,44 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
       {hasError && (
         <div className="absolute inset-0 flex items-center justify-center bg-red-900 bg-opacity-50">
           <div className="text-center text-white p-4">
-            <p className={`mb-2 ${
-              isMobile ? 'text-sm' : 'text-base'
-            }`}>
-              {isMobile ? 'Cannot play video' : 'Error loading video'}
-            </p>
-            <p className={`text-gray-300 mb-3 ${
-              isMobile ? 'text-xs' : 'text-sm'
-            }`}>
-              {isMobile ? 'Tap to try again or download' : 'Please try again or download the video'}
-            </p>
-            <div className="flex flex-col space-y-2">
-              <button
-                onClick={() => {
-                  setHasError(false);
-                  setIsLoading(true);
-                  if (videoRef.current) {
-                    videoRef.current.load();
-                  }
-                }}
-                className="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded text-sm"
-              >
-                Try Again
-              </button>
-              <a href={src} className="text-yellow-400 underline text-sm" target="_blank" rel="noopener noreferrer">
-                Download Video
-              </a>
-            </div>
+            <p className="mb-2">Error loading video</p>
+            <a href={src} className="text-yellow-400 underline text-sm">
+              Try downloading instead
+            </a>
           </div>
+=======
+      <video
+        ref={videoRef}
+        poster={poster}
+        className={videoClasses}
+        preload="metadata"
+        muted={isMuted}
+        autoPlay={autoPlay}
+        onLoadedData={handleLoadedData}
+        onPlay={() => setIsPlaying(true)}
+        onPause={() => setIsPlaying(false)}
+        onClick={handleVideoClick}
+        onMouseEnter={() => setShowControls(true)}
+        onMouseLeave={() => setShowControls(controls)}
+      >
+        <source src={src} type="video/mp4" />
+        <p className="text-white p-4">
+          Your browser doesn't support video playback. 
+          <a href={src} className="text-yellow-400 underline ml-2">
+            Download the video
+          </a>
+        </p>
+      </video>
+
+      {/* Loading Spinner */}
+      {isLoading && (
+        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <motion.div
+            className="w-8 h-8 border-2 border-yellow-400 border-t-transparent rounded-full"
+            animate={{ rotate: 360 }}
+            transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+          />
+>>>>>>> f0c516aeb6b0af008a79402205d16f46036e1430
         </div>
       )}
 
@@ -357,9 +344,15 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
       )}
 
       {/* Center Play Button for Initial State */}
+<<<<<<< HEAD
       {!isPlaying && !isLoading && shouldLoad && !hasError && (
         <motion.button
           onClick={initializeVideo}
+=======
+      {!isPlaying && !isLoading && (
+        <motion.button
+          onClick={togglePlay}
+>>>>>>> f0c516aeb6b0af008a79402205d16f46036e1430
           className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 hover:bg-opacity-50 transition-all duration-300"
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
@@ -367,7 +360,11 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
           whileTap={{ scale: 0.95 }}
         >
           <div className="bg-white bg-opacity-90 rounded-full p-6">
+<<<<<<< HEAD
             <Play className="text-yellow-600" size={isMobile ? 40 : 32} fill="currentColor" />
+=======
+            <Play className="text-yellow-600" size={32} fill="currentColor" />
+>>>>>>> f0c516aeb6b0af008a79402205d16f46036e1430
           </div>
         </motion.button>
       )}

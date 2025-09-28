@@ -214,7 +214,7 @@ const Services = () => {
             </p>
           </div>
 
-          {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="bg-gradient-to-r from-yellow-600 to-yellow-700 rounded-2xl p-8">
               <h3 className="text-2xl font-bold mb-4">Bridal Package</h3>
               <p className="text-yellow-100 mb-4">
@@ -240,7 +240,7 @@ const Services = () => {
                 </button>
               </div>
             </div>
-          </div> */}
+          </div>
         </div>
       </section>
     </div>

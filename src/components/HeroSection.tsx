@@ -1,20 +1,80 @@
+import React from 'react';
 import { motion } from 'framer-motion';
 import { Calendar, ArrowRight } from 'lucide-react';
 import { useUI } from '../context/UIContext';
-import VideoBanner from './VideoBanner';
 
 const HeroSection = () => {
   const { openBooking } = useUI();
 
   return (
-    <VideoBanner
-      videoSrc="/gallery/videos/home-banner/IMG_8923.mp4"
-      fallbackImage="https://images.pexels.com/photos/3065209/pexels-photo-3065209.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&fit=crop"
-      className="h-screen flex items-center justify-center"
-      overlayOpacity={0.4}
-    >
-      <motion.div
-        className="text-center text-white max-w-4xl mx-auto px-4"
+    <section className="relative h-screen flex items-center justify-center overflow-hidden">
+      {/* Background Image */}
+      <motion.div 
+        className="absolute inset-0 z-0"
+        initial={{ scale: 1.1, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ duration: 1.5, ease: "easeOut" }}
+        style={{
+          backgroundImage: `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.pexels.com/photos/3065209/pexels-photo-3065209.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&fit=crop')`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center'
+        }}
+      />
+
+      {/* Gradient overlay bubbles for depth */}
+      <motion.div 
+        className="absolute top-0 left-0 w-96 h-96 rounded-full opacity-5"
+        style={{
+          background: 'radial-gradient(circle, rgba(251, 191, 36, 0.3) 0%, transparent 70%)'
+        }}
+        animate={{ 
+          scale: [1, 1.2, 1],
+          opacity: [0.05, 0.15, 0.05]
+        }}
+        transition={{ 
+          duration: 8, 
+          repeat: Infinity, 
+          ease: "easeInOut" 
+        }}
+      />
+      
+      <motion.div 
+        className="absolute bottom-0 right-0 w-80 h-80 rounded-full opacity-8"
+        style={{
+          background: 'radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 60%)'
+        }}
+        animate={{ 
+          scale: [1, 0.8, 1],
+          opacity: [0.08, 0.18, 0.08]
+        }}
+        transition={{ 
+          duration: 6, 
+          repeat: Infinity, 
+          ease: "easeInOut",
+          delay: 2
+        }}
+      />
+
+      <motion.div 
+        className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full opacity-3"
+        style={{
+          background: 'radial-gradient(circle, rgba(251, 191, 36, 0.1) 0%, transparent 80%)'
+        }}
+        animate={{ 
+          rotate: [0, 360],
+          scale: [1, 1.1, 1],
+          opacity: [0.03, 0.08, 0.03]
+        }}
+        transition={{ 
+          duration: 20, 
+          repeat: Infinity, 
+          ease: "linear"
+        }}
+      />
+      
+      {/* Content */}
+      <motion.div 
+        className="relative z-10 text-center text-white max-w-4xl mx-auto px-4"
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1, delay: 0.5 }}
@@ -82,7 +142,7 @@ const HeroSection = () => {
           </motion.button>
         </motion.div>
       </motion.div>
-
+      
       {/* Floating Elements - Enhanced Bubbles */}
       {/* Large primary bubbles */}
       <motion.div 
@@ -315,7 +375,7 @@ const HeroSection = () => {
           delay: 3.5
         }}
       />
-    </VideoBanner>
+    </section>
   );
 };
 

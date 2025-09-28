@@ -42,6 +42,3 @@ dist-ssr
 *.tmp.mov
 temp_videos/
 video_processing/
-
-# Optimized videos (generated during build)
-public/gallery/videos/optimized/

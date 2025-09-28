@@ -6,8 +6,6 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "build:videos": "node scripts/convert-videos.js",
-    "build:full": "npm run build:videos && npm run build",
     "lint": "eslint .",
     "preview": "vite preview"
   },

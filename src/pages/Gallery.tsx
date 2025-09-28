@@ -1,24 +1,49 @@
-import { useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
-import { Clock, Play, Instagram, Facebook, Twitter } from 'lucide-react';
-import {
-  useScrollAnimation,
-  slideUpVariants,
+import { Instagram, Facebook, Twitter } from 'lucide-react';
+import { 
+  useScrollAnimation, 
+  slideUpVariants, 
   containerVariants,
   staggeredChildrenVariants,
   scaleInVariants
 } from '../hooks/useScrollAnimation';
-import { galleryItems, GalleryItem } from '../data/galleryData';
+<<<<<<< HEAD
+import ResponsiveGallery from '../components/ResponsiveGallery';
+
+const Gallery = () => {
+  const { ref: socialRef, controls: socialControls } = useScrollAnimation();
+
+  return (
+    <div>
+      {/* Responsive Gallery Component */}
+      <ResponsiveGallery />
+=======
+import { galleryItems, getItemsByCategory, GalleryItem } from '../data/galleryData';
 import VideoPlayer from '../components/VideoPlayer';
 import LazyImage from '../components/LazyImage';
 import VideoThumbnail from '../components/VideoThumbnail';
 
 const Gallery = () => {
+  const [activeFilter, setActiveFilter] = useState('all');
   const [selectedMedia, setSelectedMedia] = useState<GalleryItem | null>(null);
 
+  const filters = [
+    { id: 'all', name: 'All Media' },
+    { id: 'images', name: 'Photos' },
+    { id: 'videos', name: 'Videos' },
+    { id: 'hair-styling', name: 'Hair Styling' },
+    { id: 'wig-installation', name: 'Wig Installation' },
+    { id: 'treatments', name: 'Treatments' },
+    { id: 'before-after', name: 'Before & After' }
+  ];
+
   const { ref: heroRef, controls: heroControls } = useScrollAnimation();
+  const { ref: filtersRef, controls: filtersControls } = useScrollAnimation();
   const { ref: galleryRef, controls: galleryControls } = useScrollAnimation();
   const { ref: socialRef, controls: socialControls } = useScrollAnimation();
+
+  const filteredItems = getItemsByCategory(activeFilter);
 
   const openModal = (item: GalleryItem) => {
     setSelectedMedia(item);
@@ -51,9 +76,49 @@ const Gallery = () => {
         </div>
       </motion.section>
 
+      {/* Filter Buttons */}
+      <motion.section 
+        ref={filtersRef}
+        initial="hidden"
+        animate={filtersControls}
+        variants={slideInLeftVariants}
+        className="py-8 bg-white border-b"
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div 
+            variants={containerVariants}
+            className="flex flex-wrap justify-center gap-3"
+          >
+            {filters.map((filter, index) => (
+              <motion.button
+                key={filter.id}
+                variants={staggeredChildrenVariants}
+                custom={index}
+                onClick={() => setActiveFilter(filter.id)}
+                className={`flex items-center space-x-2 px-6 py-3 rounded-full font-semibold transition-all duration-200 ${
+                  activeFilter === filter.id
+                    ? 'bg-yellow-600 text-white'
+                    : 'bg-gray-100 text-gray-700 hover:bg-yellow-100 hover:text-yellow-700'
+                }`}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Filter size={16} />
+                <span>{filter.name}</span>
+              </motion.button>
+            ))}
+          </motion.div>
+          <motion.div 
+            variants={staggeredChildrenVariants}
+            className="text-center mt-4 text-sm text-gray-600"
+          >
+            Showing {filteredItems.length} items
+          </motion.div>
+        </div>
+      </motion.section>
 
       {/* Gallery Grid */}
-      <motion.section
+      <motion.section 
         ref={galleryRef}
         initial="hidden"
         animate={galleryControls}
@@ -61,151 +126,123 @@ const Gallery = () => {
         className="py-20 bg-gray-50"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
+          <motion.div 
             variants={containerVariants}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
           >
-            {galleryItems.map((item, index) => (
+            {filteredItems.map((item, index) => (
               <motion.div
                 key={item.id}
                 variants={staggeredChildrenVariants}
                 custom={index}
-                className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 transform group cursor-pointer h-full"
+                className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 transform group cursor-pointer"
                 onClick={() => openModal(item)}
-                whileHover={{
-                  y: -4,
+                whileHover={{ 
+                  y: -8,
                   scale: 1.02,
                   transition: { duration: 0.3 }
                 }}
                 whileTap={{ scale: 0.98 }}
               >
                 <div className="relative overflow-hidden">
-                  <div className="relative w-full h-64">
-                    {item.type === 'video' ? (
-                      <VideoThumbnail
-                        videoSrc={item.videoUrl || ''}
-                        fallbackImage={item.thumbnail}
-                        title={item.title}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-400"
-                        lazy={index > 5} // Lazy load items after the first 6
-                        priority={index < 6}
-                        quality={0.8}
-                        maxWidth={400}
-                      />
-                    ) : (
-                      <LazyImage
-                        src={item.thumbnail}
-                        alt={item.title}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-400"
-                      />
-                    )}
-
-                    {/* Video overlay */}
-                    {item.type === 'video' && (
-                      <motion.div
-                        className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                        whileHover={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
+                  {item.type === 'video' ? (
+                    // For videos, use VideoThumbnail component which handles missing thumbnails
+                    <VideoThumbnail
+                      videoSrc={item.videoUrl || ''}
+                      fallbackImage={item.thumbnail}
+                      title={item.title}
+                      className="w-full h-64 group-hover:scale-110 transition-transform duration-400"
+                    />
+                  ) : (
+                    // For images, use LazyImage component
+                    <LazyImage
+                      src={item.thumbnail}
+                      alt={item.title}
+                      className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-400"
+                    />
+                  )}
+                  
+                  {/* Overlay for videos - only show for videos without thumbnails or as backup */}
+                  {item.type === 'video' && item.thumbnail && (
+                    <motion.div 
+                      className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                      whileHover={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <motion.div 
+                        className="bg-white bg-opacity-90 rounded-full p-4"
+                        whileHover={{ scale: 1.1 }}
                         transition={{ duration: 0.3 }}
                       >
-                        <motion.div
-                          className="bg-white bg-opacity-90 rounded-full p-4"
-                          whileHover={{ scale: 1.1 }}
-                          transition={{ duration: 0.3 }}
-                        >
-                          <Play className="text-yellow-600" size={24} fill="currentColor" />
-                        </motion.div>
+                        <Play className="text-yellow-600" size={24} fill="currentColor" />
                       </motion.div>
-                    )}
-
-                    {/* Category badge */}
-                    <motion.div
-                      className="absolute top-4 left-4"
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.2 + index * 0.05 }}
-                    >
-                      <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                        item.type === 'video'
-                          ? 'bg-red-100 text-red-800'
-                          : 'bg-blue-100 text-blue-800'
-                      }`}>
-                        {item.type === 'video' ? 'Video' : 'Photo'}
-                      </span>
                     </motion.div>
+                  )}
 
-                    {/* Duration badge for videos */}
-                    {item.type === 'video' && item.duration && (
-                      <motion.div
-                        className="absolute top-4 right-4"
-                        initial={{ opacity: 0, x: 20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.3 + index * 0.05 }}
-                      >
-                        <span className="bg-black bg-opacity-75 text-white px-2 py-1 rounded text-xs flex items-center space-x-1">
-                          <Clock size={12} />
-                          <span>{item.duration}</span>
-                        </span>
-                      </motion.div>
-                    )}
-                  </div>
+                  {/* Category Badge */}
+                  <motion.div 
+                    className="absolute top-4 left-4"
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.2 + index * 0.1 }}
+                  >
+                    <span className="bg-yellow-600 text-white px-3 py-1 rounded-full text-xs font-semibold">
+                      {item.type === 'video' ? 'Video' : 'Photo'}
+                    </span>
+                  </motion.div>
                 </div>
 
-                {/* Content section */}
-                <motion.div
+                <motion.div 
                   className="p-6"
                   variants={staggeredChildrenVariants}
                 >
-                  <motion.h3
-                    className="text-xl font-bold text-gray-900 mb-2 line-clamp-2"
+                  <motion.h3 
+                    className="text-xl font-bold text-gray-900 mb-2"
                     variants={staggeredChildrenVariants}
                   >
                     {item.title}
                   </motion.h3>
-
-                  <motion.p
-                    className="text-gray-600 text-sm leading-relaxed mb-3 line-clamp-3"
+                  <motion.p 
+                    className="text-gray-600 text-sm leading-relaxed"
                     variants={staggeredChildrenVariants}
                   >
                     {item.description}
                   </motion.p>
-
+                  
                   {/* Tags */}
-                  <motion.div
-                    className="flex flex-wrap gap-2"
+                  <motion.div 
+                    className="flex flex-wrap gap-2 mt-3"
                     variants={staggeredChildrenVariants}
                   >
                     {item.tags.slice(0, 3).map((tag, tagIndex) => (
                       <span
                         key={tagIndex}
-                        className="bg-gray-100 text-gray-600 px-2 py-1 rounded-full text-xs hover:bg-yellow-100 hover:text-yellow-700 transition-colors"
+                        className="bg-gray-100 text-gray-600 px-2 py-1 rounded-full text-xs"
                       >
                         #{tag}
                       </span>
                     ))}
-                    {item.tags.length > 3 && (
-                      <span className="text-gray-400 text-xs px-2 py-1">
-                        +{item.tags.length - 3} more
-                      </span>
-                    )}
                   </motion.div>
                 </motion.div>
               </motion.div>
             ))}
           </motion.div>
 
-          {galleryItems.length === 0 && (
-            <motion.div
+          {filteredItems.length === 0 && (
+            <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
               className="text-center py-12"
             >
-              <p className="text-gray-500 text-lg">No gallery items available.</p>
-              <p className="text-gray-400 text-sm mt-2">Check back soon for new content.</p>
+              <p className="text-gray-500 text-lg">No items found for the selected filter.</p>
+              <p className="text-gray-400 text-sm mt-2">Try selecting a different category.</p>
             </motion.div>
           )}
         </div>
       </motion.section>
+>>>>>>> f0c516aeb6b0af008a79402205d16f46036e1430
+
       {/* Social Media Section */}
       <motion.section 
         ref={socialRef}
@@ -228,43 +265,24 @@ const Gallery = () => {
             Stay connected and see our latest work, tips, and behind-the-scenes content
           </motion.p>
           
-          <motion.div
+          <motion.div 
             variants={containerVariants}
             className="flex justify-center space-x-8 mb-8"
           >
             {[
-              {
-                name: 'Instagram',
-                href: "https://www.instagram.com/aliciahairline.ke?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
-                bgColor: 'bg-pink-600',
-                hoverColor: 'hover:bg-pink-700',
-                icon: Instagram
-              },
-              {
-                name: 'Facebook',
-                href: '#',
-                bgColor: 'bg-blue-600',
-                hoverColor: 'hover:bg-blue-700',
-                icon: Facebook
-              },
-              {
-                name: 'Twitter',
-                href: '#',
-                bgColor: 'bg-sky-500',
-                hoverColor: 'hover:bg-sky-600',
-                icon: Twitter
-              }
+              { icon: Instagram, href: '#' },
+              { icon: Facebook, href: '#' },
+              { icon: Twitter, href: '#' }
             ].map((social, index) => (
-              <motion.a
+              <motion.a 
                 key={index}
-                href={social.href}
-                className={`${social.bgColor} ${social.hoverColor} text-white rounded-full p-3 transition-all duration-200 flex items-center justify-center`}
+                href={social.href} 
+                className="text-gray-400 hover:text-yellow-400 transition-colors"
                 variants={staggeredChildrenVariants}
                 whileHover={{ scale: 1.2, rotate: 5 }}
                 whileTap={{ scale: 0.9 }}
-                aria-label={`Follow us on ${social.name}`}
               >
-                <social.icon size={20} />
+                <social.icon size={32} />
               </motion.a>
             ))}
           </motion.div>
@@ -295,13 +313,14 @@ const Gallery = () => {
             className="mt-8 bg-yellow-600 hover:bg-yellow-700 text-white px-8 py-3 rounded-full font-semibold text-lg transition-all duration-200"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            onClick={() => window.open('https://www.instagram.com/aliciahairline.ke?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==', '_blank')}
           >
             Follow @AliciaHairlineBeauty
           </motion.button>
         </div>
       </motion.section>
 
+<<<<<<< HEAD
+=======
       {/* Modal for viewing media */}
       {selectedMedia && (
         <motion.div 
@@ -329,14 +348,11 @@ const Gallery = () => {
                   <div className="flex items-center justify-center bg-black">
                     <VideoPlayer
                       src={selectedMedia.videoUrl}
-                      poster={selectedMedia.fullSize || selectedMedia.thumbnail}
+                      poster={selectedMedia.fullSize}
                       title={selectedMedia.title}
                       className="max-h-[70vh]"
                       controls={true}
                       isVertical={selectedMedia.isVertical}
-                      lazy={false}
-                      onLoadStart={() => console.log('Loading video:', selectedMedia.videoUrl)}
-                      onCanPlay={() => console.log('Video ready to play:', selectedMedia.videoUrl)}
                     />
                   </div>
                 ) : (
@@ -411,6 +427,7 @@ const Gallery = () => {
           </motion.div>
         </motion.div>
       )}
+>>>>>>> f0c516aeb6b0af008a79402205d16f46036e1430
     </div>
   );
 };

@@ -8,92 +8,38 @@ interface VideoThumbnailProps {
   title: string;
   className?: string;
   onThumbnailGenerated?: (thumbnailUrl: string) => void;
+<<<<<<< HEAD
   lazy?: boolean;
   quality?: number;
-  priority?: boolean; // For above-the-fold content
-  maxWidth?: number; // Responsive thumbnail sizing
-  isVisible?: boolean; // From virtual scrolling
 }
 
 // Thumbnail cache to avoid regenerating the same thumbnails
 const thumbnailCache = new Map<string, string>();
 
+=======
+}
+
+>>>>>>> f0c516aeb6b0af008a79402205d16f46036e1430
 const VideoThumbnail: React.FC<VideoThumbnailProps> = ({
   videoSrc,
   fallbackImage,
   title,
   className = "",
+<<<<<<< HEAD
   onThumbnailGenerated,
   lazy = true,
-  quality = 0.7,
-  priority = false,
-  maxWidth = 400,
-  isVisible = true
+  quality = 0.7
+=======
+  onThumbnailGenerated
+>>>>>>> f0c516aeb6b0af008a79402205d16f46036e1430
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
-  const [shouldGenerate, setShouldGenerate] = useState(!lazy || priority);
-  const [isMobile, setIsMobile] = useState(false);
-
-  // Detect mobile for optimization
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768 || /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
-    };
-
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-
-  // Intersection observer for lazy loading
-  useEffect(() => {
-    if (!lazy || shouldGenerate || priority) return;
-    
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            setShouldGenerate(true);
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      {
-        rootMargin: isMobile ? '50px' : '100px', // Smaller margin on mobile
-        threshold: 0.1
-      }
-    );
-    
-    if (videoRef.current?.parentElement) {
-      observer.observe(videoRef.current.parentElement);
-    }
-    
-    return () => {
-      if (videoRef.current?.parentElement) {
-        observer.unobserve(videoRef.current.parentElement);
-      }
-    };
-  }, [lazy, shouldGenerate, priority, isMobile]);
 
   useEffect(() => {
-    if (!shouldGenerate || (!isVisible && !priority)) return;
-    
-    // Check cache first
-    const cacheKey = `${videoSrc}_${quality}`;
-    const cachedThumbnail = thumbnailCache.get(cacheKey);
-    
-    if (cachedThumbnail) {
-      console.log('📦 Using cached thumbnail for:', videoSrc);
-      setThumbnailUrl(cachedThumbnail);
-      setIsLoading(false);
-      onThumbnailGenerated?.(cachedThumbnail);
-      return;
-    }
-    
     const generateThumbnailFromVideo = () => {
       const video = videoRef.current;
       const canvas = canvasRef.current;
@@ -114,44 +60,21 @@ const VideoThumbnail: React.FC<VideoThumbnailProps> = ({
             return;
           }
 
-          // Dynamic canvas dimensions based on device and priority
-          const deviceMaxWidth = isMobile ? Math.min(maxWidth, 300) : maxWidth;
-          const deviceMaxHeight = isMobile ? Math.min(300, 225) : 300;
-          const finalQuality = isMobile ? Math.min(quality, 0.6) : quality;
-          const videoAspect = video.videoWidth / video.videoHeight;
-          
-          let canvasWidth = video.videoWidth;
-          let canvasHeight = video.videoHeight;
-          
-          if (canvasWidth > deviceMaxWidth) {
-            canvasWidth = deviceMaxWidth;
-            canvasHeight = deviceMaxWidth / videoAspect;
-          }
-
-          if (canvasHeight > deviceMaxHeight) {
-            canvasHeight = deviceMaxHeight;
-            canvasWidth = deviceMaxHeight * videoAspect;
-          }
-          
-          canvas.width = canvasWidth;
-          canvas.height = canvasHeight;
+          // Set canvas dimensions to match video
+          canvas.width = video.videoWidth;
+          canvas.height = video.videoHeight;
 
           console.log(`📐 Canvas dimensions: ${canvas.width}x${canvas.height}`);
 
           // Draw video frame to canvas
           ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-          // Convert canvas to data URL with device-optimized quality
-          const dataUrl = canvas.toDataURL('image/jpeg', finalQuality);
-          
-          // Cache the generated thumbnail
-          const cacheKey = `${videoSrc}_${quality}`;
-          thumbnailCache.set(cacheKey, dataUrl);
-          
+          // Convert canvas to data URL
+          const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
           setThumbnailUrl(dataUrl);
           setIsLoading(false);
           
-          console.log('🖼️ Thumbnail generated and cached successfully');
+          console.log('🖼️ Thumbnail generated successfully');
           
           // Call callback with the generated thumbnail
           onThumbnailGenerated?.(dataUrl);
@@ -166,20 +89,8 @@ const VideoThumbnail: React.FC<VideoThumbnailProps> = ({
 
       const handleLoadedMetadata = () => {
         console.log('📹 Video metadata loaded, duration:', video.duration);
-        
-        // Smart seek time calculation to avoid black frames
-        let seekTime = 0.5; // Default to 0.5 seconds
-        
-        if (video.duration > 10) {
-          seekTime = Math.min(2, video.duration * 0.05); // 5% into longer videos
-        } else if (video.duration > 5) {
-          seekTime = 1;
-        } else if (video.duration > 2) {
-          seekTime = 0.5;
-        } else {
-          seekTime = Math.max(0.1, video.duration * 0.25); // 25% for very short videos
-        }
-        
+        // Seek to 1 second to avoid black frames
+        const seekTime = Math.min(1, video.duration * 0.1);
         console.log('⏰ Seeking to time:', seekTime);
         video.currentTime = seekTime;
         video.addEventListener('seeked', handleSeeked);
@@ -214,7 +125,7 @@ const VideoThumbnail: React.FC<VideoThumbnailProps> = ({
     };
 
     generateThumbnailFromVideo();
-  }, [videoSrc, onThumbnailGenerated, shouldGenerate, quality, isMobile, maxWidth, isVisible, priority]);
+  }, [videoSrc, onThumbnailGenerated]);
 
   // Determine what to display
   const getDisplayImage = () => {
@@ -245,10 +156,9 @@ const VideoThumbnail: React.FC<VideoThumbnailProps> = ({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.3 }}
-          loading="lazy"
         />
-      ) : shouldGenerate ? (
-        // Fallback placeholder when no image is available but generating
+      ) : (
+        // Fallback placeholder when no image is available
         <div className="w-full h-full bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
           {isLoading ? (
             <motion.div
@@ -289,19 +199,6 @@ const VideoThumbnail: React.FC<VideoThumbnailProps> = ({
             </motion.div>
           )}
         </div>
-      ) : (
-        // Lazy loading placeholder - show before intersection
-        <div className="w-full h-full bg-gradient-to-br from-gray-700 to-gray-800 flex items-center justify-center">
-          <motion.div
-            className="flex flex-col items-center space-y-2 text-gray-400"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.3 }}
-          >
-            <Video size={32} />
-            <span className="text-xs text-center px-2">Video Preview</span>
-          </motion.div>
-        </div>
       )}
 
       {/* Video play overlay */}
@@ -316,16 +213,13 @@ const VideoThumbnail: React.FC<VideoThumbnailProps> = ({
       </div>
 
       {/* Loading overlay for initial generation */}
-      {isLoading && !displayImage && shouldGenerate && (
+      {isLoading && !displayImage && (
         <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <motion.div className="flex flex-col items-center space-y-2">
-            <motion.div
-              className="w-6 h-6 border-2 border-yellow-400 border-t-transparent rounded-full"
-              animate={{ rotate: 360 }}
-              transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-            />
-            <span className="text-white text-xs">Generating...</span>
-          </motion.div>
+          <motion.div
+            className="w-6 h-6 border-2 border-yellow-400 border-t-transparent rounded-full"
+            animate={{ rotate: 360 }}
+            transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+          />
         </div>
       )}
     </div>
