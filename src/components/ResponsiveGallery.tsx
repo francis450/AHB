@@ -327,15 +327,6 @@ const ResponsiveGallery = () => {
                       <h3 className="text-2xl font-bold text-gray-900 mb-2">{selectedMedia.title}</h3>
                       <div className="flex items-center space-x-4 text-sm text-gray-500 mb-3">
                         <span className="capitalize">{selectedMedia.category.replace('-', ' ')}</span>
-                        {selectedMedia.type === 'video' && selectedMedia.duration && (
-                          <>
-                            <span>•</span>
-                            <span className="flex items-center space-x-1">
-                              <Clock size={14} />
-                              <span>{selectedMedia.duration}</span>
-                            </span>
-                          </>
-                        )}
                         <span>•</span>
                         <span>{new Date(selectedMedia.uploadDate).toLocaleDateString()}</span>
                       </div>
