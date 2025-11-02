@@ -11,5 +11,32 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <!-- Vantage Chatbot Widget with History -->
+<script>
+  (function() {
+    window.VantageConfig = {
+      apiKey: 'd0omfebnA8XdJeUNXEsZcaVKEYChNnyq',
+      subdomain: 'aliciahairline',
+      apiBaseUrl: 'https://charara.chat/api/v1',
+      reverbUrl: 'localhost:8081',
+      reverbKey: 'vantage-key'
+    };
+
+    // Load main widget
+    var widgetScript = document.createElement('script');
+    widgetScript.src = 'https://charara.chat/widget.js';
+    widgetScript.async = true;
+    document.head.appendChild(widgetScript);
+
+    // Load history addon after main widget
+    widgetScript.onload = function() {
+      var historyScript = document.createElement('script');
+      historyScript.src = 'https://charara.chat/widget-history-addon.js';
+      historyScript.async = true;
+      document.head.appendChild(historyScript);
+    };
+  })();
+</script>
+<!-- End Vantage Chatbot Widget -->
   </body>
 </html>
