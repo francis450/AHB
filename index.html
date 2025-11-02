@@ -24,14 +24,14 @@
 
     // Load main widget
     var widgetScript = document.createElement('script');
-    widgetScript.src = 'https://charara.chat/widget.js';
+    widgetScript.src = 'https://chatara.chat/widget.js';
     widgetScript.async = true;
     document.head.appendChild(widgetScript);
 
     // Load history addon after main widget
     widgetScript.onload = function() {
       var historyScript = document.createElement('script');
-      historyScript.src = 'https://charara.chat/widget-history-addon.js';
+      historyScript.src = 'https://chatara.chat/widget-history-addon.js';
       historyScript.async = true;
       document.head.appendChild(historyScript);
     };
