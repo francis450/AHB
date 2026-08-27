@@ -67,7 +67,7 @@ const Contact = () => {
         variants={slideUpVariants}
         className="py-20 bg-cover bg-center bg-no-repeat relative"
         style={{
-          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/images/company-banner.jpg')`
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/images/shop.jpg')`
         }}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
@@ -174,8 +174,8 @@ const Contact = () => {
                   className="mt-4 p-3 bg-yellow-900 bg-opacity-30 rounded-lg border border-yellow-600"
                 >
                   <p className="text-yellow-400 text-sm">
-                    <strong>Special Hours:</strong> Early (before 8 AM) or late (after 8 PM) appointments 
-                    available with an additional fee of Ksh 500.
+                    <strong>Special Hours:</strong> Early (before 9 AM) or late (after 7 PM) appointments
+                    available with an additional fee of Ksh 500–1,500, subject to stylist availability.
                   </p>
                 </motion.div>
               </motion.div>

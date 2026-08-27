@@ -66,7 +66,7 @@ const ResponsiveGallery = () => {
           variants={slideUpVariants}
           className="py-12 bg-cover bg-center bg-no-repeat relative"
           style={{
-            backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/images/company-banner.jpg')`
+            backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/images/shop.jpg')`
           }}
         >
           <div className="max-w-7xl mx-auto px-4 text-center relative z-10">
@@ -100,7 +100,7 @@ const ResponsiveGallery = () => {
         variants={slideUpVariants}
         className="py-20 bg-cover bg-center bg-no-repeat relative"
         style={{
-          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/images/company-banner.jpg')`
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/images/shop.jpg')`
         }}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">

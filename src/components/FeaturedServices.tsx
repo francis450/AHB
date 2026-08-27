@@ -19,28 +19,28 @@ const FeaturedServices = () => {
       icon: <Scissors className="text-yellow-600" size={40} />,
       title: "Professional Hair Styling",
       description: "Expert styling services for every occasion, from everyday looks to special events.",
-      price: "From Ksh 2,000",
+      price: "From Ksh 500",
       image: "https://images.pexels.com/photos/3065209/pexels-photo-3065209.jpeg?auto=compress&cs=tinysrgb&w=500"
     },
     {
       icon: <Crown className="text-yellow-600" size={40} />,
       title: "Premium Wig Installation",
       description: "Luxury wig services with premium quality hair and professional installation.",
-      price: "From Ksh 8,000",
+      price: "From Ksh 500",
       image: "https://images.pexels.com/photos/3373727/pexels-photo-3373727.jpeg?auto=compress&cs=tinysrgb&w=500"
     },
     {
       icon: <Sparkles className="text-yellow-600" size={40} />,
       title: "Hair Treatments",
       description: "Restorative treatments that nourish and strengthen your natural hair.",
-      price: "From Ksh 3,500",
+      price: "From Ksh 500",
       image: "https://images.pexels.com/photos/3997989/pexels-photo-3997989.jpeg?auto=compress&cs=tinysrgb&w=500"
     },
     {
       icon: <Heart className="text-yellow-600" size={40} />,
       title: "Beauty Services",
       description: "Complete beauty services including makeup, eyebrow shaping, and more.",
-      price: "From Ksh 1,500",
+      price: "From Ksh 200",
       image: "https://images.pexels.com/photos/3178786/pexels-photo-3178786.jpeg?auto=compress&cs=tinysrgb&w=500"
     }
   ];
