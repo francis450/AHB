@@ -26,19 +26,19 @@ const FeaturedServices = () => {
       icon: <Crown className="text-yellow-600" size={40} />,
       title: "Premium Wig Installation",
       description: "Luxury wig services with premium quality hair and professional installation.",
-      image: "https://images.pexels.com/photos/3373727/pexels-photo-3373727.jpeg?auto=compress&cs=tinysrgb&w=500"
+      image: "https://images.pexels.com/photos/17362828/pexels-photo-17362828.jpeg?auto=compress&cs=tinysrgb&w=500"
     },
     {
       icon: <Sparkles className="text-yellow-600" size={40} />,
       title: "Hair Treatments",
       description: "Restorative treatments that nourish and strengthen your natural hair.",
-      image: "https://images.pexels.com/photos/3997989/pexels-photo-3997989.jpeg?auto=compress&cs=tinysrgb&w=500"
+      image: "https://images.pexels.com/photos/7388937/pexels-photo-7388937.jpeg?auto=compress&cs=tinysrgb&w=500"
     },
     {
       icon: <Heart className="text-yellow-600" size={40} />,
       title: "Beauty Services",
       description: "Complete beauty services including makeup, eyebrow shaping, and more.",
-      image: "https://images.pexels.com/photos/3178786/pexels-photo-3178786.jpeg?auto=compress&cs=tinysrgb&w=500"
+      image: "https://images.pexels.com/photos/3813896/pexels-photo-3813896.jpeg?auto=compress&cs=tinysrgb&w=500"
     }
   ];
 
