@@ -4,7 +4,8 @@ import { Link } from 'react-router-dom';
 const PrintReviewQr = () => {
   const configuredUrl = import.meta.env.VITE_PUBLIC_SITE_URL?.replace(/\/$/, '');
   const reviewUrl = `${configuredUrl || window.location.origin}/reviews/leave`;
-  const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=640x640&margin=16&format=svg&data=${encodeURIComponent(reviewUrl)}`;
+  const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=640x640&margin=16&ecc=H&format=svg&data=${encodeURIComponent(reviewUrl)}`;
+  const logoUrl = 'https://alicia.boraerp.co.ke/files/logo.png';
 
   return (
     <main className="min-h-screen bg-stone-100 px-4 py-8 print:bg-white print:p-0">
@@ -20,7 +21,12 @@ const PrintReviewQr = () => {
           <p className="mt-3 text-lg text-stone-300">Tell us about your Alicia experience.</p>
         </div>
         <div className="px-8 py-9 text-center">
-          <div className="mx-auto flex w-fit rounded-3xl border-8 border-yellow-100 bg-white p-3"><img src={qrUrl} width="260" height="260" alt="QR code linking to Alicia Hairline and Beauty reviews" /></div>
+          <div className="relative mx-auto flex w-fit rounded-3xl border-8 border-yellow-100 bg-white p-3">
+            <img src={qrUrl} width="260" height="260" alt="QR code linking to Alicia Hairline and Beauty reviews" />
+            <div className="absolute left-1/2 top-1/2 flex h-14 w-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-2 border-yellow-100 bg-white p-1.5 shadow-md">
+              <img src={logoUrl} alt="" className="h-full w-full rounded-full object-cover" />
+            </div>
+          </div>
           <div className="mt-7 flex items-center justify-center gap-2 text-yellow-700"><QrCode size={20} /><span className="text-sm font-bold uppercase tracking-[0.16em]">Scan to leave a review</span></div>
           <p className="mx-auto mt-3 max-w-sm text-sm leading-relaxed text-gray-600">Your feedback helps us keep creating beautiful hair moments and helps future clients choose with confidence.</p>
           <div className="mt-7 border-t border-dashed border-gray-200 pt-5"><p className="text-xs font-semibold uppercase tracking-[0.13em] text-gray-400">Or visit</p><p className="mt-1 break-all text-sm font-semibold text-gray-700">{reviewUrl}</p></div>
