@@ -1,8 +1,25 @@
+import { useState } from 'react';
+import { Search, Sparkles } from 'lucide-react';
 import { useUI } from '../context/UIContext';
 import { priceListCategories } from '../data/priceListData';
+import { categoryIcons, getServiceIcon } from '../lib/serviceIcons';
 
 const Services = () => {
   const { openBooking } = useUI();
+  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const filterButtons = [{ id: 'all', name: 'All Services' }, ...priceListCategories.map((category) => ({ id: category.id, name: category.name }))];
+
+  const filteredCategories = priceListCategories
+    .filter((category) => selectedCategory === 'all' || category.id === selectedCategory)
+    .map((category) => ({
+      ...category,
+      items: category.items.filter((item) => item.name.toLowerCase().includes(searchQuery.toLowerCase())),
+    }))
+    .filter((category) => category.items.length > 0);
+
+  const totalResults = filteredCategories.reduce((total, category) => total + category.items.length, 0);
 
   return (
     <div>
@@ -29,24 +46,76 @@ const Services = () => {
         </div>
       </section>
 
+      {/* Filters and Search */}
+      <section className="py-8 bg-white border-b">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
+            <div className="relative flex-1 max-w-md">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+              <input
+                type="text"
+                placeholder="Search services..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-full focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+              />
+            </div>
+
+            <div className="flex flex-wrap gap-2">
+              {filterButtons.map((filter) => (
+                <button
+                  key={filter.id}
+                  onClick={() => setSelectedCategory(filter.id)}
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+                    selectedCategory === filter.id
+                      ? 'bg-yellow-600 text-white'
+                      : 'bg-gray-100 text-gray-700 hover:bg-yellow-100 hover:text-yellow-700'
+                  }`}
+                >
+                  {filter.name}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="mt-4 text-sm text-gray-600">
+            Showing {totalResults} service{totalResults === 1 ? '' : 's'}
+          </div>
+        </div>
+      </section>
+
       {/* Price List */}
       <section className="py-20 bg-gray-50">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-          {priceListCategories.map((category) => (
-            <div key={category.id} className="bg-white rounded-2xl shadow-lg overflow-hidden">
-              <div className="bg-gray-900 px-6 py-4 sm:px-8">
-                <h2 className="text-xl font-bold text-yellow-400">{category.name}</h2>
-              </div>
-              <div className="px-6 py-4 sm:px-8 grid grid-cols-1 sm:grid-cols-2 sm:gap-x-10">
-                {category.items.map((item) => (
-                  <div key={item.name} className="flex items-baseline justify-between gap-3 border-b border-dashed border-gray-200 py-3">
-                    <span className="text-gray-800">{item.name}</span>
-                    <span className="whitespace-nowrap font-semibold text-yellow-700">{item.price}</span>
-                  </div>
-                ))}
-              </div>
+          {filteredCategories.length === 0 && (
+            <div className="text-center py-12">
+              <p className="text-gray-500 text-lg">No services found matching your search.</p>
+              <p className="text-gray-400 text-sm mt-2">Try a different keyword or category.</p>
             </div>
-          ))}
+          )}
+          {filteredCategories.map((category) => {
+            const CategoryIcon = categoryIcons[category.id] ?? Sparkles;
+            return (
+              <div key={category.id} className="bg-white rounded-2xl shadow-lg overflow-hidden">
+                <div className="bg-gray-900 px-6 py-4 sm:px-8 flex items-center gap-3">
+                  <CategoryIcon className="text-yellow-400" size={22} />
+                  <h2 className="text-xl font-bold text-yellow-400">{category.name}</h2>
+                </div>
+                <div className="grid grid-cols-2 gap-4 p-6 sm:grid-cols-3 sm:px-8 lg:grid-cols-4">
+                  {category.items.map((item) => {
+                    const Icon = getServiceIcon(item.name);
+                    return (
+                      <div key={item.name} className="flex flex-col items-center gap-2 rounded-2xl border border-gray-100 bg-gray-50 p-4 text-center transition-colors hover:border-yellow-200 hover:bg-yellow-50">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-yellow-100 text-yellow-700"><Icon size={20} /></div>
+                        <p className="text-sm font-semibold text-gray-900">{item.name}</p>
+                        <p className="text-sm font-bold text-yellow-700">{item.price}</p>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            );
+          })}
           <p className="text-center text-sm text-gray-500">Prices are subject to change. Ask us to confirm the price for your specific hair length/type when you book.</p>
         </div>
       </section>

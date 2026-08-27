@@ -1,10 +1,11 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Scissors, Sparkles, Crown, Heart } from 'lucide-react';
+import { Scissors, Sparkles, Crown, Heart, ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { useUI } from '../context/UIContext';
-import { 
-  useScrollAnimation, 
-  slideUpVariants, 
+import {
+  useScrollAnimation,
+  slideUpVariants,
   containerVariants,
   staggeredChildrenVariants,
   scaleInVariants
@@ -19,28 +20,24 @@ const FeaturedServices = () => {
       icon: <Scissors className="text-yellow-600" size={40} />,
       title: "Professional Hair Styling",
       description: "Expert styling services for every occasion, from everyday looks to special events.",
-      price: "From Ksh 500",
       image: "https://images.pexels.com/photos/3065209/pexels-photo-3065209.jpeg?auto=compress&cs=tinysrgb&w=500"
     },
     {
       icon: <Crown className="text-yellow-600" size={40} />,
       title: "Premium Wig Installation",
       description: "Luxury wig services with premium quality hair and professional installation.",
-      price: "From Ksh 500",
       image: "https://images.pexels.com/photos/3373727/pexels-photo-3373727.jpeg?auto=compress&cs=tinysrgb&w=500"
     },
     {
       icon: <Sparkles className="text-yellow-600" size={40} />,
       title: "Hair Treatments",
       description: "Restorative treatments that nourish and strengthen your natural hair.",
-      price: "From Ksh 500",
       image: "https://images.pexels.com/photos/3997989/pexels-photo-3997989.jpeg?auto=compress&cs=tinysrgb&w=500"
     },
     {
       icon: <Heart className="text-yellow-600" size={40} />,
       title: "Beauty Services",
       description: "Complete beauty services including makeup, eyebrow shaping, and more.",
-      price: "From Ksh 200",
       image: "https://images.pexels.com/photos/3178786/pexels-photo-3178786.jpeg?auto=compress&cs=tinysrgb&w=500"
     }
   ];
@@ -127,16 +124,14 @@ const FeaturedServices = () => {
                 {service.description}
               </motion.p>
               
-              <motion.div 
-                className="flex items-center justify-between"
+              <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4 + index * 0.1 }}
               >
-                <span className="text-lg font-bold text-yellow-600">{service.price}</span>
                 <motion.button
                   onClick={openBooking}
-                  className="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded-full text-sm font-semibold transition-colors duration-200"
+                  className="w-full bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded-full text-sm font-semibold transition-colors duration-200"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
@@ -145,6 +140,17 @@ const FeaturedServices = () => {
               </motion.div>
             </motion.div>
           ))}
+        </motion.div>
+
+        <motion.div
+          className="text-center mt-12"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6, duration: 0.5 }}
+        >
+          <Link to="/services" className="inline-flex items-center gap-2 border-2 border-yellow-600 text-yellow-600 hover:bg-yellow-600 hover:text-white px-8 py-3 rounded-full font-semibold text-lg transition-all duration-300">
+            View Full Price List <ArrowRight size={20} />
+          </Link>
         </motion.div>
       </div>
     </motion.section>
