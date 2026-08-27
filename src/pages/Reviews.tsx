@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Heart, MessageCircleHeart, Printer } from 'lucide-react';
-import { Link } from 'react-router-dom';
 import ReviewCard from '../components/ReviewCard';
 import ReviewForm from '../components/ReviewForm';
+import ReviewQrCode from '../components/ReviewQrCode';
+import ReviewQrPrintCard from '../components/ReviewQrPrintCard';
 import { getWebsiteReviews, WebsiteReview } from '../services/reviews';
 
 const Reviews = () => {
@@ -14,11 +15,14 @@ const Reviews = () => {
   const average = useMemo(() => reviews.length ? (reviews.reduce((total, review) => total + review.rating, 0) / reviews.length).toFixed(1) : null, [reviews]);
 
   return (
-    <section className="min-h-[calc(100vh-5rem)] bg-[#fcfaf6] py-12 sm:py-16">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6">
+    <section className="min-h-[calc(100vh-5rem)] bg-[#fcfaf6] py-12 sm:py-16 print:min-h-0 print:bg-white print:py-0">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 print:hidden">
         <div className="relative overflow-hidden rounded-[2rem] bg-stone-950 px-6 py-12 text-white sm:px-10 sm:py-16">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(202,138,4,0.4),transparent_32%)]" />
-          <div className="relative max-w-2xl"><p className="flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.22em] text-yellow-300"><MessageCircleHeart size={17} /> Alicia Hairline &amp; Beauty</p><h1 className="mt-5 text-4xl font-bold sm:text-6xl">Beautiful experiences, shared honestly.</h1><p className="mt-5 max-w-xl text-lg leading-relaxed text-stone-300">Read client stories, then leave your own. Every review lives here on our website.</p><Link to="/reviews/qr" className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/20"><Printer size={16} /> Print counter QR</Link></div>
+          <div className="relative flex flex-col gap-10 lg:flex-row lg:items-center lg:justify-between">
+            <div className="max-w-2xl"><p className="flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.22em] text-yellow-300"><MessageCircleHeart size={17} /> Alicia Hairline &amp; Beauty</p><h1 className="mt-5 text-4xl font-bold sm:text-6xl">Beautiful experiences, shared honestly.</h1><p className="mt-5 max-w-xl text-lg leading-relaxed text-stone-300">Read client stories, then leave your own. Every review lives here on our website.</p><button type="button" onClick={() => window.print()} className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/20"><Printer size={16} /> Print counter QR</button></div>
+            <div className="flex flex-col items-center gap-2 self-center"><ReviewQrCode size={150} /><p className="text-xs font-semibold uppercase tracking-[0.18em] text-stone-300">Scan to review</p></div>
+          </div>
           <div className="relative mt-9 flex flex-wrap gap-4"><div className="rounded-2xl border border-white/15 bg-white/10 px-5 py-4"><p className="text-3xl font-bold text-yellow-300">{average || '—'}</p><p className="text-sm text-stone-300">average rating</p></div><div className="rounded-2xl border border-white/15 bg-white/10 px-5 py-4"><p className="text-3xl font-bold text-yellow-300">{reviews.length}</p><p className="text-sm text-stone-300">client review{reviews.length === 1 ? '' : 's'}</p></div></div>
         </div>
 
@@ -33,6 +37,9 @@ const Reviews = () => {
           </aside>
         </div>
       </div>
+
+      {/* Print-only: clicking "Print counter QR" above prints just this card, nothing else on the page. */}
+      <div className="hidden print:block"><ReviewQrPrintCard /></div>
     </section>
   );
 };
