@@ -53,7 +53,7 @@ const FloatingWhatsAppButton = () => {
     <AnimatePresence>
       {isVisible && (
         <motion.div 
-          className="fixed bottom-6 right-6 z-50"
+          className="fixed bottom-6 right-6 z-50 print:hidden"
           initial={{ opacity: 0, scale: 0.5, y: 50 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.5, y: 50 }}

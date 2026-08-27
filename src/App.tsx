@@ -8,6 +8,9 @@ import Services from './pages/Services';
 import Products from './pages/Products';
 import Gallery from './pages/Gallery';
 import Contact from './pages/Contact';
+import Reviews from './pages/Reviews';
+import LeaveReview from './pages/LeaveReview';
+import PrintReviewQr from './pages/PrintReviewQr';
 import Cart from './components/Cart';
 import BookingModal from './components/BookingModal';
 import FloatingWhatsAppButton from './components/FloatingWhatsAppButton';
@@ -29,6 +32,9 @@ function App() {
                 <Route path="/products" element={<Products />} />
                 <Route path="/gallery" element={<Gallery />} />
                 <Route path="/contact" element={<Contact />} />
+                <Route path="/reviews" element={<Reviews />} />
+                <Route path="/reviews/leave" element={<LeaveReview />} />
+                <Route path="/reviews/qr" element={<PrintReviewQr />} />
               </Routes>
             </main>
             <Footer />

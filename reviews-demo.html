@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alicia Hairline & Beauty â€” Reviews</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Work+Sans:wght@400;500;600&display=swap');
+
+  :root{
+    --ink:#2B2320;
+    --ivory:#F7F1E8;
+    --card:#FFFFFF;
+    --gold:#B08D57;
+    --gold-soft:#D9C39B;
+    --rose:#8B5E5E;
+    --line:rgba(43,35,32,0.12);
+    --radius:14px;
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--ivory);
+    color:var(--ink);
+    font-family:'Work Sans', sans-serif;
+    padding:32px 16px 64px;
+  }
+
+  .wrap{max-width:640px;margin:0 auto;}
+
+  header{text-align:center;margin-bottom:36px;}
+  .eyebrow{
+    font-size:12px;letter-spacing:0.14em;text-transform:uppercase;
+    color:var(--rose);margin-bottom:6px;font-weight:600;
+  }
+  h1{
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    font-size:clamp(28px,6vw,40px);
+    margin:0 0 14px;
+  }
+  .hairline{
+    width:0;
+    height:1px;
+    background:var(--gold);
+    margin:0 auto;
+    animation:draw 900ms ease-out forwards;
+  }
+  @keyframes draw{ to{ width:120px; } }
+  @media (prefers-reduced-motion: reduce){
+    .hairline{ animation:none; width:120px; }
+  }
+
+  .summary{
+    display:flex;align-items:baseline;justify-content:center;gap:10px;
+    margin-top:18px;font-family:'Fraunces', serif;
+  }
+  .summary .score{font-size:28px;}
+  .summary .count{font-size:13px;color:var(--rose);font-family:'Work Sans',sans-serif;}
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:24px;
+    margin-bottom:28px;
+  }
+  .card h2{
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    font-size:19px;
+    margin:0 0 16px;
+  }
+
+  label{display:block;font-size:13px;font-weight:600;margin:14px 0 6px;}
+  input[type=text], textarea{
+    width:100%;
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:10px 12px;
+    font-family:inherit;
+    font-size:14px;
+    background:var(--ivory);
+    color:var(--ink);
+  }
+  textarea{min-height:80px;resize:vertical;}
+  input[type=text]:focus, textarea:focus{
+    outline:2px solid var(--gold-soft);outline-offset:1px;
+  }
+
+  .stars{display:flex;gap:6px;margin-top:4px;}
+  .stars input{position:absolute;opacity:0;pointer-events:none;}
+  .stars label{
+    margin:0;cursor:pointer;font-size:26px;line-height:1;
+    color:var(--line);transition:color 120ms ease;
+  }
+  .stars label svg{width:26px;height:26px;display:block;}
+  .stars label .fill{fill:none;stroke:var(--gold);stroke-width:1.4;}
+  .stars.rated-1 label:nth-child(-n+2) svg .fill,
+  .stars.rated-2 label:nth-child(-n+4) svg .fill,
+  .stars.rated-3 label:nth-child(-n+6) svg .fill,
+  .stars.rated-4 label:nth-child(-n+8) svg .fill,
+  .stars.rated-5 label svg .fill{ fill:var(--gold); }
+
+  .hp{position:absolute;left:-9999px;opacity:0;}
+
+  button{
+    margin-top:18px;
+    background:var(--ink);
+    color:var(--ivory);
+    border:none;
+    border-radius:8px;
+    padding:11px 22px;
+    font-family:inherit;
+    font-weight:600;
+    font-size:14px;
+    cursor:pointer;
+    transition:background 150ms ease;
+  }
+  button:hover{background:#1b1512;}
+  button:disabled{opacity:0.5;cursor:not-allowed;}
+
+  .msg{font-size:13px;margin-top:10px;}
+  .msg.error{color:#a3403f;}
+  .msg.ok{color:#3f7a4d;}
+
+  .reviews-title{
+    font-family:'Fraunces', serif;font-weight:500;font-size:19px;
+    margin:36px 0 14px;
+  }
+
+  .review{
+    padding:18px 0;
+    border-top:1px solid var(--line);
+  }
+  .review:first-of-type{border-top:none;}
+  .review-top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;}
+  .review-name{font-weight:600;font-size:14px;}
+  .review-date{font-size:12px;color:var(--rose);white-space:nowrap;}
+  .review-stars{margin:6px 0 8px;}
+  .review-stars svg{width:14px;height:14px;}
+  .review-stars .fill{stroke:var(--gold);}
+  .review-text{font-size:14px;line-height:1.55;margin:0;}
+
+  .empty{
+    text-align:center;color:var(--rose);font-size:14px;padding:24px 0;
+  }
+
+  .note{
+    font-size:12px;color:var(--rose);text-align:center;margin-top:40px;
+    border-top:1px dashed var(--line);padding-top:16px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">Alicia Hairline &amp; Beauty</div>
+    <h1>Client Reviews</h1>
+    <div class="hairline"></div>
+    <div class="summary" id="summary" style="display:none;">
+      <span class="score" id="avgScore">â€”</span>
+      <span class="count" id="reviewCount"></span>
+    </div>
+  </header>
+
+  <div class="card">
+    <h2>Leave a review</h2>
+    <form id="reviewForm">
+      <label for="rating">Your rating</label>
+      <div class="stars" id="starPicker">
+        <input type="radio" name="rating" value="1" id="r1"><label for="r1">${STAR}</label>
+        <input type="radio" name="rating" value="2" id="r2"><label for="r2">${STAR}</label>
+        <input type="radio" name="rating" value="3" id="r3"><label for="r3">${STAR}</label>
+        <input type="radio" name="rating" value="4" id="r4"><label for="r4">${STAR}</label>
+        <input type="radio" name="rating" value="5" id="r5"><label for="r5">${STAR}</label>
+      </div>
+
+      <label for="name">Your name</label>
+      <input type="text" id="name" maxlength="60" placeholder="e.g. Wanjiru M." autocomplete="name">
+
+      <label for="comment">Your experience</label>
+      <textarea id="comment" maxlength="500" placeholder="Tell other clients what stood out..."></textarea>
+
+      <input type="text" class="hp" id="website" tabindex="-1" autocomplete="off">
+
+      <button type="submit" id="submitBtn">Post review</button>
+      <div class="msg" id="formMsg"></div>
+    </form>
+  </div>
+
+  <div class="reviews-title">What clients are saying</div>
+  <div id="reviewsList"></div>
+
+  <div class="note">Demo preview — reviews are stored only in this browser. The live QR page sends reviews to WhatsApp for approval before publishing.</div>
+
+</div>
+
+<script>
+const STORAGE_KEY = 'alicia-hairline-reviews';
+
+function getStoredReviews(){
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); } catch { return []; }
+}
+
+function starSVG(){
+  return '<svg viewBox="0 0 24 24"><polygon class="fill" points="12,2 14.9,8.6 22,9.3 16.7,14 18.3,21 12,17.3 5.7,21 7.3,14 2,9.3 9.1,8.6"/></svg>';
+}
+document.querySelectorAll('#starPicker label').forEach(l => l.innerHTML = starSVG());
+
+const picker = document.getElementById('starPicker');
+picker.addEventListener('change', e => {
+  const val = e.target.value;
+  picker.className = 'stars rated-' + val;
+});
+
+function escapeHtml(str){
+  const d = document.createElement('div');
+  d.textContent = str;
+  return d.innerHTML;
+}
+
+function timeAgo(iso){
+  const diff = Date.now() - new Date(iso).getTime();
+  const day = 86400000;
+  if(diff < 3600000) return 'just now';
+  if(diff < day) return Math.floor(diff/3600000) + 'h ago';
+  const days = Math.floor(diff/day);
+  if(days < 30) return days + 'd ago';
+  return new Date(iso).toLocaleDateString('en-GB', {day:'numeric', month:'short', year:'numeric'});
+}
+
+function reviewStarsHtml(rating){
+  let html = '<div class="review-stars">';
+  for(let i=1;i<=5;i++){
+    html += `<svg viewBox="0 0 24 24" style="display:inline-block;"><polygon class="fill" style="fill:${i<=rating ? 'var(--gold)':'none'}" points="12,2 14.9,8.6 22,9.3 16.7,14 18.3,21 12,17.3 5.7,21 7.3,14 2,9.3 9.1,8.6"/></svg>`;
+  }
+  return html + '</div>';
+}
+
+async function loadReviews(){
+  const list = document.getElementById('reviewsList');
+  let reviews = [];
+  try{
+    reviews = getStoredReviews();
+  }catch(e){
+    reviews = [];
+  }
+  reviews.sort((a,b) => new Date(b.created_at) - new Date(a.created_at));
+
+  if(reviews.length === 0){
+    list.innerHTML = '<div class="empty">No reviews yet â€” be the first to share your experience.</div>';
+    document.getElementById('summary').style.display = 'none';
+    return reviews;
+  }
+
+  const avg = (reviews.reduce((s,r) => s + r.rating, 0) / reviews.length).toFixed(1);
+  document.getElementById('avgScore').textContent = avg;
+  document.getElementById('reviewCount').textContent = `from ${reviews.length} review${reviews.length===1?'':'s'}`;
+  document.getElementById('summary').style.display = 'flex';
+
+  list.innerHTML = reviews.map(r => `
+    <div class="review">
+      <div class="review-top">
+        <span class="review-name">${escapeHtml(r.name)}</span>
+        <span class="review-date">${timeAgo(r.created_at)}</span>
+      </div>
+      ${reviewStarsHtml(r.rating)}
+      <p class="review-text">${escapeHtml(r.comment)}</p>
+    </div>
+  `).join('');
+
+  return reviews;
+}
+
+document.getElementById('reviewForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const msg = document.getElementById('formMsg');
+  const btn = document.getElementById('submitBtn');
+  msg.className = 'msg';
+  msg.textContent = '';
+
+  if(document.getElementById('website').value){
+    // honeypot tripped â€” silently drop
+    return;
+  }
+
+  const rating = document.querySelector('input[name=rating]:checked');
+  const name = document.getElementById('name').value.trim();
+  const comment = document.getElementById('comment').value.trim();
+
+  if(!rating){ msg.className='msg error'; msg.textContent='Please select a star rating.'; return; }
+  if(!name){ msg.className='msg error'; msg.textContent='Please add your name.'; return; }
+  if(!comment || comment.length < 5){ msg.className='msg error'; msg.textContent='Please share a few words about your experience.'; return; }
+
+  btn.disabled = true;
+  btn.textContent = 'Posting...';
+
+  try{
+    let reviews = [];
+    try{
+      reviews = getStoredReviews();
+    }catch(e){ reviews = []; }
+
+    reviews.push({
+      name, comment,
+      rating: parseInt(rating.value, 10),
+      created_at: new Date().toISOString()
+    });
+
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(reviews));
+
+    e.target.reset();
+    picker.className = 'stars';
+    msg.className = 'msg ok';
+    msg.textContent = 'Thank you. Your review has been saved in this browser.';
+    await loadReviews();
+  }catch(err){
+    msg.className = 'msg error';
+    msg.textContent = 'Something went wrong. Please try again.';
+  }finally{
+    btn.disabled = false;
+    btn.textContent = 'Post review';
+  }
+});
+
+loadReviews();
+</script>
+</body>
+</html>
