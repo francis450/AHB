@@ -1,5 +1,8 @@
 {
   "rewrites": [
+    { "source": "/reviews/leave", "destination": "/reviews/leave/index.html" },
+    { "source": "/reviews/qr", "destination": "/reviews/qr/index.html" },
+    { "source": "/reviews", "destination": "/reviews/index.html" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
