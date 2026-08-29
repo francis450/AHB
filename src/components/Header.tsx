@@ -8,7 +8,7 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
   const { cartItems } = useCart();
-  const { openCart, openBooking } = useUI();
+  const { openBooking } = useUI();
 
   const navigation = [
     { name: 'Home', path: '/' },
@@ -69,8 +69,9 @@ const Header = () => {
               <span>Book Now</span>
             </button>
             
-            <button
-              onClick={openCart}
+            <Link
+              to="/cart"
+              aria-label="Cart"
               className="relative p-2 text-gray-700 hover:text-yellow-600 transition-colors duration-200"
             >
               <ShoppingBag size={20} />
@@ -79,7 +80,7 @@ const Header = () => {
                   {cartItemCount}
                 </span>
               )}
-            </button>
+            </Link>
 
             {/* Mobile Menu Button */}
             <button

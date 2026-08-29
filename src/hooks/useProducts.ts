@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import ERPNextService, { ERPNextWebsiteItem } from '../services/erpnext';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { getWebsiteProducts, WebsiteProduct } from '../services/products';
 
 export interface Product {
   id: string;
@@ -16,161 +16,100 @@ export interface Product {
   bestseller?: boolean;
 }
 
+const PLACEHOLDER_IMAGE = 'https://via.placeholder.com/400x300?text=No+Image';
+
+const toProduct = (row: WebsiteProduct): Product => ({
+  id: row.item_code,
+  itemCode: row.item_code,
+  name: row.name,
+  price: row.price,
+  rating: 4.5,
+  image: row.image || PLACEHOLDER_IMAGE,
+  category: row.category || 'Products',
+  description: row.description,
+  inStock: row.in_stock,
+  stockQuantity: 0,
+  bestseller: false,
+});
+
 export const useProducts = () => {
-  const [products, setProducts] = useState<Product[]>([]);
+  const [allProducts, setAllProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [query, setQuery] = useState('');
+  const [category, setCategory] = useState('all');
 
-  const transformWebsiteItem = (item: ERPNextWebsiteItem & { price?: number; actualQty?: number; inStock?: boolean }): Product => {
-    return {
-      id: item.item_code,
-      name: item.web_item_name || item.item_name,
-      price: item.price || 0,
-      rating: 4.5, // You can implement a rating system in ERPNext custom fields
-      image: item.website_image || item.thumbnail || 'https://via.placeholder.com/400x300?text=No+Image',
-      category: item.item_group || 'Uncategorized',
-      description: item.short_description || item.short_description || item.description || '',
-      inStock: true, // Always mark as in stock to allow ordering
-      stockQuantity: item.actualQty || 0,
-      itemCode: item.item_code,
-      bestseller: false // You can implement this logic based on sales data
-    };
-  };
-
-  const fetchProducts = async (filters?: any) => {
+  const fetchProducts = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
-      
-      // Check if ERPNext is configured
-      if (!import.meta.env.VITE_ERPNEXT_URL || 
-          !import.meta.env.VITE_ERPNEXT_API_KEY || 
-          !import.meta.env.VITE_ERPNEXT_API_SECRET) {
-        console.warn('ERPNext not configured, using fallback products');
-        setProducts(getFallbackProducts());
-        return;
-      }
-      
-      const items = await ERPNextService.getWebsiteItems(filters);
-      const transformedProducts = items.map(transformWebsiteItem);
-      setProducts(transformedProducts);
-    } catch (err: any) {
-      console.error('Error fetching products:', err);
-      
-      // Set user-friendly error message
-      if (err.message?.includes('Network error')) {
-        setError('Unable to connect to product database. Using offline catalog.');
-      } else if (err.message?.includes('Authentication failed')) {
-        setError('Product database authentication error. Using offline catalog.');
-      } else {
-        setError('Unable to load products. Using offline catalog.');
-      }
-      
-      // Fallback to static data
-      setProducts(getFallbackProducts());
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const searchProducts = async (query: string) => {
-    try {
-      setLoading(true);
-      setError(null);
-      const items = await ERPNextService.searchWebsiteItems(query);
-      const transformedProducts = items.map(transformWebsiteItem);
-      setProducts(transformedProducts);
+      const rows = await getWebsiteProducts();
+      setAllProducts(rows.map(toProduct));
     } catch (err) {
-      setError('Failed to search products');
-      console.error('Error searching products:', err);
+      setError(err instanceof Error ? err.message : 'Unable to load products.');
+      setAllProducts(getFallbackProducts());
     } finally {
       setLoading(false);
     }
-  };
-
-  const getProductsByCategory = async (category: string) => {
-    try {
-      setLoading(true);
-      setError(null);
-      const filters = category !== 'all' ? { item_group: category } : {};
-      const items = await ERPNextService.getWebsiteItems(filters);
-      const transformedProducts = items.map(transformWebsiteItem);
-      setProducts(transformedProducts);
-    } catch (err) {
-      setError('Failed to fetch products by category');
-      console.error('Error fetching products by category:', err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  }, []);
 
   useEffect(() => {
     fetchProducts();
-  }, []);
+  }, [fetchProducts]);
+
+  const products = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    return allProducts.filter((product) => {
+      const matchesCategory = category === 'all' || product.category === category;
+      const matchesQuery =
+        !q ||
+        product.name.toLowerCase().includes(q) ||
+        (product.description || '').toLowerCase().includes(q);
+      return matchesCategory && matchesQuery;
+    });
+  }, [allProducts, query, category]);
+
+  const searchProducts = useCallback(async (value: string) => setQuery(value), []);
+  const getProductsByCategory = useCallback(async (value: string) => setCategory(value), []);
 
   return {
     products,
+    allProducts,
     loading,
     error,
     fetchProducts,
     searchProducts,
-    getProductsByCategory
+    getProductsByCategory,
   };
 };
 
-// Fallback products in case ERPNext is not available
+// Shown only if the products API is unreachable.
 const getFallbackProducts = (): Product[] => [
   {
-    id: "1",
-    name: "Premium Wig Cap",
+    id: 'WIG-CAP-001',
+    name: 'Premium Wig Cap',
     price: 50,
-    originalPrice: 80,
     rating: 5,
-    image: "https://images.pexels.com/photos/4041392/pexels-photo-4041392.jpeg?auto=compress&cs=tinysrgb&w=400",
-    category: "Accessories",
-    description: "High-quality wig cap for secure and comfortable wig application.",
+    image: 'https://images.pexels.com/photos/4041392/pexels-photo-4041392.jpeg?auto=compress&cs=tinysrgb&w=400',
+    category: 'Accessories',
+    description: 'High-quality wig cap for secure and comfortable wig application.',
     inStock: true,
-    stockQuantity: 25,
-    itemCode: "WIG-CAP-001",
-    bestseller: true
+    stockQuantity: 0,
+    itemCode: 'WIG-CAP-001',
+    bestseller: true,
   },
   {
-    id: "2",
-    name: "Professional Lace Glue",
+    id: 'LACE-GLUE-001',
+    name: 'Professional Lace Glue',
     price: 1500,
     rating: 4.8,
-    image: "https://images.pexels.com/photos/5240834/pexels-photo-5240834.jpeg?auto=compress&cs=tinysrgb&w=400",
-    category: "Adhesives",
-    description: "Strong-hold adhesive for lace front wigs with waterproof formula.",
+    image: 'https://images.pexels.com/photos/5240834/pexels-photo-5240834.jpeg?auto=compress&cs=tinysrgb&w=400',
+    category: 'Adhesives',
+    description: 'Strong-hold adhesive for lace front wigs with waterproof formula.',
     inStock: true,
-    stockQuantity: 15,
-    itemCode: "LACE-GLUE-001"
+    stockQuantity: 0,
+    itemCode: 'LACE-GLUE-001',
   },
-  {
-    id: "3",
-    name: "Nourishing Hair Serum",
-    price: 400,
-    originalPrice: 600,
-    rating: 4.9,
-    image: "https://images.pexels.com/photos/4465124/pexels-photo-4465124.jpeg?auto=compress&cs=tinysrgb&w=400",
-    category: "Hair Care",
-    description: "Intensive nourishing serum for damaged and dry hair.",
-    inStock: true,
-    stockQuantity: 30,
-    itemCode: "SERUM-001"
-  },
-  {
-    id: "4",
-    name: "Luxury Shampoo Set",
-    price: 1200,
-    rating: 5,
-    image: "https://images.pexels.com/photos/4465830/pexels-photo-4465830.jpeg?auto=compress&cs=tinysrgb&w=400",
-    category: "Hair Care",
-    description: "Professional grade shampoo and conditioner set.",
-    inStock: true,
-    stockQuantity: 20,
-    itemCode: "SHAMPOO-SET-001"
-  }
 ];
 
 export default useProducts;
