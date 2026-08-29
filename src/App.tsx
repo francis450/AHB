@@ -1,4 +1,3 @@
-import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -11,7 +10,10 @@ import Contact from './pages/Contact';
 import Reviews from './pages/Reviews';
 import LeaveReview from './pages/LeaveReview';
 import PrintReviewQr from './pages/PrintReviewQr';
-import Cart from './components/Cart';
+import PaymentReturn from './pages/PaymentReturn';
+import CartPage from './pages/CartPage';
+import CheckoutPage from './pages/CheckoutPage';
+import GoLiveGuide from './pages/GoLiveGuide';
 import BookingModal from './components/BookingModal';
 import FloatingWhatsAppButton from './components/FloatingWhatsAppButton';
 import { CartProvider } from './context/CartContext';
@@ -35,10 +37,13 @@ function App() {
                 <Route path="/reviews" element={<Reviews />} />
                 <Route path="/reviews/leave" element={<LeaveReview />} />
                 <Route path="/reviews/qr" element={<PrintReviewQr />} />
+                <Route path="/cart" element={<CartPage />} />
+                <Route path="/checkout" element={<CheckoutPage />} />
+                <Route path="/shop/payment-return" element={<PaymentReturn />} />
+                <Route path="/go-live" element={<GoLiveGuide />} />
               </Routes>
             </main>
             <Footer />
-            <Cart />
             <BookingModal />
             <FloatingWhatsAppButton />
           </div>
