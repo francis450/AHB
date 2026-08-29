@@ -1,4 +1,6 @@
-﻿export interface WebsiteReview {
+﻿import { extractFrappeError } from './frappeError';
+
+export interface WebsiteReview {
   name: string;
   rating: number;
   comment: string;
@@ -10,7 +12,7 @@ const endpoint = `${baseUrl}/api/method/alicia_reviews.api.website_reviews`;
 
 const responseData = async (response: Response) => {
   const data = await response.json();
-  if (!response.ok) throw new Error(data.message || data.exc || 'Unable to save your review.');
+  if (!response.ok) throw new Error(extractFrappeError(data, 'Unable to save your review.'));
   return data.message;
 };
 
