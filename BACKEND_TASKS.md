@@ -14,10 +14,10 @@ All controlled from a new single **Alicia Booking Settings**
 | Fri/Sat = walk-in only, no appointments | `Website Booking.validate` + the website API reject a new booking whose preferred date is a Friday/Saturday, with a message you can edit in settings. |
 | Cancel already-booked Fri/Sat | Daily scheduled job `cancel_weekend_bookings` sets **upcoming** open Fri/Sat bookings to Cancelled with a comment. Past bookings are left alone. |
 | System should show a count for new bookings | Every new website booking creates a desk **Notification Log** (the bell) for each user listed in `notify_recipients` (default: Judy + Maggie). |
-| SMS the client when Confirmed / Cancelled | On status change to Confirmed or Cancelled, an SMS is sent to the client's phone using the editable templates. Salon can also opt into an SMS on every new booking. |
+| SMS the client when Confirmed / Cancelled | On status change to Confirmed/Cancelled the client gets an SMS built from the editable templates. With **Review the SMS before sending** on (default), the booking form pops a dialog with the pre-filled text + number so staff can edit/skip before it sends; with it off, it sends automatically. A "Send status SMS" button on the form handles re-sends. Salon can also opt into an SMS on every new booking. |
 | Booking "didn't appear in the system" | Was already fixed before this change (bookings show in the Website Booking list). |
 
-Tests: `bench --site alicia.boraerp.co.ke run-tests --module alicia_reviews.alicia_reviews.doctype.website_booking.test_website_booking` (14 cases).
+Tests: `bench --site alicia.boraerp.co.ke run-tests --module alicia_reviews.alicia_reviews.doctype.website_booking.test_website_booking` (20 cases).
 
 ## Operator steps to finish activation
 
