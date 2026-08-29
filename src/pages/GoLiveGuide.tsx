@@ -163,15 +163,7 @@ const GoLiveGuide = () => (
             </p>
           </Step>
 
-          <Step n={5} title="Set your product prices">
-            <p>
-              The shop can only sell items that have a price. Make sure every product you want to sell
-              online has its price entered in the system (or send me a price list and I'll do a bulk
-              update). Items with no price are turned away at checkout.
-            </p>
-          </Step>
-
-          <Step n={6} title="Send me two things">
+          <Step n={5} title="Send me two things">
             <p>Send me:</p>
             <ul className="ml-4 list-disc space-y-1">
               <li>Your live <strong>Consumer Key</strong></li>
