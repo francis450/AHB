@@ -13,6 +13,7 @@ import PrintReviewQr from './pages/PrintReviewQr';
 import PaymentReturn from './pages/PaymentReturn';
 import CartPage from './pages/CartPage';
 import CheckoutPage from './pages/CheckoutPage';
+import GoLiveGuide from './pages/GoLiveGuide';
 import BookingModal from './components/BookingModal';
 import FloatingWhatsAppButton from './components/FloatingWhatsAppButton';
 import { CartProvider } from './context/CartContext';
@@ -39,6 +40,7 @@ function App() {
                 <Route path="/cart" element={<CartPage />} />
                 <Route path="/checkout" element={<CheckoutPage />} />
                 <Route path="/shop/payment-return" element={<PaymentReturn />} />
+                <Route path="/go-live" element={<GoLiveGuide />} />
               </Routes>
             </main>
             <Footer />
