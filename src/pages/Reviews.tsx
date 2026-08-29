@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Heart, MessageCircleHeart, Printer } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Heart, MessageCircleHeart, Printer, Sparkles } from 'lucide-react';
 import ReviewCard from '../components/ReviewCard';
 import ReviewForm from '../components/ReviewForm';
 import ReviewQrCode from '../components/ReviewQrCode';
@@ -34,6 +35,12 @@ const Reviews = () => {
             <h2 className="mt-2 text-2xl font-bold text-gray-900">Leave a little love</h2>
             <p className="mt-2 text-sm leading-relaxed text-gray-600">Tell future clients what made your visit special.</p>
             <div className="mt-6"><ReviewForm onSubmitted={(review) => setReviews((current) => [review, ...current])} /></div>
+
+            <div className="mt-6 rounded-2xl border border-yellow-100 bg-yellow-50/60 p-5">
+              <p className="flex items-center gap-2 text-sm font-semibold text-yellow-800"><Sparkles size={16} /> Curious what we have in stock?</p>
+              <p className="mt-1 text-sm leading-relaxed text-gray-600">Browse photos and prices of the wigs currently available at the salon.</p>
+              <Link to="/gallery" className="mt-3 inline-flex items-center gap-2 rounded-full bg-yellow-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-yellow-700">See our wigs</Link>
+            </div>
           </aside>
         </div>
       </div>

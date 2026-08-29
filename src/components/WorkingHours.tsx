@@ -7,8 +7,9 @@ const WorkingHours = () => {
     { day: 'Tuesday', hours: '9:00 AM - 7:00 PM', isOpen: true },
     { day: 'Wednesday', hours: '9:00 AM - 7:00 PM', isOpen: true },
     { day: 'Thursday', hours: '9:00 AM - 7:00 PM', isOpen: true },
-    { day: 'Friday', hours: '9:00 AM - 7:00 PM', isOpen: true },
-    { day: 'Saturday', hours: '9:00 AM - 7:00 PM', isOpen: true },
+    { day: 'Friday', hours: '9:00 AM - 7:00 PM (walk-in only)', isOpen: true },
+    { day: 'Saturday', hours: '9:00 AM - 7:00 PM (walk-in only)', isOpen: true },
+    { day: 'Sunday', hours: 'Closed', isOpen: false },
   ];
 
   return (
@@ -42,9 +43,10 @@ const WorkingHours = () => {
                 <div className="flex items-start space-x-3">
                   <AlertCircle className="text-yellow-400 mt-1" size={20} />
                   <div>
-                    <h4 className="text-yellow-400 font-semibold mb-2">Special Rates</h4>
+                    <h4 className="text-yellow-400 font-semibold mb-2">Good to know</h4>
                     <p className="text-gray-300 text-sm leading-relaxed">
-                      Early or late appointments (outside working hours) are subject  
+                      Fridays and Saturdays are walk-in only — no appointments those days.
+                      Early or late appointments (outside working hours) are subject
                       to an additional fee and based on stylist availability.
                     </p>
                   </div>

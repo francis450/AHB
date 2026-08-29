@@ -19,14 +19,11 @@ const ResponsiveGallery = () => {
   const [activeFilter, setActiveFilter] = useState('all');
   const [selectedMedia, setSelectedMedia] = useState<GalleryItem | null>(null);
 
+  // Only categories that currently have media are listed. Add more back (e.g.
+  // 'wig-installation', 'before-after') once photos/videos exist for them.
   const filters = [
     { id: 'all', name: 'All Media' },
-    { id: 'images', name: 'Photos' },
-    { id: 'videos', name: 'Videos' },
-    { id: 'hair-styling', name: 'Hair Styling' },
-    { id: 'wig-installation', name: 'Wig Installation' },
-    { id: 'treatments', name: 'Treatments' },
-    { id: 'before-after', name: 'Before & After' }
+    { id: 'wigs', name: 'Wigs' }
   ];
 
   const { ref: heroRef, controls: heroControls } = useScrollAnimation();

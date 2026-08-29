@@ -53,8 +53,9 @@ const Contact = () => {
     { day: 'Tuesday', hours: '9:00 AM - 7:00 PM', isOpen: true },
     { day: 'Wednesday', hours: '9:00 AM - 7:00 PM', isOpen: true },
     { day: 'Thursday', hours: '9:00 AM - 7:00 PM', isOpen: true },
-    { day: 'Friday', hours: '9:00 AM - 7:00 PM', isOpen: true },
-    { day: 'Saturday', hours: '9:00 AM - 7:00 PM', isOpen: true },
+    { day: 'Friday', hours: '9:00 AM - 7:00 PM (walk-in only)', isOpen: true },
+    { day: 'Saturday', hours: '9:00 AM - 7:00 PM (walk-in only)', isOpen: true },
+    { day: 'Sunday', hours: 'Closed', isOpen: false },
   ];
 
   return (
@@ -174,8 +175,9 @@ const Contact = () => {
                   className="mt-4 p-3 bg-yellow-900 bg-opacity-30 rounded-lg border border-yellow-600"
                 >
                   <p className="text-yellow-400 text-sm">
-                    <strong>Special Hours:</strong> Early (before 9 AM) or late (after 7 PM) appointments
-                    available with an additional fee of Ksh 500–1,500, subject to stylist availability.
+                    <strong>Fri &amp; Sat:</strong> walk-in only, no appointments.
+                    <strong className="ml-1">Special Hours:</strong> Early (before 9 AM) or late (after 7 PM)
+                    appointments available with an additional fee of Ksh 500–1,500, subject to stylist availability.
                   </p>
                 </motion.div>
               </motion.div>

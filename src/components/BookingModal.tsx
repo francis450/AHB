@@ -33,8 +33,20 @@ const BookingModal = () => {
     '5:00 PM', '6:00 PM', '7:00 PM'
   ];
 
+  // Fridays and Saturdays are walk-in only — no appointments are taken.
+  const isWalkInOnlyDay = (dateStr: string) => {
+    if (!dateStr) return false;
+    const day = new Date(`${dateStr}T00:00:00`).getDay(); // 5 = Fri, 6 = Sat
+    return day === 5 || day === 6;
+  };
+  const weekendBlocked = isWalkInOnlyDay(formData.date);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isWalkInOnlyDay(formData.date)) {
+      setError('Fridays and Saturdays are walk-in only — please choose another day, or just come in on the day.');
+      return;
+    }
     setIsSubmitting(true);
     setError('');
     try {
@@ -98,7 +110,8 @@ const BookingModal = () => {
               </div>
               <h3 className="mt-4 text-xl font-bold text-gray-900">Booking request sent!</h3>
               <p className="mx-auto mt-2 max-w-sm text-sm leading-relaxed text-gray-600">
-                We've received your request and will contact you shortly to confirm your appointment.
+                We've received your request. You'll get an SMS as soon as it's approved — or if we
+                have to cancel, we'll text you that too.
               </p>
               <button
                 onClick={handleClose}
@@ -196,6 +209,11 @@ const BookingModal = () => {
                   min={new Date().toISOString().split('T')[0]}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
                 />
+                {weekendBlocked && (
+                  <p className="mt-2 text-sm text-red-700" role="status">
+                    Fridays and Saturdays are walk-in only — please pick another day.
+                  </p>
+                )}
               </div>
 
               <div>
@@ -236,7 +254,11 @@ const BookingModal = () => {
             </div>
 
             {/* Special Note */}
-            <div className="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+            <div className="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg space-y-2">
+              <p className="text-sm text-yellow-800">
+                <strong>Fridays &amp; Saturdays:</strong> walk-in only — we don't take appointments on
+                these days, just come in during opening hours (9 AM – 7 PM).
+              </p>
               <p className="text-sm text-yellow-800">
                 <strong>Note:</strong> Appointments outside business hours (before 9 AM or after 7 PM)
                 include an additional fee of Ksh 500–1,500, subject to stylist availability.
@@ -253,7 +275,7 @@ const BookingModal = () => {
             <div className="mt-8 flex space-x-4">
               <button
                 type="submit"
-                disabled={isSubmitting}
+                disabled={isSubmitting || weekendBlocked}
                 className="flex-1 bg-yellow-600 hover:bg-yellow-700 text-white py-3 rounded-full font-semibold text-lg transition-all duration-200 transform hover:scale-105 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:scale-100"
               >
                 {isSubmitting ? 'Submitting...' : 'Submit Booking Request'}

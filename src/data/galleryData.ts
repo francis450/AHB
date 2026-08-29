@@ -1,7 +1,7 @@
 export interface GalleryItem {
   id: string;
   type: 'image' | 'video';
-  category: 'hair-styling' | 'wig-installation' | 'treatments' | 'before-after';
+  category: 'wigs' | 'hair-styling' | 'wig-installation' | 'treatments' | 'before-after';
   title: string;
   description: string;
   thumbnail: string; // For images: always required. For videos: optional (will auto-generate if missing)
@@ -16,38 +16,101 @@ export interface GalleryItem {
 //
 // IMPORTANT: only list items here whose video/image files actually exist under
 // public/gallery/. Referencing a file that was never uploaded renders as a
-// broken/unplayable video on the live site (see public/gallery/videos/PLACEHOLDER_FILES.md
-// and public/gallery/PLACEHOLDER_FILES.md for what's still outstanding).
+// broken image/unplayable video on the live site (see public/gallery/PLACEHOLDER_FILES.md).
+//
+// The client's phone videos would not play on the live site, so the gallery now
+// shows photos of the wigs in stock instead — clients browse these (e.g. while
+// leaving a review) to see what's available. Update the price in `description`
+// whenever the client revises it, and add/remove entries as stock changes. Each
+// `thumbnail`/`fullSize` path must point at a real file in public/gallery/wigs/.
 export const galleryItems: GalleryItem[] = [
-  // NOTE: '13x4 BODY WAVE WIGS GLUELESS&GLUE.mp4' (formerly id '3') was removed —
-  // the file itself is corrupted (fails to decode even in real Chrome/Edge, not
-  // just a codec-support quirk) and needs to be re-exported/re-uploaded by the
-  // client before it can go back in the gallery.
   {
-    id: '14',
-    type: 'video',
-    category: 'wig-installation',
-    title: 'Blended Wigs Installation',
-    description: 'Professional blended wig installation technique showing seamless color and texture blending for natural looks.',
-    thumbnail: '', // No thumbnail provided - will auto-generate
-    fullSize: '', // Not needed for videos without custom thumbnails
-    videoUrl: '/gallery/videos/human-hair/BLENDED WIGS .mp4',
-    isVertical: true,
-    tags: ['blended-wigs', 'color-blending', 'texture-mixing', 'natural-look'],
-    uploadDate: '2025-09-06'
+    id: 'wig-12-water-wave',
+    type: 'image',
+    category: 'wigs',
+    title: '12" Water Wave',
+    description: 'Ksh 8,500 · Natural black water wave lace wig, shoulder length.',
+    thumbnail: '/gallery/wigs/12in-water-wave.jpg',
+    fullSize: '/gallery/wigs/12in-water-wave.jpg',
+    tags: ['water-wave', '12-inch', 'lace-front', 'natural-black'],
+    uploadDate: '2026-08-29'
   },
   {
-    id: '15',
-    type: 'video',
-    category: 'wig-installation',
-    title: 'Fringe Water Wave Glueless Installation',
-    description: 'Trendy fringe water wave wig installation using glueless method for comfortable, natural-looking results.',
-    thumbnail: '', // No thumbnail provided - will auto-generate
-    fullSize: '', // Not needed for videos without custom thumbnails
-    videoUrl: '/gallery/videos/human-hair/FRINGE WATER WAVE GLUELESS.mp4',
-    isVertical: true,
-    tags: ['fringe', 'water-wave', 'glueless', 'trendy', 'bangs'],
-    uploadDate: '2025-09-06'
+    id: 'wig-14-fringe',
+    type: 'image',
+    category: 'wigs',
+    title: '14" Fringe',
+    description: 'Ksh 8,500 · Burgundy curly fringe wig — no lace, ready to wear.',
+    thumbnail: '/gallery/wigs/14in-fringe.jpg',
+    fullSize: '/gallery/wigs/14in-fringe.jpg',
+    tags: ['fringe', 'bangs', '14-inch', 'burgundy', 'curly'],
+    uploadDate: '2026-08-29'
+  },
+  {
+    id: 'wig-18-pixie-curly-burgundy',
+    type: 'image',
+    category: 'wigs',
+    title: '18" Pixie Curly (Burgundy)',
+    description: 'Ksh 16,000 · Burgundy 99J pixie curls on a lace front.',
+    thumbnail: '/gallery/wigs/18in-pixie-curly-burgundy.jpg',
+    fullSize: '/gallery/wigs/18in-pixie-curly-burgundy.jpg',
+    tags: ['pixie-curls', '18-inch', 'burgundy', 'lace-front'],
+    uploadDate: '2026-08-29'
+  },
+  {
+    id: 'wig-18-pixie-curly-highlight',
+    type: 'image',
+    category: 'wigs',
+    title: '18" Pixie Curly (Brown Highlight)',
+    description: 'Ksh 16,000 · Brown highlighted pixie curls on a lace front.',
+    thumbnail: '/gallery/wigs/18in-pixie-curly-highlight.jpg',
+    fullSize: '/gallery/wigs/18in-pixie-curly-highlight.jpg',
+    tags: ['pixie-curls', '18-inch', 'highlight', 'lace-front'],
+    uploadDate: '2026-08-29'
+  },
+  {
+    id: 'wig-22-water-wave-natural',
+    type: 'image',
+    category: 'wigs',
+    title: '22" Water Wave (Natural Black)',
+    description: 'Ksh 20,000 · Long natural black water wave lace wig.',
+    thumbnail: '/gallery/wigs/22in-water-wave-natural.jpg',
+    fullSize: '/gallery/wigs/22in-water-wave-natural.jpg',
+    tags: ['water-wave', '22-inch', 'lace-front', 'natural-black'],
+    uploadDate: '2026-08-29'
+  },
+  {
+    id: 'wig-22-water-wave-brown',
+    type: 'image',
+    category: 'wigs',
+    title: '22" Water Wave (Dark Brown)',
+    description: 'Ksh 20,000 · Long dark brown water wave lace wig.',
+    thumbnail: '/gallery/wigs/22in-water-wave-brown.jpg',
+    fullSize: '/gallery/wigs/22in-water-wave-brown.jpg',
+    tags: ['water-wave', '22-inch', 'lace-front', 'brown'],
+    uploadDate: '2026-08-29'
+  },
+  {
+    id: 'wig-24-water-wave-highlight',
+    type: 'image',
+    category: 'wigs',
+    title: '24" Water Wave (Brown Highlight)',
+    description: 'Ksh 22,000 · Brown highlighted water wave lace wig, extra long.',
+    thumbnail: '/gallery/wigs/24in-water-wave-highlight.jpg',
+    fullSize: '/gallery/wigs/24in-water-wave-highlight.jpg',
+    tags: ['water-wave', '24-inch', 'highlight', 'lace-front'],
+    uploadDate: '2026-08-29'
+  },
+  {
+    id: 'wig-30-water-wave',
+    type: 'image',
+    category: 'wigs',
+    title: '30" Water Wave',
+    description: 'Ksh 34,000 · Natural black water wave lace wig, full waist length.',
+    thumbnail: '/gallery/wigs/30in-water-wave.jpg',
+    fullSize: '/gallery/wigs/30in-water-wave.jpg',
+    tags: ['water-wave', '30-inch', 'lace-front', 'natural-black'],
+    uploadDate: '2026-08-29'
   },
 ];
 
