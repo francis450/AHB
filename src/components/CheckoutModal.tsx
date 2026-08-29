@@ -1,8 +1,14 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { X, User, Mail, Phone, MapPin, CreditCard, AlertCircle, CheckCircle } from 'lucide-react';
+import { X, User, Mail, Phone, MapPin, CreditCard, AlertCircle } from 'lucide-react';
 import { useCart } from '../context/CartContext';
-import CheckoutService, { CheckoutData, OrderResult } from '../services/checkout';
+import { startCartPayment } from '../services/payments';
+
+interface OrderResult {
+  success: boolean;
+  message: string;
+  error?: unknown;
+}
 
 interface CheckoutModalProps {
   isOpen: boolean;
@@ -10,7 +16,7 @@ interface CheckoutModalProps {
 }
 
 const CheckoutModal: React.FC<CheckoutModalProps> = ({ isOpen, onClose }) => {
-  const { cartItems, getTotalPrice, clearCart } = useCart();
+  const { cartItems, getTotalPrice } = useCart();
   const [loading, setLoading] = useState(false);
   const [orderResult, setOrderResult] = useState<OrderResult | null>(null);
   const [formData, setFormData] = useState({
@@ -39,64 +45,37 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({ isOpen, onClose }) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (!validateForm()) return;
-    
-    setLoading(true);
-    
-    try {
-      // Validate stock before proceeding
-      const stockValidation = await CheckoutService.validateStock(cartItems);
-      if (!stockValidation.valid) {
-        setOrderResult({
-          success: false,
-          message: 'Stock validation failed',
-          error: stockValidation.issues
-        });
-        setLoading(false);
-        return;
-      }
 
-      const checkoutData: CheckoutData = {
-        customerInfo: {
+    if (!validateForm()) return;
+
+    setLoading(true);
+    setOrderResult(null);
+
+    try {
+      const { redirect_url } = await startCartPayment({
+        customer: {
           name: formData.name,
           email: formData.email,
           phone: formData.phone,
           address: formData.address,
-          city: formData.city
+          city: formData.city,
         },
-        cartItems,
-        totalAmount: getTotalPrice(),
+        items: cartItems.map((item) => ({
+          item_code: String(item.id),
+          qty: item.quantity,
+        })),
         notes: formData.notes,
-        deliveryDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0] // 7 days from now
-      };
+      });
 
-      const result = await CheckoutService.processCheckout(checkoutData);
-      setOrderResult(result);
-      
-      if (result.success) {
-        // Clear cart on successful order
-        setTimeout(() => {
-          clearCart();
-          onClose();
-          setOrderResult(null);
-          setFormData({
-            name: '',
-            email: '',
-            phone: '',
-            address: '',
-            city: '',
-            notes: ''
-          });
-        }, 3000);
-      }
+      // Hand off to Pesapal's hosted card page. The cart stays in localStorage
+      // so it survives the round-trip; the return page clears it once paid.
+      window.location.assign(redirect_url);
     } catch (error) {
       setOrderResult({
         success: false,
-        message: 'An unexpected error occurred. Please try again.',
-        error
+        message: error instanceof Error ? error.message : 'Something went wrong. Please try again.',
+        error,
       });
-    } finally {
       setLoading(false);
     }
   };
@@ -130,32 +109,12 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({ isOpen, onClose }) => {
           </button>
         </div>
 
-        {/* Order Result Display */}
-        {orderResult && (
-          <div className={`p-6 border-b ${orderResult.success ? 'bg-green-50' : 'bg-red-50'}`}>
+        {/* Error display */}
+        {orderResult && !orderResult.success && (
+          <div className="p-6 border-b bg-red-50">
             <div className="flex items-center space-x-3">
-              {orderResult.success ? (
-                <CheckCircle className="text-green-600" size={24} />
-              ) : (
-                <AlertCircle className="text-red-600" size={24} />
-              )}
-              <div>
-                <p className={`font-semibold ${orderResult.success ? 'text-green-800' : 'text-red-800'}`}>
-                  {orderResult.message}
-                </p>
-                {orderResult.salesOrderId && (
-                  <p className="text-sm text-gray-600 mt-1">
-                    Order ID: {orderResult.salesOrderId}
-                  </p>
-                )}
-                {orderResult.error && Array.isArray(orderResult.error) && (
-                  <ul className="text-sm text-red-600 mt-2">
-                    {orderResult.error.map((issue, index) => (
-                      <li key={index}>• {issue}</li>
-                    ))}
-                  </ul>
-                )}
-              </div>
+              <AlertCircle className="text-red-600" size={24} />
+              <p className="font-semibold text-red-800">{orderResult.message}</p>
             </div>
           </div>
         )}
@@ -317,14 +276,14 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({ isOpen, onClose }) => {
               ) : (
                 <>
                   <CreditCard size={20} />
-                  <span>Place Order - Ksh {getTotalPrice().toLocaleString()}</span>
+                  <span>Pay with card - Ksh {getTotalPrice().toLocaleString()}</span>
                 </>
               )}
             </button>
 
             <p className="text-xs text-gray-500 text-center">
-              By placing this order, you agree to our terms and conditions. 
-              You will receive an order confirmation via email.
+              You'll be taken to our secure payment page to enter your card details.
+              Prices are confirmed against our catalogue before payment.
             </p>
           </form>
         </div>

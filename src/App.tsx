@@ -11,6 +11,7 @@ import Contact from './pages/Contact';
 import Reviews from './pages/Reviews';
 import LeaveReview from './pages/LeaveReview';
 import PrintReviewQr from './pages/PrintReviewQr';
+import PaymentReturn from './pages/PaymentReturn';
 import Cart from './components/Cart';
 import BookingModal from './components/BookingModal';
 import FloatingWhatsAppButton from './components/FloatingWhatsAppButton';
@@ -35,6 +36,7 @@ function App() {
                 <Route path="/reviews" element={<Reviews />} />
                 <Route path="/reviews/leave" element={<LeaveReview />} />
                 <Route path="/reviews/qr" element={<PrintReviewQr />} />
+                <Route path="/shop/payment-return" element={<PaymentReturn />} />
               </Routes>
             </main>
             <Footer />

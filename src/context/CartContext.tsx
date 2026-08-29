@@ -1,4 +1,16 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+
+const STORAGE_KEY = 'ahb_cart';
+
+const loadCart = (): CartItem[] => {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    const parsed = raw ? JSON.parse(raw) : [];
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+};
 
 export interface CartItem {
   id: number;
@@ -21,7 +33,15 @@ interface CartContextType {
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [cartItems, setCartItems] = useState<CartItem[]>(loadCart);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(cartItems));
+    } catch {
+      /* storage unavailable — cart just won't persist */
+    }
+  }, [cartItems]);
 
   const addToCart = (item: Omit<CartItem, 'quantity'> & { quantity?: number }) => {
     setCartItems(prevItems => {
