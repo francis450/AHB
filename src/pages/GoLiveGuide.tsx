@@ -38,7 +38,7 @@ const GoLiveGuide = () => (
           Two features on the site — <strong className="text-white">card payments</strong> and{' '}
           <strong className="text-white">automatic SMS</strong> to booking clients — are fully built and
           tested. To switch them from test mode to real money and real texts, you need to open two
-          accounts and send the details to Frank. This page walks you through it.
+          accounts and send me the details. This page walks you through it.
         </p>
       </header>
 
@@ -110,17 +110,17 @@ const GoLiveGuide = () => (
             </Callout>
           </Step>
 
-          <Step n={5} title="Send Frank three things">
-            <p>Once the Sender ID is approved, send Frank:</p>
+          <Step n={5} title="Send me three things">
+            <p>Once the Sender ID is approved, send me:</p>
             <ul className="ml-4 list-disc space-y-1">
               <li>Your <strong>username</strong></li>
               <li>Your <strong>live API key</strong></li>
               <li>Your approved <strong>Sender ID</strong></li>
             </ul>
             <p>
-              He plugs these into the website's SMS settings, switches it from test mode to live, and
-              turns on client SMS. After that, every confirmed/cancelled online booking texts the
-              client automatically (you can still review/edit each message before it sends).
+              I plug these into the website's SMS settings, switch it from test mode to live, and turn
+              on client SMS. After that, every confirmed/cancelled online booking texts the client
+              automatically (you can still review/edit each message before it sends).
             </p>
           </Step>
         </ol>
@@ -166,19 +166,19 @@ const GoLiveGuide = () => (
           <Step n={5} title="Set your product prices">
             <p>
               The shop can only sell items that have a price. Make sure every product you want to sell
-              online has its price entered in the system (or ask Frank to do a bulk update from a
-              price list you send him). Items with no price are turned away at checkout.
+              online has its price entered in the system (or send me a price list and I'll do a bulk
+              update). Items with no price are turned away at checkout.
             </p>
           </Step>
 
-          <Step n={6} title="Send Frank two things">
-            <p>Send Frank:</p>
+          <Step n={6} title="Send me two things">
+            <p>Send me:</p>
             <ul className="ml-4 list-disc space-y-1">
               <li>Your live <strong>Consumer Key</strong></li>
               <li>Your live <strong>Consumer Secret</strong></li>
             </ul>
             <p>
-              He switches the website to live mode and re-registers it with Pesapal. Then do{' '}
+              I switch the website to live mode and re-register it with Pesapal. Then we do{' '}
               <strong>one small real purchase</strong> together (buy a cheap item, pay with a real
               card) to confirm the money reaches your KCB account.
             </p>
@@ -190,7 +190,7 @@ const GoLiveGuide = () => (
       <div className="mt-8 rounded-[2rem] bg-stone-950 p-6 text-white sm:p-8">
         <div className="flex items-center gap-3">
           <Send className="text-yellow-300" size={22} />
-          <h2 className="text-xl font-bold">What to send Frank, in one message</h2>
+          <h2 className="text-xl font-bold">What to send me, in one message</h2>
         </div>
         <div className="mt-5 space-y-4 text-sm">
           <div>
@@ -211,7 +211,7 @@ const GoLiveGuide = () => (
           </div>
         </div>
         <p className="mt-6 text-xs text-stone-400">
-          Treat the API keys like passwords — send them to Frank directly, not in a group chat, and
+          Treat the API keys like passwords — send them to me directly, not in a group chat, and
           don't post them anywhere public.
         </p>
       </div>
