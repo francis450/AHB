@@ -47,6 +47,28 @@ export const galleryItems: GalleryItem[] = [
     uploadDate: '2026-08-29'
   },
   {
+    id: 'wig-14-4x4-water-wave',
+    type: 'image',
+    category: 'wigs',
+    title: '14" 4x4 Water Wave',
+    description: 'Ksh 9,500 · Natural black 4x4 closure water wave lace wig, bob length.',
+    thumbnail: '/gallery/wigs/14in-4x4-water-wave.jpg',
+    fullSize: '/gallery/wigs/14in-4x4-water-wave.jpg',
+    tags: ['water-wave', '14-inch', '4x4-closure', 'lace-front', 'natural-black'],
+    uploadDate: '2026-08-31'
+  },
+  {
+    id: 'wig-14-4x4-water-wave-alt',
+    type: 'image',
+    category: 'wigs',
+    title: '14" 4x4 Water Wave (Alt Angle)',
+    description: 'Ksh 9,500 · Natural black 4x4 closure water wave lace wig, bob length.',
+    thumbnail: '/gallery/wigs/14in-4x4-water-wave-alt.jpg',
+    fullSize: '/gallery/wigs/14in-4x4-water-wave-alt.jpg',
+    tags: ['water-wave', '14-inch', '4x4-closure', 'lace-front', 'natural-black'],
+    uploadDate: '2026-08-31'
+  },
+  {
     id: 'wig-18-pixie-curly-burgundy',
     type: 'image',
     category: 'wigs',
@@ -100,6 +122,17 @@ export const galleryItems: GalleryItem[] = [
     fullSize: '/gallery/wigs/24in-water-wave-highlight.jpg',
     tags: ['water-wave', '24-inch', 'highlight', 'lace-front'],
     uploadDate: '2026-08-29'
+  },
+  {
+    id: 'wig-24-burmese-curly',
+    type: 'image',
+    category: 'wigs',
+    title: '24" Burmese Curly',
+    description: 'Ksh 26,000 · Natural black Burmese curly human hair lace wig, extra long.',
+    thumbnail: '/gallery/wigs/24in-burmese-curly.jpg',
+    fullSize: '/gallery/wigs/24in-burmese-curly.jpg',
+    tags: ['burmese-curly', '24-inch', 'human-hair', 'lace-front', 'natural-black'],
+    uploadDate: '2026-08-31'
   },
   {
     id: 'wig-30-water-wave',
