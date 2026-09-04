@@ -1,7 +1,7 @@
 import { extractFrappeError } from './frappeError';
 
 const baseUrl = (import.meta.env.VITE_ERPNEXT_URL || 'https://alicia.boraerp.co.ke').replace(/\/$/, '');
-const endpoint = `${baseUrl}/api/method/alicia_reviews.api.website_products`;
+const endpoint = `${baseUrl}/api/method/alicia_reviews.alicia_reviews.api.website_products`;
 
 export interface WebsiteProduct {
   item_code: string;
